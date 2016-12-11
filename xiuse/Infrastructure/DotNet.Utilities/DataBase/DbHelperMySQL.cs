@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Data.Common;
 using System.Collections.Generic;
+using System.Web.Configuration;//注意添加这个命名空间
 namespace Maticsoft.DBUtility
 {
     /// <summary>
@@ -19,7 +20,8 @@ namespace Maticsoft.DBUtility
     public abstract class DbHelperMySQL
     {
         //数据库连接字符串(web.config来配置)，可以动态更改connectionString支持多数据库.		
-        public static string connectionString = "连接字符串";
+        
+        public static string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["XiuseMySqlConnection"].ConnectionString;
         public DbHelperMySQL()
         {            
         }

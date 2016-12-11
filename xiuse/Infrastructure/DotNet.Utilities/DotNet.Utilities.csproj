@@ -62,6 +62,14 @@
     <Compile Include="Cookie&amp;Session&amp;Cache\SessionHelper.cs" />
     <Compile Include="Cookie&amp;Session&amp;Cache\SessionHelper2.cs" />
     <Compile Include="CSV\CsvHelper.cs" />
+    <Compile Include="DbUtility\AosyMySql.cs" />
+    <Compile Include="DbUtility\AosyOleDb.cs" />
+    <Compile Include="DbUtility\AosyOracle.cs" />
+    <Compile Include="DbUtility\AosySql.cs" />
+    <Compile Include="DbUtility\MySqlHelper.cs" />
+    <Compile Include="DbUtility\OleDbHelper.cs" />
+    <Compile Include="DbUtility\OracleHelper.cs" />
+    <Compile Include="DbUtility\SqlHelper.cs" />
     <Compile Include="DEncrypt\MySecurity.cs" />
     <Compile Include="Internet&amp;Url\AdslHelper.cs" />
     <Compile Include="Validate&amp;Tool\FormulaExpress.cs" />
