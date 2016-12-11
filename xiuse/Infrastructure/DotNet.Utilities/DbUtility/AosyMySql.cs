@@ -22,7 +22,7 @@ namespace Xiuse.DbUtility
         /// <summary>
         /// 获取数据库连接字符串
         /// </summary>
-        private static string Connstr=ConfigurationManager.AppSettings["MySqlConnStr"].ToString();
+        private static string Connstr = System.Configuration.ConfigurationManager.ConnectionStrings["XiuseMySqlConnection"].ConnectionString;
         #endregion
 
         #region 执行SQL语句
