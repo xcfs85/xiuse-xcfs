@@ -1,17 +1,73 @@
 /*
-MySQL Data Transfer
-Source Host: localhost
-Source Database: xiuse
-Target Host: localhost
-Target Database: xiuse
-Date: 2016/12/9 13:34:08
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 50505
+Source Host           : localhost:3306
+Source Database       : xiuse
+
+Target Server Type    : MYSQL
+Target Server Version : 50505
+File Encoding         : 65001
+
+Date: 2016-12-11 22:50:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
 -- ----------------------------
--- Table structure for order_00000000000000000000000000000000
+-- Table structure for `memberconsumption`
 -- ----------------------------
-CREATE TABLE `order_00000000000000000000000000000000` (
+DROP TABLE IF EXISTS `memberconsumption`;
+CREATE TABLE `memberconsumption` (
+  `ConsumptionRecordsId` char(32) NOT NULL,
+  `MemberCardNo` char(16) NOT NULL COMMENT '会员卡卡号',
+  `MemberId` char(32) NOT NULL COMMENT '会员Id',
+  `CRecordsType` tinyint(4) NOT NULL COMMENT '消费类型',
+  `Amount` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '消费金额',
+  `Balance` decimal(12,2) NOT NULL COMMENT '余额',
+  `ConsumptionTime` datetime NOT NULL COMMENT '消费日期',
+  `OrderId` char(32) NOT NULL COMMENT '订单Id',
+  PRIMARY KEY (`ConsumptionRecordsId`),
+  KEY `MCon_key` (`MemberId`),
+  CONSTRAINT `MCon_key` FOREIGN KEY (`MemberId`) REFERENCES `xiuse_member` (`MemberId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of memberconsumption
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `ordermenu_`
+-- ----------------------------
+DROP TABLE IF EXISTS `ordermenu_`;
+CREATE TABLE `ordermenu_` (
+  `OrderMenuId` char(32) NOT NULL COMMENT '订单ID',
+  `OrderId` char(32) NOT NULL,
+  `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
+  `MenuPrice` decimal(12,2) NOT NULL COMMENT '菜品价格',
+  `MenuTag` varchar(500) NOT NULL COMMENT '菜品标签',
+  `MenuImage` varchar(500) DEFAULT NULL COMMENT '菜品图片',
+  `MenuInstruction` varchar(5000) DEFAULT NULL COMMENT '菜品介绍',
+  `DiscoutFlag` bit(1) DEFAULT NULL COMMENT '是否有折扣（0,1）',
+  `DiscountName` varchar(500) DEFAULT NULL COMMENT '折扣名称',
+  `DiscountContent` decimal(12,2) DEFAULT NULL COMMENT '折扣金额',
+  `DiscountType` tinyint(1) DEFAULT NULL COMMENT '折扣类型(0:百分比 1：固定金额)',
+  `MenuServing` bit(1) DEFAULT NULL COMMENT '是否上菜',
+  PRIMARY KEY (`OrderMenuId`),
+  KEY `key-006` (`OrderId`),
+  CONSTRAINT `key-006` FOREIGN KEY (`OrderId`) REFERENCES `order_` (`OrderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of ordermenu_
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `order_`
+-- ----------------------------
+DROP TABLE IF EXISTS `order_`;
+CREATE TABLE `order_` (
   `OrderId` varchar(32) NOT NULL COMMENT '订单号',
   `DeskId` char(32) NOT NULL COMMENT '餐桌Id',
   `BillAmount` decimal(12,2) NOT NULL COMMENT '账单',
@@ -31,29 +87,13 @@ CREATE TABLE `order_00000000000000000000000000000000` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for ordermenu_00000000000000000000000000000000
+-- Records of order_
 -- ----------------------------
-CREATE TABLE `ordermenu_00000000000000000000000000000000` (
-  `OrderMenuId` char(32) NOT NULL COMMENT '订单ID',
-  `OrderId` char(32) NOT NULL,
-  `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
-  `MenuPrice` decimal(12,2) NOT NULL COMMENT '菜品价格',
-  `MenuTag` varchar(500) NOT NULL COMMENT '菜品标签',
-  `MenuImage` varchar(500) DEFAULT NULL COMMENT '菜品图片',
-  `MenuInstruction` varchar(5000) DEFAULT NULL COMMENT '菜品介绍',
-  `DiscoutFlag` bit(1) DEFAULT NULL COMMENT '是否有折扣（0,1）',
-  `DiscountName` varchar(500) DEFAULT NULL COMMENT '折扣名称',
-  `DiscountContent` decimal(12,2) DEFAULT NULL COMMENT '折扣金额',
-  `DiscountType` tinyint(1) DEFAULT NULL COMMENT '折扣类型(0:百分比 1：固定金额)',
-  `MenuServing` bit(1) DEFAULT NULL COMMENT '是否上菜',
-  PRIMARY KEY (`OrderMenuId`),
-  KEY `key-006` (`OrderId`),
-  CONSTRAINT `key-006` FOREIGN KEY (`OrderId`) REFERENCES `order_00000000000000000000000000000000` (`OrderId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for xiuse_desk
+-- Table structure for `xiuse_desk`
 -- ----------------------------
+DROP TABLE IF EXISTS `xiuse_desk`;
 CREATE TABLE `xiuse_desk` (
   `DeskId` char(32) NOT NULL COMMENT '餐桌主键ID',
   `DeskName` varchar(100) NOT NULL COMMENT '餐桌名称',
@@ -68,8 +108,13 @@ CREATE TABLE `xiuse_desk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
 
 -- ----------------------------
--- Table structure for xiuse_discount
+-- Records of xiuse_desk
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_discount`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_discount`;
 CREATE TABLE `xiuse_discount` (
   `DiscountId` char(32) NOT NULL DEFAULT '' COMMENT '折扣ID',
   `DiscountName` varchar(250) NOT NULL COMMENT '折扣名称',
@@ -87,8 +132,13 @@ CREATE TABLE `xiuse_discount` (
 ) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
 
 -- ----------------------------
--- Table structure for xiuse_member
+-- Records of xiuse_discount
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_member`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_member`;
 CREATE TABLE `xiuse_member` (
   `MemberId` char(32) NOT NULL COMMENT '会员Id',
   `MemberCardNo` char(16) NOT NULL COMMENT '会员卡号',
@@ -107,8 +157,13 @@ CREATE TABLE `xiuse_member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for xiuse_memberclassify
+-- Records of xiuse_member
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_memberclassify`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_memberclassify`;
 CREATE TABLE `xiuse_memberclassify` (
   `MemberClassifyId` char(32) NOT NULL COMMENT '会员类型',
   `DiscountId` char(32) NOT NULL COMMENT '折扣ID',
@@ -121,41 +176,13 @@ CREATE TABLE `xiuse_memberclassify` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for xiuse_memberconsumption
+-- Records of xiuse_memberclassify
 -- ----------------------------
-CREATE TABLE `xiuse_memberconsumption` (
-  `ConsumptionRecordsId` char(32) NOT NULL COMMENT '会员卡消费信息（ID）',
-  `MemberCardNo` char(16) NOT NULL COMMENT '会员卡卡号',
-  `MemberId` char(32) NOT NULL COMMENT '会员Id',
-  `CRecordsType` tinyint(4) NOT NULL COMMENT '消费类型',
-  `Amount` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '消费金额',
-  `Balance` decimal(12,2) NOT NULL COMMENT '余额',
-  `ConsumptionTime` datetime NOT NULL COMMENT '消费日期',
-  `OrderId` char(32) NOT NULL COMMENT '订单Id',
-  PRIMARY KEY (`ConsumptionRecordsId`),
-  KEY `MCon_key` (`MemberId`),
-  CONSTRAINT `MCon_key` FOREIGN KEY (`MemberId`) REFERENCES `xiuse_member` (`MemberId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for xiuse_memberrecharge
+-- Table structure for `xiuse_menuclassify`
 -- ----------------------------
-CREATE TABLE `xiuse_memberrecharge` (
-  `RechargeId` char(32) NOT NULL COMMENT '充值记录Id',
-  `RechargeType` tinyint(4) NOT NULL COMMENT '充值类型',
-  `RechargeAmount` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '充值金额',
-  `Balance` decimal(12,2) NOT NULL COMMENT '可用余额',
-  `MemberId` char(32) NOT NULL COMMENT '会员的Id',
-  `MemberCardNo` varchar(16) NOT NULL COMMENT '会员的卡号',
-  `RechargeTime` datetime NOT NULL,
-  PRIMARY KEY (`RechargeId`),
-  KEY `RechargeMember_key` (`MemberId`),
-  CONSTRAINT `RechargeMember_key` FOREIGN KEY (`MemberId`) REFERENCES `xiuse_member` (`MemberId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Table structure for xiuse_menuclassify
--- ----------------------------
+DROP TABLE IF EXISTS `xiuse_menuclassify`;
 CREATE TABLE `xiuse_menuclassify` (
   `ClassifyId` char(32) NOT NULL COMMENT '菜单分类',
   `ClassifyInstruction` varchar(500) DEFAULT NULL COMMENT '品餐分类介绍',
@@ -167,8 +194,13 @@ CREATE TABLE `xiuse_menuclassify` (
 ) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
 
 -- ----------------------------
--- Table structure for xiuse_menus
+-- Records of xiuse_menuclassify
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_menus`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_menus`;
 CREATE TABLE `xiuse_menus` (
   `MenuId` char(32) NOT NULL COMMENT '品餐Id',
   `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
@@ -192,8 +224,34 @@ CREATE TABLE `xiuse_menus` (
 ) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
 
 -- ----------------------------
--- Table structure for xiuse_restaurant
+-- Records of xiuse_menus
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_recharge`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_recharge`;
+CREATE TABLE `xiuse_recharge` (
+  `RechargeId` char(32) NOT NULL COMMENT '充值记录Id',
+  `RechargeType` tinyint(4) NOT NULL COMMENT '充值类型',
+  `RechargeAmount` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '充值金额',
+  `Balance` decimal(12,2) NOT NULL COMMENT '可用余额',
+  `MemberId` char(32) NOT NULL COMMENT '会员的Id',
+  `MemberCardNo` varchar(16) NOT NULL COMMENT '会员的卡号',
+  `RechargeTime` datetime NOT NULL,
+  PRIMARY KEY (`RechargeId`),
+  KEY `RechargeMember_key` (`MemberId`),
+  CONSTRAINT `RechargeMember_key` FOREIGN KEY (`MemberId`) REFERENCES `xiuse_member` (`MemberId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of xiuse_recharge
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_restaurant`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_restaurant`;
 CREATE TABLE `xiuse_restaurant` (
   `RestaurantId` char(32) NOT NULL COMMENT '餐厅的Id',
   `RestaurantName` varchar(200) DEFAULT NULL COMMENT '餐厅名称',
@@ -205,8 +263,13 @@ CREATE TABLE `xiuse_restaurant` (
 ) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
 
 -- ----------------------------
--- Table structure for xiuse_user
+-- Records of xiuse_restaurant
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_user`;
 CREATE TABLE `xiuse_user` (
   `UserId` char(32) NOT NULL COMMENT 'Id编号',
   `UserName` varchar(50) NOT NULL COMMENT '姓名',
@@ -225,5 +288,5 @@ CREATE TABLE `xiuse_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
 
 -- ----------------------------
--- Records 
+-- Records of xiuse_user
 -- ----------------------------
