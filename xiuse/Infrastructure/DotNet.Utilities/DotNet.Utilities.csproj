@@ -202,6 +202,13 @@
     <Compile Include="Yzm\YZMHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\Excel.dll" />
+    <Content Include="bin\Debug\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="bin\Debug\itextsharp.dll" />
+    <Content Include="bin\Debug\Maticsoft.DBUtility.dll" />
+    <Content Include="bin\Debug\MySql.Data.dll" />
+    <Content Include="bin\Debug\OWC10Chart.dll" />
+    <Content Include="bin\Debug\System.Data.SQLite.DLL" />
     <Content Include="ResourceManager\Sample.xml" />
   </ItemGroup>
   <ItemGroup>
