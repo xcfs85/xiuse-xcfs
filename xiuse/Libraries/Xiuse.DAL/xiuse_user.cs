@@ -90,7 +90,7 @@ namespace  Xiuse.DAL
 				model.Password=dr["Password"].ToString();
 				model.UserRole=(int)dr["UserRole"];
 				model.ParentUserId=dr["ParentUserId"].ToString();
-				model.OwnRestaurant=(bool)dr["OwnRestaurant"];
+				model.OwnRestaurant=(int)dr["OwnRestaurant"];
 				model.Time=dr["Time"].ToString();
                 return model;
             }
@@ -99,8 +99,44 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-        
 
+        /*
+         * 获取全部实体
+         * 版本1.00 修改时间2016/12/12 @xcfs85
+         */
+        /// <summary>
+        /// 获取全部实体
+        /// </summary>
+        public List <Xiuse.Model.xiuse_user> GetModels()
+        {
+            string strSql = String.Format(@"Select * From xiuse_user ");
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            List<Xiuse.Model.xiuse_user> models = new List<Model.xiuse_user>();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    Xiuse.Model.xiuse_user model = new Xiuse.Model.xiuse_user();
+                    model.UserId = (string)dr["UserId"];
+                    model.RestaurantId = (string)dr["RestaurantId"];
+                    model.UserName = dr["UserName"].ToString();
+                    model.Weixin = dr["Weixin"].ToString();
+                    model.CellPhone = (decimal)dr["CellPhone"];
+                    model.Email = dr["Email"].ToString();
+                    model.Password = dr["Password"].ToString();
+                    model.UserRole = (int)dr["UserRole"];
+                    model.ParentUserId = dr["ParentUserId"].ToString();
+                    model.OwnRestaurant = (int)dr["OwnRestaurant"];
+                    model.Time = dr["Time"].ToString();
+                    models.Add(model);
+                }
+                return models;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// 搜索数据

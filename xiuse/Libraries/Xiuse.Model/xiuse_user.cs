@@ -19,7 +19,7 @@ namespace Xiuse.Model
 	private string _Password;
 	private int _UserRole;
 	private string _ParentUserId;
-	private bool _OwnRestaurant;
+	private int _OwnRestaurant;
 	private string _Time;
         #endregion
 
@@ -127,7 +127,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 餐厅所有权（0，无；1，所有；）[OwnRestaurant]
 	        /// </summary>
-	        public bool OwnRestaurant
+	        public int OwnRestaurant
 	        {
 	            get{ return _OwnRestaurant; }
 	            set{ _OwnRestaurant=value; }

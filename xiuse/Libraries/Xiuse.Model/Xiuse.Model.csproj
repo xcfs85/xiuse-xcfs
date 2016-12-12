@@ -43,6 +43,7 @@
     <Compile Include="memberconsumption.cs" />
     <Compile Include="ordermenu_.cs" />
     <Compile Include="order_.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="xiuse_desk.cs" />
     <Compile Include="xiuse_discount.cs" />

@@ -1,0 +1,13 @@
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.DAL.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.DAL.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Maticsoft.DBUtility.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\System.Data.SQLite.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.xml
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.csprojResolveAssemblyReference.cache
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.pdb

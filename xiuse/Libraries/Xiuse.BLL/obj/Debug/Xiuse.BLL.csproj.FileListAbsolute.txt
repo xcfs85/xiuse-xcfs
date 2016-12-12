@@ -1,0 +1,16 @@
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\Xiuse.BLL.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\Xiuse.BLL.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\Xiuse.DAL.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\Xiuse.Model.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\DotNet.Utilities.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\MySql.Data.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\Maticsoft.DBUtility.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\System.Data.SQLite.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\Xiuse.DAL.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\Xiuse.Model.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\DotNet.Utilities.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\bin\Debug\DotNet.Utilities.xml
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\obj\Debug\Xiuse.BLL.csprojResolveAssemblyReference.cache
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\obj\Debug\Xiuse.BLL.dll
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.BLL\obj\Debug\Xiuse.BLL.pdb

@@ -63,9 +63,22 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(UserId);
         }
-        
+        /*
+         * 增加获取全部实体
+         * 
+         * 版本1 修改时间2016/12/12  创建函数 @xcfs85  
+         * 
+         */
+        /// <summary>
+        /// 获取全部实体
+        /// </summary>
+        /// <param name="UserId">UserId</param>
+        public List<Xiuse.Model.xiuse_user> GetModels()
+        {
+            return dal.GetModels();
+        }
 
-		/// <summary>
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">餐厅ID[RestaurantId]</param>

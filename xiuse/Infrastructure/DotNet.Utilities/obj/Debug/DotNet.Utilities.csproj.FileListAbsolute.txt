@@ -1,0 +1,6 @@
+D:\document\xiuse-git\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.XML
+D:\document\xiuse-git\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.dll
+D:\document\xiuse-git\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.pdb
+D:\document\xiuse-git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.csprojResolveAssemblyReference.cache
+D:\document\xiuse-git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.dll
+D:\document\xiuse-git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.pdb
