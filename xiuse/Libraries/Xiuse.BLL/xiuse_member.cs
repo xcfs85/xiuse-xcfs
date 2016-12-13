@@ -167,6 +167,7 @@ namespace Xiuse.BLL
         {
            return dal.ExecuteUpdate(updatefield,wheres);
         }
+        #region 工具类
         /// <summary>
         /// 把DataSet转成List泛型集合(expand无关联实体)
         /// Author:xcf Date:2015.01.26
@@ -229,6 +230,7 @@ namespace Xiuse.BLL
                 Tmp = null;
             return Tmp;
         }
-       
+        #endregion
+
     }
 }

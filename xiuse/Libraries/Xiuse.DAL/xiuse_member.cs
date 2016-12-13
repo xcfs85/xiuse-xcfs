@@ -124,7 +124,7 @@ namespace  Xiuse.DAL
             StringBuilder strSql = new StringBuilder();
             
             strSql.Append(string.Format("Select * From xiuse_member Where MemberCell like '%{0}%' or MemberName like '{1}' or MemberCardNo like", MemberCell,MemberName,MemberCardNo));
-            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql.ToString());
             return ds;
         }
         /// <summary>
@@ -278,6 +278,7 @@ namespace  Xiuse.DAL
             string sql = "update xiuse_member set " + updatefield + " where " + wheres;
             return AosyMySql.ExecuteNonQuery(sql);
         }
+        #endregion
     }
 }
 
