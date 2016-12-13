@@ -876,6 +876,24 @@
             </summary>
             <param name="data">需要转换成整数的byte数组</param>
         </member>
+        <member name="M:DotNet.Utilities.ConvertHelper.DataSetToEntity``1(System.Data.DataSet,System.Int32)">
+            <summary>
+            DataSet转换为实体类
+            </summary>
+            <typeparam name="T">实体类</typeparam>
+            <param name="p_DataSet">DataSet</param>
+            <param name="p_TableIndex">待转换数据表索引</param>
+            <returns>实体类</returns>
+        </member>
+        <member name="M:DotNet.Utilities.ConvertHelper.DataSetToEntityList``1(System.Data.DataSet,System.Int32)">
+            <summary>
+            DataSet转换为实体列表
+            </summary>
+            <typeparam name="T">实体类</typeparam>
+            <param name="p_DataSet">DataSet</param>
+            <param name="p_TableIndex">待转换数据表索引</param>
+            <returns>实体类列表</returns>
+        </member>
         <member name="M:DotNet.Utilities.CacheHelper.GetCache(System.String)">
             <summary>
             获取数据缓存
