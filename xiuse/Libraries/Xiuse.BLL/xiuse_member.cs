@@ -108,7 +108,17 @@ namespace Xiuse.BLL
             RecordCount=count;
             return ds;
         }
-
+        /// <summary>
+        /// 搜索数据
+        /// </summary>
+        /// <param name="">会员卡号[MemberCardNo]</param>
+        /// <param name="">会员名称[MemberName]</param>
+        /// <param name="">手机号[MemberCell]</param>
+        public List<Model.xiuse_member> Search( string MemberCardNo, string MemberName, string MemberCell)
+        {
+            return DataSetTransModelListNoExpand( dal.Search( MemberCardNo, MemberName, MemberCell));
+            
+        }
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -174,7 +184,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static List<Xiuse.Model.xiuse_member> DataSetTransModelListNoExpand(DataSet dataSet)
+        private  List<Xiuse.Model.xiuse_member> DataSetTransModelListNoExpand(DataSet dataSet)
         {
             List<Xiuse.Model.xiuse_member> list = new List<Xiuse.Model.xiuse_member>();
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
@@ -190,7 +200,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static Xiuse.Model.xiuse_member DataSetTransModelNoExpand(DataSet dataSet)
+        private  Xiuse.Model.xiuse_member DataSetTransModelNoExpand(DataSet dataSet)
         {
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {

@@ -7,3 +7,4 @@ D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.dll
 D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.pdb
 D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.dll
 D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.pdb
+D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.csprojResolveAssemblyReference.cache

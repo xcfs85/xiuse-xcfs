@@ -152,7 +152,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static List<Xiuse.Model.xiuse_memberclassify> DataSetTransModelListNoExpand(DataSet dataSet)
+        private List<Xiuse.Model.xiuse_memberclassify> DataSetTransModelListNoExpand(DataSet dataSet)
         {
             List<Xiuse.Model.xiuse_memberclassify> list = new List<Xiuse.Model.xiuse_memberclassify>();
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
@@ -168,7 +168,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static Xiuse.Model.xiuse_memberclassify DataSetTransModelNoExpand(DataSet dataSet)
+        private Xiuse.Model.xiuse_memberclassify DataSetTransModelNoExpand(DataSet dataSet)
         {
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {

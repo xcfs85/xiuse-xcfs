@@ -153,7 +153,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static List<Xiuse.Model.memberconsumption> DataSetTransModelListNoExpand(DataSet dataSet)
+        private  List<Xiuse.Model.memberconsumption> DataSetTransModelListNoExpand(DataSet dataSet)
         {
             List<Xiuse.Model.memberconsumption> list = new List<Xiuse.Model.memberconsumption>();
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
@@ -169,7 +169,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static Xiuse.Model.memberconsumption DataSetTransModelNoExpand(DataSet dataSet)
+        private  Xiuse.Model.memberconsumption DataSetTransModelNoExpand(DataSet dataSet)
         {
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {

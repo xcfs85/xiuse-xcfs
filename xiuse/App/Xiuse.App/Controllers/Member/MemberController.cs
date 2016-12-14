@@ -30,11 +30,15 @@ namespace Xiuse.App.Controllers.Member
         {
             return MemberBLL.GetModels_RestaurantId(RestaurantId);
         }
+        /// <summary>
+        /// 搜索会员，条件：会员号、手机号、会员名称
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
         [Route("SearchMembers")]
         public List<Model.xiuse_member> GetSearchMembers(string exp)
         {
-            //todo
-            return null;
+            return MemberBLL.Search(exp, exp, exp); ;
         }
         /// <summary>
         /// 添加餐厅的会员
