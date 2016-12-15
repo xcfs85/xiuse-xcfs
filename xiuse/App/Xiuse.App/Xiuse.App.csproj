@@ -239,6 +239,7 @@
     <Compile Include="Controllers\Test\DefaultController.cs" />
     <Compile Include="Controllers\Test\TestController.cs" />
     <Compile Include="Controllers\Test\TestUserController.cs" />
+    <Compile Include="Controllers\User\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
