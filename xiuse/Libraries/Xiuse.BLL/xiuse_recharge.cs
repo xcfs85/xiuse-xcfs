@@ -65,9 +65,18 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(RechargeId);
         }
-        
 
-		/// <summary>
+        /// <summary>
+        /// 获取店铺内实体
+        /// </summary>
+        /// <param name="RechargeId">RechargeId</param>
+        public Xiuse.Model.xiuse_recharge GetModels(string RestaurantId)
+        {
+            return null;
+            //todo
+        }
+
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">会员的Id[MemberId]</param>

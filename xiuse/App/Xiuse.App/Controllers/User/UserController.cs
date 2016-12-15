@@ -32,7 +32,7 @@ namespace Xiuse.App.Controllers
             return Ok(user);
         }
         //新建一个用户{重复检测如何实现}
-        public IHttpActionResult PostSetXiuse_users(Model.xiuse_user user)
+        public IHttpActionResult PostSetXiuse_users([FromBody] Model.xiuse_user user)
         {
             //List<Model.xiuse_user> users = new_user.GetModels();
             if (new_user.Insert(user) == true)

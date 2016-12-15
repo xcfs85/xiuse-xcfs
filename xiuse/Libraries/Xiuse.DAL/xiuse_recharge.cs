@@ -66,13 +66,18 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Select Count(1) From xiuse_recharge Where RechargeId={0}",RechargeId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
-        
 
-
+       
+        //todo
+        public DataSet(string RechargeId)
+        {
+            string strSql = String.Format(@" select* from xiuse_member left join xiuse_recharge on xiuse_member.MemberId = xiuse_recharge.MemberId where xiuse_member={ 0}", RechargeId);
+            return null;
+        }
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="RechargeId">RechargeId</param>
+        /// <parame name="RechargeId">RechargeId</param>
         public Xiuse.Model.xiuse_recharge GetModel(string RechargeId)
         {
              string strSql=String.Format(@"Select * From xiuse_recharge Where RechargeId={0}",RechargeId); 

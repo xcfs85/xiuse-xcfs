@@ -108,6 +108,7 @@ namespace Xiuse.App.Controllers.Member
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
+       
         #endregion
     }
 }

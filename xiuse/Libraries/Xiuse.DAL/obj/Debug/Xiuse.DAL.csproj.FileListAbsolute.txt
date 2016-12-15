@@ -24,3 +24,16 @@ D:\workplace\Git_\xiuse\Libraries\Xiuse.DAL\bin\Debug\ICSharpCode.SharpZipLib.dl
 D:\workplace\Git_\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.pdb
 D:\workplace\Git_\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.xml
 D:\workplace\Git_\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.pdb
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.DAL.dll
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.DAL.pdb
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.dll
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.dll
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Maticsoft.DBUtility.dll
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\System.Data.SQLite.dll
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.pdb
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.xml
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.pdb
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.csprojResolveAssemblyReference.cache
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.dll
+D:\document\Git\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.pdb
