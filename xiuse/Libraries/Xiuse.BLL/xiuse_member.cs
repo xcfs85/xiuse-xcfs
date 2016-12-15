@@ -84,7 +84,45 @@ namespace Xiuse.BLL
         {
             return DataSetTransModelListNoExpand(dal.GetData("*", String.Format("RestaurantId={0}", RestaurantId)));
         }
-       
+        /*
+        * 根据会员的ID设定会员的启用状态
+        * 创建人xcf  2016/12/13
+        */
+        /// <summary>
+        /// 设定会员启用状态
+        /// </summary>
+        /// <param name="MemberId">会员的ID</param>
+        /// <param name="flag">启用状态</param>
+        /// <returns></returns>
+        public bool SetMemberState(string MemberId, bool flag)
+        {
+            if (dal.Exists(MemberId))
+            {
+                if (dal.ExecuteUpdate(String.Format("MemberState={0}", flag ? "1" : "0"), String.Format("MemberId={0}", MemberId)) > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        /*
+       * 根据会员的手机号检测会员手机是否重复
+       * 创建人xcf  2016/12/15
+       */
+        /// <summary>
+        /// 检测会员手机是否重复
+        /// </summary>
+        /// <param name="Cell">手机号码</param>
+        /// <returns>true：有重复；false:无重复；</returns>
+        public bool CheckCellExist(string Cell)
+        {
+            if (dal.GetData("1", string.Format("MemberCell={0}", Cell)).Tables[0].Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
         /// <summary>
         /// 搜索数据
         /// </summary>
