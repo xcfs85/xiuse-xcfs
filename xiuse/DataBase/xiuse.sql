@@ -9,7 +9,6 @@ Source Database       : xiuse
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
-
 Date: 2016-12-11 22:50:21
 */
 
