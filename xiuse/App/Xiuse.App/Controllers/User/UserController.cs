@@ -27,7 +27,7 @@ namespace Xiuse.App.Controllers
             var user = users.FirstOrDefault((p) => p.UserId == id);
             if (user == null)
             {
-                return NotFound();
+                   return NotFound();
             }
             return Ok(user);
         }
