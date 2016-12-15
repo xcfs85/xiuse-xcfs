@@ -84,7 +84,45 @@ namespace Xiuse.BLL
         {
             return DataSetTransModelListNoExpand(dal.GetData("*", String.Format("RestaurantId={0}", RestaurantId)));
         }
-       
+        /*
+        * 根据会员的ID设定会员的启用状态
+        * 创建人xcf  2016/12/13
+        */
+        /// <summary>
+        /// 设定会员启用状态
+        /// </summary>
+        /// <param name="MemberId">会员的ID</param>
+        /// <param name="flag">启用状态</param>
+        /// <returns></returns>
+        public bool SetMemberState(string MemberId, bool flag)
+        {
+            if (dal.Exists(MemberId))
+            {
+                if (dal.ExecuteUpdate(String.Format("MemberState={0}", flag ? "1" : "0"), String.Format("MemberId={0}", MemberId)) > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        /*
+       * 根据会员的手机号检测会员手机是否重复
+       * 创建人xcf  2016/12/15
+       */
+        /// <summary>
+        /// 检测会员手机是否重复
+        /// </summary>
+        /// <param name="Cell">手机号码</param>
+        /// <returns>true：有重复；false:无重复；</returns>
+        public bool CheckCellExist(string Cell)
+        {
+            if (dal.GetData("1", string.Format("MemberCell={0}", Cell)).Tables[0].Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
         /// <summary>
         /// 搜索数据
         /// </summary>
@@ -108,7 +146,17 @@ namespace Xiuse.BLL
             RecordCount=count;
             return ds;
         }
-
+        /// <summary>
+        /// 搜索数据
+        /// </summary>
+        /// <param name="">会员卡号[MemberCardNo]</param>
+        /// <param name="">会员名称[MemberName]</param>
+        /// <param name="">手机号[MemberCell]</param>
+        public List<Model.xiuse_member> Search( string MemberCardNo, string MemberName, string MemberCell)
+        {
+            return DataSetTransModelListNoExpand( dal.Search( MemberCardNo, MemberName, MemberCell));
+            
+        }
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -167,13 +215,14 @@ namespace Xiuse.BLL
         {
            return dal.ExecuteUpdate(updatefield,wheres);
         }
+        #region 工具类
         /// <summary>
         /// 把DataSet转成List泛型集合(expand无关联实体)
         /// Author:xcf Date:2015.01.26
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static List<Xiuse.Model.xiuse_member> DataSetTransModelListNoExpand(DataSet dataSet)
+        private  List<Xiuse.Model.xiuse_member> DataSetTransModelListNoExpand(DataSet dataSet)
         {
             List<Xiuse.Model.xiuse_member> list = new List<Xiuse.Model.xiuse_member>();
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
@@ -189,7 +238,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private static Xiuse.Model.xiuse_member DataSetTransModelNoExpand(DataSet dataSet)
+        private  Xiuse.Model.xiuse_member DataSetTransModelNoExpand(DataSet dataSet)
         {
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {
@@ -229,6 +278,7 @@ namespace Xiuse.BLL
                 Tmp = null;
             return Tmp;
         }
-       
+        #endregion
+
     }
 }

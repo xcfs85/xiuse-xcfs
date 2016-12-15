@@ -4,6 +4,8 @@ using System.Text;
 using System.Data;
 using Xiuse.Model;
 using Xiuse.DAL;
+using DotNet.Utilities;
+
 namespace Xiuse.BLL
 {
     /// <summary>
@@ -144,5 +146,66 @@ namespace Xiuse.BLL
         {
            return dal.ExecuteUpdate(updatefield,wheres);
         }
+        #region 工具类
+        /// <summary>
+        /// 把DataSet转成List泛型集合(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private  List<Xiuse.Model.memberconsumption> DataSetTransModelListNoExpand(DataSet dataSet)
+        {
+            List<Xiuse.Model.memberconsumption> list = new List<Xiuse.Model.memberconsumption>();
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.memberconsumption>(dataSet, 0));
+                return list;
+            }
+            return null;
+        }
+        /// <summary>
+        /// 把DataSet转成泛型(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private  Xiuse.Model.memberconsumption DataSetTransModelNoExpand(DataSet dataSet)
+        {
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                return ConvertHelper.DataSetToEntity<Xiuse.Model.memberconsumption>(dataSet, 0);
+            }
+            return null;
+        }
+        /// <summary>
+        /// 工具类DataSet转换为List
+        /// </summary>
+        /// <param name="ds">DataSet</param>
+        /// <returns></returns>
+        private List<Xiuse.Model.memberconsumption> ConvertDSToModels(DataSet ds)
+        {
+            List<Xiuse.Model.memberconsumption> Tmp = new List<Model.memberconsumption>();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    Xiuse.Model.memberconsumption model = new Xiuse.Model.memberconsumption();
+                    DataRow dr = ds.Tables[0].Rows[0];
+                    model.ConsumptionRecordsId = (string)dr["ConsumptionRecordsId"];
+                    model.MemberId = (string)dr["MemberId"];
+                    model.MemberCardNo = (string)dr["MemberCardNo"];
+                    model.CRecordsType = (byte)dr["CRecordsType"];
+                    model.Amount = (decimal)dr["Amount"];
+                    model.Balance = (decimal)dr["Balance"];
+                    model.ConsumptionTime = dr["ConsumptionTime"].ToString();
+                    model.OrderId = (string)dr["OrderId"];
+                    Tmp.Add(model);
+                }
+            }
+            else
+                Tmp = null;
+            return Tmp;
+        }
+        #endregion
     }
 }
