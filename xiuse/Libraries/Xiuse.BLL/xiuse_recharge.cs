@@ -67,12 +67,12 @@ namespace Xiuse.BLL
         }
 
         /// <summary>
-        /// 获取店铺内实体
+        /// 获取店铺内的会员充值记录实体
         /// </summary>
         /// <param name="RechargeId">RechargeId</param>
-        public Xiuse.Model.xiuse_recharge GetModels(string RestaurantId)
+        public List<Xiuse.Model.xiuse_recharge> GetModelsAtRestaurant(string RestaurantId)
         {
-            return null;
+            return DataSetTransModelListNoExpand(dal.GetModelsAtRestaurant(RestaurantId));
             //todo
         }
 

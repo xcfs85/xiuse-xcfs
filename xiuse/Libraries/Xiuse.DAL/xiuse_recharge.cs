@@ -67,12 +67,20 @@ namespace  Xiuse.DAL
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
-       
-        //todo
-        public DataSet(string RechargeId)
+       /*
+       * 获取实体，店铺内的充值记录
+       * 作者：xcf  更新时间：2016/12/15
+       */
+        /// <summary>
+        /// 获取店铺的实体
+        /// </summary>
+        /// <param name="RestaurantId">店铺的ID</param>
+        /// <returns></returns>
+        public DataSet GetModelsAtRestaurant(string RestaurantId)
         {
-            string strSql = String.Format(@" select* from xiuse_member left join xiuse_recharge on xiuse_member.MemberId = xiuse_recharge.MemberId where xiuse_member={ 0}", RechargeId);
-            return null;
+            string strSql = String.Format(@" select* from xiuse_member left join xiuse_recharge on xiuse_member.MemberId = xiuse_recharge.MemberId where xiuse_member={ 0}", RestaurantId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            return ds;
         }
         /// <summary>
         /// 获取实体
