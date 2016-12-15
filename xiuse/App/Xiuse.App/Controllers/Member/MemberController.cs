@@ -92,6 +92,12 @@ namespace Xiuse.App.Controllers.Member
                 return new HttpResponseMessage(HttpStatusCode.Gone);
 
         }
+        /// <summary>
+        /// 检测会员手机号是否重复
+        /// </summary>
+        /// <param name="cell">会员手机号</param>
+        /// <returns></returns>
+        [Route("CheckCell")]
         public HttpResponseMessage PostCheckCell([FromBody] string cell)
         {
             if (cell == null)
