@@ -4,6 +4,8 @@ using System.Text;
 using System.Data;
 using Xiuse.Model;
 using Xiuse.DAL;
+using DotNet.Utilities;
+
 namespace Xiuse.BLL
 {
     /// <summary>
@@ -150,5 +152,72 @@ namespace Xiuse.BLL
         {
            return dal.ExecuteUpdate(updatefield,wheres);
         }
+        #region 工具类
+        /// <summary>
+        /// 把DataSet转成List泛型集合(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private  List<Xiuse.Model.order_> DataSetTransModelListNoExpand(DataSet dataSet)
+        {
+            List<Xiuse.Model.order_> list = new List<Xiuse.Model.order_>();
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.order_>(dataSet, 0));
+                return list;
+            }
+            return null;
+        }
+        /// <summary>
+        /// 把DataSet转成泛型(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private  Xiuse.Model.order_ DataSetTransModelNoExpand(DataSet dataSet)
+        {
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                return ConvertHelper.DataSetToEntity<Xiuse.Model.order_>(dataSet, 0);
+            }
+            return null;
+        }
+        /// <summary>
+        /// 工具类DataSet转换为List
+        /// </summary>
+        /// <param name="ds">DataSet</param>
+        /// <returns></returns>
+        private List<Xiuse.Model.order_> ConvertDSToModels(DataSet ds)
+        {
+            List<Xiuse.Model.order_> Tmp = new List<Model.order_>();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    Xiuse.Model.order_ model = new Xiuse.Model.order_();
+                    DataRow dr = ds.Tables[0].Rows[0];
+                    model.OrderId = dr["OrderId"].ToString();
+                    model.DeskId = (string)dr["DeskId"];
+                    model.BillAmount = (decimal)dr["BillAmount"];
+                    model.AccountsPayable = (decimal)dr["AccountsPayable"];
+                    model.Refunds = (decimal)dr["Refunds"];
+                    model.DishCount = (byte)dr["DishCount"];
+                    model.OrderState = (byte)dr["OrderState"];
+                    model.Cash = (decimal)dr["Cash"];
+                    model.BankCard = (decimal)dr["BankCard"];
+                    model.WeiXin = (decimal)dr["WeiXin"];
+                    model.Alipay = (decimal)dr["Alipay"];
+                    model.MembersCard = (decimal)dr["MembersCard"];
+                    model.OrderbeginTime = dr["OrderbeginTime"].ToString();
+                    model.OrderEndTime = dr["OrderEndTime"].ToString();
+                    Tmp.Add(model);
+                }
+            }
+            else
+                Tmp = null;
+            return Tmp;
+        }
+        #endregion
     }
 }

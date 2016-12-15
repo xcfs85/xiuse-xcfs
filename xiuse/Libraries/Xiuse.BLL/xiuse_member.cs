@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using Xiuse.Model;
 using Xiuse.DAL;
+using DotNet.Utilities;
 namespace Xiuse.BLL
 {
     /// <summary>
@@ -53,8 +54,15 @@ namespace Xiuse.BLL
         {
             return dal.Exists(MemberId);
         }
-        
-        
+        /// <summary>
+        ///  判断卡号及相关参数是否异常
+        /// </summary>
+        /// <param name="MemberId">MemberId</param>
+        public bool ExistsMember(Model.xiuse_member member)
+        {
+            return dal.ExistsMember(member);
+        }
+
         /// <summary>
         /// 获取实体
         /// </summary>
@@ -63,9 +71,59 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(MemberId);
         }
-        
+        /*
+         * 根据餐厅ID查询会员信息
+         * 创建人xcf  2016/12/13
+         */
+        /// <summary>
+        /// 获取实体,根据餐厅ID查询实体
+        /// </summary>
+        /// <param name="RestaurantId">餐厅ID</param>
+        /// <returns></returns>
+        public List<Xiuse.Model.xiuse_member> GetModels_RestaurantId(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetData("*", String.Format("RestaurantId={0}", RestaurantId)));
+        }
+        /*
+        * 根据会员的ID设定会员的启用状态
+        * 创建人xcf  2016/12/13
+        */
+        /// <summary>
+        /// 设定会员启用状态
+        /// </summary>
+        /// <param name="MemberId">会员的ID</param>
+        /// <param name="flag">启用状态</param>
+        /// <returns></returns>
+        public bool SetMemberState(string MemberId, bool flag)
+        {
+            if (dal.Exists(MemberId))
+            {
+                if (dal.ExecuteUpdate(String.Format("MemberState={0}", flag ? "1" : "0"), String.Format("MemberId={0}", MemberId)) > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        /*
+       * 根据会员的手机号检测会员手机是否重复
+       * 创建人xcf  2016/12/15
+       */
+        /// <summary>
+        /// 检测会员手机是否重复
+        /// </summary>
+        /// <param name="Cell">手机号码</param>
+        /// <returns>true：有重复；false:无重复；</returns>
+        public bool CheckCellExist(string Cell)
+        {
+            if (dal.GetData("1", string.Format("MemberCell={0}", Cell)).Tables[0].Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
 
-		/// <summary>
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">会员类型ID[MemberClassifyId]</param>
@@ -88,7 +146,17 @@ namespace Xiuse.BLL
             RecordCount=count;
             return ds;
         }
-
+        /// <summary>
+        /// 搜索数据
+        /// </summary>
+        /// <param name="">会员卡号[MemberCardNo]</param>
+        /// <param name="">会员名称[MemberName]</param>
+        /// <param name="">手机号[MemberCell]</param>
+        public List<Model.xiuse_member> Search( string MemberCardNo, string MemberName, string MemberCell)
+        {
+            return DataSetTransModelListNoExpand( dal.Search( MemberCardNo, MemberName, MemberCell));
+            
+        }
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -147,5 +215,70 @@ namespace Xiuse.BLL
         {
            return dal.ExecuteUpdate(updatefield,wheres);
         }
+        #region 工具类
+        /// <summary>
+        /// 把DataSet转成List泛型集合(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private  List<Xiuse.Model.xiuse_member> DataSetTransModelListNoExpand(DataSet dataSet)
+        {
+            List<Xiuse.Model.xiuse_member> list = new List<Xiuse.Model.xiuse_member>();
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.xiuse_member>(dataSet, 0));
+                return list;
+            }
+            return null;
+        }
+        /// <summary>
+        /// 把DataSet转成泛型(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private  Xiuse.Model.xiuse_member DataSetTransModelNoExpand(DataSet dataSet)
+        {
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                return ConvertHelper.DataSetToEntity<Xiuse.Model.xiuse_member>(dataSet, 0);
+            }
+            return null;
+        }
+        /// <summary>
+        /// 工具类DataSet转换为List
+        /// </summary>
+        /// <param name="ds">DataSet</param>
+        /// <returns></returns>
+        private List<Xiuse.Model.xiuse_member> ConvertDSToModels(DataSet ds)
+        {
+            List<Xiuse.Model.xiuse_member> Tmp = new List<Model.xiuse_member>();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    Xiuse.Model.xiuse_member model = new Xiuse.Model.xiuse_member();
+                    DataRow dr = ds.Tables[0].Rows[0];
+                    model.MemberId = (string)dr["MemberId"];
+                    model.MemberClassifyId = (string)dr["MemberClassifyId"];
+                    model.MemberCardNo = (string)dr["MemberCardNo"];
+                    model.MemberName = dr["MemberName"].ToString();
+                    model.MemberAmount = (decimal)dr["MemberAmount"];
+                    model.MemberCell = dr["MemberCell"].ToString();
+                    model.MemberReference = dr["MemberReference"].ToString();
+                    model.MemberPassword = dr["MemberPassword"].ToString();
+                    model.MemberState = (bool)dr["MemberState"];
+                    model.MemberTime = dr["MemberTime"].ToString();
+                    model.RestaurantId = (string)dr["RestaurantId"];
+                    Tmp.Add(model);
+                }
+            }
+            else
+                Tmp = null;
+            return Tmp;
+        }
+        #endregion
+
     }
 }

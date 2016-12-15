@@ -55,6 +55,10 @@
     <Compile Include="xiuse_user.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\DotNet.Utilities\DotNet.Utilities.csproj">
+      <Project>{0a9704f9-7864-45af-bfa7-e09f2b30a29f}</Project>
+      <Name>DotNet.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xiuse.DAL\Xiuse.DAL.csproj">
       <Project>{e9a1f7e4-c510-4f1c-bf72-f843b2c38df8}</Project>
       <Name>Xiuse.DAL</Name>

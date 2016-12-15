@@ -12,11 +12,12 @@ namespace Xiuse.App.Controllers.Test
     public class TestUserController : ApiController
     {
         BLL.xiuse_user test = new BLL.xiuse_user();
-        
-        public List<Model.xiuse_user> GetAllXiuse_users()
+       
+        public IQueryable<Model.xiuse_user> GetAllXiuse_users()
         {
             List<Model.xiuse_user> users = test.GetModels();
-            return users;
+            
+            return users.AsQueryable<Model.xiuse_user>() ;
         }
         public IHttpActionResult GetXiuse_users(string id)
         {
@@ -28,5 +29,6 @@ namespace Xiuse.App.Controllers.Test
             }
             return Ok(user);
         }
+
     }
 }

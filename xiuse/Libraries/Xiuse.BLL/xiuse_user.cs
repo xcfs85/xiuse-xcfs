@@ -4,6 +4,8 @@ using System.Text;
 using System.Data;
 using Xiuse.Model;
 using Xiuse.DAL;
+using DotNet.Utilities;
+
 namespace Xiuse.BLL
 {
     /// <summary>
@@ -160,5 +162,69 @@ namespace Xiuse.BLL
         {
            return dal.ExecuteUpdate(updatefield,wheres);
         }
+        #region 工具类
+        /// <summary>
+        /// 把DataSet转成List泛型集合(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private List<Xiuse.Model.xiuse_user> DataSetTransModelListNoExpand(DataSet dataSet)
+        {
+            List<Xiuse.Model.xiuse_user> list = new List<Xiuse.Model.xiuse_user>();
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.xiuse_user>(dataSet, 0));
+                return list;
+            }
+            return null;
+        }
+        /// <summary>
+        /// 把DataSet转成泛型(expand无关联实体)
+        /// Author:xcf Date:2015.01.26
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
+        private Xiuse.Model.xiuse_user DataSetTransModelNoExpand(DataSet dataSet)
+        {
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                return ConvertHelper.DataSetToEntity<Xiuse.Model.xiuse_user>(dataSet, 0);
+            }
+            return null;
+        }
+        /// <summary>
+        /// 工具类DataSet转换为List
+        /// </summary>
+        /// <param name="ds">DataSet</param>
+        /// <returns></returns>
+        private List<Xiuse.Model.xiuse_user> ConvertDSToModels(DataSet ds)
+        {
+            List<Xiuse.Model.xiuse_user> Tmp = new List<Model.xiuse_user>();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    Xiuse.Model.xiuse_user model = new Xiuse.Model.xiuse_user();
+                    DataRow dr = ds.Tables[0].Rows[0];
+                    model.UserId = (string)dr["UserId"];
+                    model.RestaurantId = (string)dr["RestaurantId"];
+                    model.UserName = dr["UserName"].ToString();
+                    model.Weixin = dr["Weixin"].ToString();
+                    model.CellPhone = (decimal)dr["CellPhone"];
+                    model.Email = dr["Email"].ToString();
+                    model.Password = dr["Password"].ToString();
+                    model.UserRole = (int)dr["UserRole"];
+                    model.ParentUserId = dr["ParentUserId"].ToString();
+                    model.OwnRestaurant = (int)dr["OwnRestaurant"];
+                    model.Time = dr["Time"].ToString();
+                    Tmp.Add(model);
+                }
+            }
+            else
+                Tmp = null;
+            return Tmp;
+        }
+        #endregion
     }
 }

@@ -67,12 +67,22 @@ namespace  Xiuse.DAL
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
         
-
+        /// <summary>
+        ///  判断会员是否存在
+        ///  作者：xcf  时间：2016/12/13
+        ///  
+        /// </summary>
+        /// <parame name="MemberId">MemberId</param>
+        public bool ExistsMember(Model.xiuse_member Member)
+        {
+            string strSql = String.Format("Select Count(1) From xiuse_member Where MemberCardNo={0} or MemberCell={1}", Member.MemberCardNo,Member.MemberCell);
+            return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
+        }
 
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="MemberId">MemberId</param>
+        /// <parame name="MemberId">MemberId</param>
         public Xiuse.Model.xiuse_member GetModel(string MemberId)
         {
              string strSql=String.Format(@"Select * From xiuse_member Where MemberId={0}",MemberId); 
@@ -99,9 +109,24 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-        
 
 
+        /// <summary>
+        /// 搜索数据，搜索条件会员卡号、名称、手机
+        /// 作者：xcf 时间2016.12.13
+        /// </summary>
+        /// <param name="">会员卡号[MemberCardNo]</param>
+        /// <param name="">会员名称[MemberName]</param>
+        /// <param name="">手机号[MemberCell]</param>
+        public DataSet Search(string MemberCardNo,  string MemberName, string MemberCell)
+        {
+            #region 条件语句...
+            StringBuilder strSql = new StringBuilder();
+            
+            strSql.Append(string.Format("Select * From xiuse_member Where MemberCell like '%{0}%' or MemberName like '{1}' or MemberCardNo like", MemberCell,MemberName,MemberCardNo));
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql.ToString());
+            return ds;
+        }
         /// <summary>
         /// 搜索数据
         /// </summary>
@@ -253,6 +278,7 @@ namespace  Xiuse.DAL
             string sql = "update xiuse_member set " + updatefield + " where " + wheres;
             return AosyMySql.ExecuteNonQuery(sql);
         }
+        #endregion
     }
 }
 

@@ -2,3 +2,9 @@ D:\document\xiuse-git\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.dll
 D:\document\xiuse-git\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.pdb
 D:\document\xiuse-git\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.dll
 D:\document\xiuse-git\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.pdb
+D:\document\xiuse-git\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.csprojResolveAssemblyReference.cache
+D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.dll
+D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.pdb
+D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.dll
+D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.pdb
+D:\workplace\Git_\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.csprojResolveAssemblyReference.cache
