@@ -17,20 +17,21 @@ namespace Xiuse.App.Controllers.Member
         /// </summary>
         /// <param name="RestaurantId">店铺的ID</param>
         /// <returns></returns>
-        [Route("RechargeAtRestaurant")]
+        [Route("RechargeAt")]
         public List<Model.xiuse_recharge> GetRechargeAtRestaurant(string RestaurantId)
         {
             return BllRecharge.GetModelsAtRestaurant(RestaurantId);
         }
         /// <summary>
-        /// 搜索会员充值记录
+        /// 搜索店内会员充值记录
         /// </summary>
-        /// <param name="condition">条件：会员卡号，会员手机号</param>
+        /// <param name="RestaurantId">餐厅的ID</param>
+        /// <param name="Condition">搜索条件：会员名称、会员手机号、会员卡号</param>
         /// <returns></returns>
-        public List<Model.xiuse_recharge> GetSearchRecharge(string condition)
+        [Route("SearchRecharge")]
+        public List<Model.xiuse_recharge> GetSearchRecharge(string RestaurantId,string condition)
         {
-            //todo
-            return null;
+            return BllRecharge.Search(RestaurantId, condition);
         }
         /// <summary>
         /// 会员卡充值

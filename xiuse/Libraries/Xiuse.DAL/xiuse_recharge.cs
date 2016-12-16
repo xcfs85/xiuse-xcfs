@@ -67,10 +67,7 @@ namespace  Xiuse.DAL
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
-       /*
-       * 获取实体，店铺内的充值记录
-       * 作者：xcf  更新时间：2016/12/15
-       */
+        #region 获取实体，店铺内的充值记录作者：xcf  更新时间：2016/12/15
         /// <summary>
         /// 获取店铺的实体
         /// </summary>
@@ -82,6 +79,26 @@ namespace  Xiuse.DAL
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             return ds;
         }
+        /// <summary>
+        /// 搜索店内会员充值记录
+        /// </summary>
+        /// <param name="RestaurantId">餐厅的ID</param>
+        /// <param name="Condition">搜索条件：会员名称、会员手机号、会员卡号</param>
+        /// <returns></returns>
+        public DataSet Search(string RestaurantId, string Condition)
+        {
+            string strSql = string.Format(@"SELECT
+                        xiuse_recharge.* FROM
+                        xiuse_recharge left join xiuse_member on xiuse_recharge.MemberId = xiuse_member.MemberId
+                        where xiuse_member.RestaurantId = '{0}' and 
+                            (xiuse_member.MemberCardNo like '%{1}%' or 
+                             xiuse_member.MemberCell like '%{2}%' or 
+                             xiuse_member.MemberName like'%{3}%') ", RestaurantId, Condition, Condition, Condition);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            return ds;
+        }
+        #endregion
+
         /// <summary>
         /// 获取实体
         /// </summary>

@@ -96,7 +96,38 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-        
+        #region 作者 xcf   时间：2016/12/16
+        /// <summary>
+        /// 获取餐厅内的会员消费记录
+        /// </summary>
+        /// <param name="RestaurantId">餐厅ID</param>
+        /// <returns></returns>
+        public DataSet GetModels(string RestaurantId)
+        {
+            string strSql = string.Format(@"select memberconsumption.* from 
+                            memberconsumption left join xiuse_member on memberconsumption.MemberId = xiuse_member.MemberId
+                            where xiuse.xiuse_member.RestaurantId = '{0}'", RestaurantId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
+
+        /// <summary>
+        /// 搜索餐厅内的会员消费记录
+        /// </summary>
+        /// <param name="RestaurantId">餐厅Id</param>
+        /// <param name="Condition">搜索条件：会员名称、会员卡号、会员手机号</param>
+        /// <returns></returns>
+        public DataSet Search(string RestaurantId,string Condition)
+        {
+            string strSql = string.Format(@"select memberconsumption.* from 
+                            memberconsumption left join xiuse_member on memberconsumption.MemberId = xiuse_member.MemberId
+                            where xiuse.xiuse_member.RestaurantId = '{0}' 
+                            and (xiuse_member.MemberCardNo like '%{1}%' 
+                            or xiuse_member.MemberCell like '%{1}%' 
+                            or xiuse_member.MemberName like '%{1}%')"
+                            , RestaurantId,Condition);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
+        #endregion
 
 
         /// <summary>

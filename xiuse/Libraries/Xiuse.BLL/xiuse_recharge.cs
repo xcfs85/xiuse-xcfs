@@ -66,6 +66,7 @@ namespace Xiuse.BLL
             return dal.GetModel(RechargeId);
         }
 
+        #region 作者 xcf  时间2016/12/16
         /// <summary>
         /// 获取店铺内的会员充值记录实体
         /// </summary>
@@ -73,8 +74,18 @@ namespace Xiuse.BLL
         public List<Xiuse.Model.xiuse_recharge> GetModelsAtRestaurant(string RestaurantId)
         {
             return DataSetTransModelListNoExpand(dal.GetModelsAtRestaurant(RestaurantId));
-            //todo
         }
+        /// <summary>
+        /// 搜索店内会员充值记录
+        /// </summary>
+        /// <param name="RestaurantId">餐厅的ID</param>
+        /// <param name="Condition">搜索条件：会员名称、会员手机号、会员卡号</param>
+        /// <returns></returns>
+        public List<Xiuse.Model.xiuse_recharge> Search(string RestanrantId,string Condition)
+        {
+            return DataSetTransModelListNoExpand(dal.Search(RestanrantId, Condition));
+        }
+        #endregion
 
         /// <summary>
         /// 搜索数据

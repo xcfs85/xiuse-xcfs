@@ -98,7 +98,28 @@ namespace Xiuse.BLL
             return dal.GetData(Fields,Wheres);
         }
 
+        #region 作者 xcf   时间：2016/12/16
+        /// <summary>
+        /// 获取餐厅内的会员消费记录
+        /// </summary>
+        /// <param name="RestaurantId">餐厅ID</param>
+        /// <returns></returns>
+        public List<Model.memberconsumption> GetModels(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetModels(RestaurantId));
+        }
 
+        /// <summary>
+        /// 搜索餐厅内的会员消费记录
+        /// </summary>
+        /// <param name="RestaurantId">餐厅Id</param>
+        /// <param name="Condition">搜索条件：会员名称、会员卡号、会员手机号</param>
+        /// <returns></returns>
+        public List<Model.memberconsumption> Search(string RestaurantId, string Condition)
+        {
+            return DataSetTransModelListNoExpand(dal.Search(RestaurantId, Condition);
+        }
+        #endregion
         /// <summary>
         /// 获取数据[用于分页]
         /// </summary>
