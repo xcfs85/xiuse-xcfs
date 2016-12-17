@@ -1,16 +1,24 @@
 /*
-MySQL Data Transfer
-Source Host: localhost
-Source Database: xiuse
-Target Host: localhost
-Target Database: xiuse
-Date: 2016/12/16 16:50:31
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 50505
+Source Host           : localhost:3306
+Source Database       : xiuse
+
+Target Server Type    : MYSQL
+Target Server Version : 50505
+File Encoding         : 65001
+
+Date: 2016-12-17 12:07:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
 -- ----------------------------
--- Table structure for memberconsumption
+-- Table structure for `memberconsumption`
 -- ----------------------------
+DROP TABLE IF EXISTS `memberconsumption`;
 CREATE TABLE `memberconsumption` (
   `ConsumptionRecordsId` char(32) NOT NULL,
   `MemberCardNo` char(16) NOT NULL COMMENT '会员卡卡号',
@@ -23,11 +31,42 @@ CREATE TABLE `memberconsumption` (
   PRIMARY KEY (`ConsumptionRecordsId`),
   KEY `MCon_key` (`MemberId`),
   CONSTRAINT `MCon_key` FOREIGN KEY (`MemberId`) REFERENCES `xiuse_member` (`MemberId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for order_
+-- Records of memberconsumption
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `ordermenu_`
+-- ----------------------------
+DROP TABLE IF EXISTS `ordermenu_`;
+CREATE TABLE `ordermenu_` (
+  `OrderMenuId` char(32) NOT NULL COMMENT '订单ID',
+  `OrderId` char(32) NOT NULL,
+  `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
+  `MenuPrice` decimal(12,2) NOT NULL COMMENT '菜品价格',
+  `MenuTag` varchar(500) NOT NULL COMMENT '菜品标签',
+  `MenuImage` varchar(500) DEFAULT NULL COMMENT '菜品图片',
+  `MenuInstruction` varchar(5000) DEFAULT NULL COMMENT '菜品介绍',
+  `DiscoutFlag` int(1) DEFAULT '0' COMMENT '是否有折扣（0,1）',
+  `DiscountName` varchar(500) DEFAULT NULL COMMENT '折扣名称',
+  `DiscountContent` decimal(12,2) DEFAULT NULL COMMENT '折扣金额',
+  `DiscountType` tinyint(1) DEFAULT NULL COMMENT '折扣类型(0:百分比 1：固定金额)',
+  `MenuServing` int(1) DEFAULT '0' COMMENT '是否上菜',
+  PRIMARY KEY (`OrderMenuId`),
+  KEY `key-006` (`OrderId`),
+  CONSTRAINT `key-006` FOREIGN KEY (`OrderId`) REFERENCES `order_` (`OrderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ordermenu_
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `order_`
+-- ----------------------------
+DROP TABLE IF EXISTS `order_`;
 CREATE TABLE `order_` (
   `OrderId` varchar(32) NOT NULL COMMENT '订单号',
   `DeskId` char(32) NOT NULL COMMENT '餐桌Id',
@@ -45,32 +84,16 @@ CREATE TABLE `order_` (
   `OrderEndTime` datetime DEFAULT NULL COMMENT '用餐结束时间',
   PRIMARY KEY (`OrderId`),
   KEY `DeskId` (`DeskId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for ordermenu_
+-- Records of order_
 -- ----------------------------
-CREATE TABLE `ordermenu_` (
-  `OrderMenuId` char(32) NOT NULL COMMENT '订单ID',
-  `OrderId` char(32) NOT NULL,
-  `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
-  `MenuPrice` decimal(12,2) NOT NULL COMMENT '菜品价格',
-  `MenuTag` varchar(500) NOT NULL COMMENT '菜品标签',
-  `MenuImage` varchar(500) DEFAULT NULL COMMENT '菜品图片',
-  `MenuInstruction` varchar(5000) DEFAULT NULL COMMENT '菜品介绍',
-  `DiscoutFlag` int(1) DEFAULT '0' COMMENT '是否有折扣（0,1）',
-  `DiscountName` varchar(500) DEFAULT NULL COMMENT '折扣名称',
-  `DiscountContent` decimal(12,2) DEFAULT NULL COMMENT '折扣金额',
-  `DiscountType` tinyint(1) DEFAULT NULL COMMENT '折扣类型(0:百分比 1：固定金额)',
-  `MenuServing` int(1) DEFAULT '0' COMMENT '是否上菜',
-  PRIMARY KEY (`OrderMenuId`),
-  KEY `key-006` (`OrderId`),
-  CONSTRAINT `key-006` FOREIGN KEY (`OrderId`) REFERENCES `order_` (`OrderId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for xiuse_desk
+-- Table structure for `xiuse_desk`
 -- ----------------------------
+DROP TABLE IF EXISTS `xiuse_desk`;
 CREATE TABLE `xiuse_desk` (
   `DeskId` char(32) NOT NULL COMMENT '餐桌主键ID',
   `DeskName` varchar(100) NOT NULL COMMENT '餐桌名称',
@@ -82,11 +105,16 @@ CREATE TABLE `xiuse_desk` (
   PRIMARY KEY (`DeskId`),
   KEY `key_001` (`RestaurantId`),
   CONSTRAINT `key_001` FOREIGN KEY (`RestaurantId`) REFERENCES `xiuse_restaurant` (`RestaurantId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_discount
+-- Records of xiuse_desk
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_discount`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_discount`;
 CREATE TABLE `xiuse_discount` (
   `DiscountId` char(32) NOT NULL DEFAULT '' COMMENT '折扣ID',
   `DiscountName` varchar(250) NOT NULL COMMENT '折扣名称',
@@ -101,11 +129,16 @@ CREATE TABLE `xiuse_discount` (
   PRIMARY KEY (`DiscountId`),
   KEY `key-002` (`RestaurantId`),
   CONSTRAINT `key-002` FOREIGN KEY (`RestaurantId`) REFERENCES `xiuse_restaurant` (`RestaurantId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_member
+-- Records of xiuse_discount
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_member`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_member`;
 CREATE TABLE `xiuse_member` (
   `MemberId` char(32) NOT NULL COMMENT '会员Id',
   `MemberCardNo` char(16) NOT NULL COMMENT '会员卡号',
@@ -121,11 +154,16 @@ CREATE TABLE `xiuse_member` (
   PRIMARY KEY (`MemberId`),
   KEY `MemberType_foreign_key` (`MemberClassifyId`),
   CONSTRAINT `MemberType_foreign_key` FOREIGN KEY (`MemberClassifyId`) REFERENCES `xiuse_memberclassify` (`MemberClassifyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_memberclassify
+-- Records of xiuse_member
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_memberclassify`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_memberclassify`;
 CREATE TABLE `xiuse_memberclassify` (
   `MemberClassifyId` char(32) NOT NULL COMMENT '会员类型',
   `DiscountId` char(32) NOT NULL COMMENT '折扣ID',
@@ -135,11 +173,16 @@ CREATE TABLE `xiuse_memberclassify` (
   `ClassifyTime` datetime NOT NULL COMMENT '修改时间',
   `DelTag` tinyint(4) DEFAULT NULL COMMENT '删除标志，(0,启用；1，停用；2，删除。)',
   PRIMARY KEY (`MemberClassifyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_menuclassify
+-- Records of xiuse_memberclassify
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_menuclassify`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_menuclassify`;
 CREATE TABLE `xiuse_menuclassify` (
   `ClassifyId` char(32) NOT NULL COMMENT '菜单分类',
   `ClassifyInstruction` varchar(500) DEFAULT NULL COMMENT '品餐分类介绍',
@@ -149,11 +192,16 @@ CREATE TABLE `xiuse_menuclassify` (
   `RestaurantId` char(32) DEFAULT NULL COMMENT '餐厅的ID',
   `ClassifyTime` datetime NOT NULL COMMENT '分类更新时间',
   PRIMARY KEY (`ClassifyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_menus
+-- Records of xiuse_menuclassify
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_menus`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_menus`;
 CREATE TABLE `xiuse_menus` (
   `MenuId` char(32) NOT NULL COMMENT '品餐Id',
   `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
@@ -174,11 +222,16 @@ CREATE TABLE `xiuse_menus` (
   KEY `key-008` (`ClassifyId`),
   CONSTRAINT `key-003` FOREIGN KEY (`RestaurantId`) REFERENCES `xiuse_restaurant` (`RestaurantId`),
   CONSTRAINT `key-008` FOREIGN KEY (`ClassifyId`) REFERENCES `xiuse_menuclassify` (`ClassifyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_recharge
+-- Records of xiuse_menus
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_recharge`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_recharge`;
 CREATE TABLE `xiuse_recharge` (
   `RechargeId` char(32) NOT NULL COMMENT '充值记录Id',
   `RechargeType` tinyint(4) NOT NULL COMMENT '充值类型',
@@ -190,11 +243,16 @@ CREATE TABLE `xiuse_recharge` (
   PRIMARY KEY (`RechargeId`),
   KEY `RechargeMember_key` (`MemberId`),
   CONSTRAINT `RechargeMember_key` FOREIGN KEY (`MemberId`) REFERENCES `xiuse_member` (`MemberId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_restaurant
+-- Records of xiuse_recharge
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_restaurant`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_restaurant`;
 CREATE TABLE `xiuse_restaurant` (
   `RestaurantId` char(32) NOT NULL COMMENT '餐厅的Id',
   `RestaurantName` varchar(200) DEFAULT NULL COMMENT '餐厅名称',
@@ -203,11 +261,17 @@ CREATE TABLE `xiuse_restaurant` (
   `Remark` varchar(500) DEFAULT NULL COMMENT '餐厅的说明',
   `Time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`RestaurantId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for xiuse_user
+-- Records of xiuse_restaurant
 -- ----------------------------
+INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000000', 'TestRN', '010-88888888', '北京', null, '2016-12-12 13:22:43');
+
+-- ----------------------------
+-- Table structure for `xiuse_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_user`;
 CREATE TABLE `xiuse_user` (
   `UserId` char(32) NOT NULL COMMENT 'Id编号',
   `UserName` varchar(50) NOT NULL COMMENT '姓名',
@@ -223,10 +287,9 @@ CREATE TABLE `xiuse_user` (
   PRIMARY KEY (`UserId`),
   KEY `key-004` (`RestaurantId`),
   CONSTRAINT `key-004` FOREIGN KEY (`RestaurantId`) REFERENCES `xiuse_restaurant` (`RestaurantId`)
-) ENGINE=InnoDB DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records 
+-- Records of xiuse_user
 -- ----------------------------
-INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000000', 'TestRN', '010-88888888', '北京', null, '2016-12-12 13:22:43');
 INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000000', 'admin', 'weixin', '15811111111', 'admin@163.com', 'flaskjdflj===', '00000000000000000000000000000000', '0', '-1', '0', '2016-12-12 13:20:42');
