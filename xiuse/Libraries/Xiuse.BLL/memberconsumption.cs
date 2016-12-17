@@ -117,7 +117,7 @@ namespace Xiuse.BLL
         /// <returns></returns>
         public List<Model.memberconsumption> Search(string RestaurantId, string Condition)
         {
-            return DataSetTransModelListNoExpand(dal.Search(RestaurantId, Condition);
+            return DataSetTransModelListNoExpand(dal.Search(RestaurantId, Condition));
         }
         #endregion
         /// <summary>
