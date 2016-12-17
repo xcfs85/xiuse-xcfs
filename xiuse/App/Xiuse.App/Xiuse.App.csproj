@@ -237,6 +237,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Member\ConsumPtionController.cs" />
     <Compile Include="Controllers\Member\MemberController.cs" />
+    <Compile Include="Controllers\Member\RebatesController.cs" />
     <Compile Include="Controllers\Member\RechargeController.cs" />
     <Compile Include="Controllers\Test\DefaultController.cs" />
     <Compile Include="Controllers\Test\TestController.cs" />

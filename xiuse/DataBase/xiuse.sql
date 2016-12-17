@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2016-12-17 12:07:03
+Date: 2016-12-17 22:44:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -226,6 +226,26 @@ CREATE TABLE `xiuse_menus` (
 
 -- ----------------------------
 -- Records of xiuse_menus
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xiuse_rebates`
+-- ----------------------------
+DROP TABLE IF EXISTS `xiuse_rebates`;
+CREATE TABLE `xiuse_rebates` (
+  `RebatesId` char(32) NOT NULL COMMENT '返现记录Id',
+  `MemberCardNo` char(16) NOT NULL COMMENT '会员卡号',
+  `MemberId` char(32) NOT NULL COMMENT '会员Id',
+  `RebatesType` varchar(500) NOT NULL COMMENT '返现类型',
+  `RebatesAmount` decimal(12,2) DEFAULT NULL COMMENT '返现金额',
+  `DateTime` datetime DEFAULT NULL COMMENT '日期',
+  PRIMARY KEY (`RebatesId`),
+  KEY `Rebates_key` (`MemberId`),
+  CONSTRAINT `Rebates_key` FOREIGN KEY (`MemberId`) REFERENCES `xiuse_member` (`MemberId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xiuse_rebates
 -- ----------------------------
 
 -- ----------------------------

@@ -51,6 +51,7 @@
     <Compile Include="xiuse_memberclassify.cs" />
     <Compile Include="xiuse_menuclassify.cs" />
     <Compile Include="xiuse_menus.cs" />
+    <Compile Include="xiuse_rebates.cs" />
     <Compile Include="xiuse_recharge.cs" />
     <Compile Include="xiuse_restaurant.cs" />
     <Compile Include="xiuse_user.cs" />
