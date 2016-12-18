@@ -21,9 +21,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_memberclassify model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_memberclassify(DiscountId,ClassifyName,ClassRemark,ClassifyMemberNum,ClassifyTime,DelTag) 
-                                        values({0},'{1}','{2}',{3},'{4}',{5})",
-                                        model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag);
+            string strSql=String.Format(@"Insert Into xiuse_memberclassify(DiscountId,ClassifyName,ClassRemark,ClassifyMemberNum,ClassifyTime,DelTag,RestaurantId) 
+                                        values({0},'{1}','{2}',{3},'{4}',{5},{6})",
+                                        model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -37,9 +37,9 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_memberclassify model)
         {
             string strSql=String.Format(@"Update xiuse_memberclassify Set 
-            DiscountId={0},ClassifyName='{1}',ClassRemark='{2}',ClassifyMemberNum={3},ClassifyTime='{4}',DelTag={5} 
-            Where MemberClassifyId={6}",
-            model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.MemberClassifyId);
+            DiscountId={0},ClassifyName='{1}',ClassRemark='{2}',ClassifyMemberNum={3},ClassifyTime='{4}',DelTag={5},RestaurantId={6} 
+            Where MemberClassifyId={7}",
+            model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId,model.MemberClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -88,6 +88,7 @@ namespace  Xiuse.DAL
 				model.ClassifyMemberNum=(int)dr["ClassifyMemberNum"];
 				model.ClassifyTime=dr["ClassifyTime"].ToString();
 				model.DelTag=(byte)dr["DelTag"];
+                model.RestaurantId = (string)dr["RestaurantId"];
                 return model;
             }
             else
@@ -95,7 +96,35 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-        
+        #region 作者xcf  修改时间 2016/12/18
+
+        /// <summary>
+        /// 获取餐厅的所有的会员类型
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
+        public DataSet GetDatas(string RestaurantId)
+        {
+            string strSql = String.Format(@"Select * From xiuse_memberclassify Where RestaurantId={0}", RestaurantId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
+
+        /// <summary>
+        /// 设置会员类型的状态（0,启用；1，停用；2，删除。）
+        /// </summary>
+        /// <param name="State">（0,启用；1，停用；2，删除。）</param>
+        /// <param name="MemberClassifyId">会员类别Id</param>
+        /// <returns></returns>
+        public bool SetMemberClassify(int State,string MemberClassifyId)
+        {
+            string strSql = string.Format("update xiuse_memberclassify set DelTag={0} where MemberClassifyId={1}", State, MemberClassifyId);
+            if (AosyMySql.ExecuteNonQuery(strSql) > 0)
+                return true;
+            else
+                return false;
+        }
+        #endregion
+
 
 
         /// <summary>
@@ -110,7 +139,7 @@ namespace  Xiuse.DAL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string DiscountId,string ClassifyName,string ClassRemark,int ClassifyMemberNum,string ClassifyTime,byte DelTag, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string DiscountId,string ClassifyName,string ClassRemark,int ClassifyMemberNum,string ClassifyTime,byte DelTag,string RestaurantId, int StartIndex, int PageSize, out int RecordCount)
         {
             #region 条件语句...
             StringBuilder strWhere=new StringBuilder();
@@ -137,7 +166,10 @@ namespace  Xiuse.DAL
 
             if(DelTag.ToString().Length>0)
                 strWhere.Append(" And DelTag="+DelTag);
-            
+
+            if (RestaurantId.ToString().Length > 0)
+                strWhere.Append(" And RestaurantId=" + RestaurantId);
+
             string where=strWhere.ToString().Substring(4,strWhere.Length-4);
             #endregion
 

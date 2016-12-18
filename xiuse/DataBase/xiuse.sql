@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2016-12-17 22:44:03
+Date: 2016-12-18 20:53:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -120,7 +120,7 @@ CREATE TABLE `xiuse_discount` (
   `DiscountName` varchar(250) NOT NULL COMMENT '折扣名称',
   `DiscountType` tinyint(11) NOT NULL DEFAULT '0' COMMENT '折扣类型(0:百分比 1：固定金额)',
   `DiscountContent` decimal(12,2) NOT NULL COMMENT '折扣金额',
-  `DiscountMenus` varchar(250) DEFAULT '' COMMENT '折扣菜品(-1，全部餐品；（菜品ID,菜品ID,菜品ID,菜品ID,菜品ID）,部门折扣)',
+  `DiscountMenus` varchar(1000) DEFAULT '' COMMENT '折扣菜品(-1，全部餐品；（菜品ID,菜品ID,菜品ID,菜品ID,菜品ID）,部门折扣)',
   `DiscountSection` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0,整单折扣；1，单品折扣',
   `DiscountState` int(1) DEFAULT '0' COMMENT '1,启用；0，禁用',
   `DiscountVerification` int(1) DEFAULT '0' COMMENT '0,启用管理员验证；1,禁用管理员验证；',
@@ -171,8 +171,11 @@ CREATE TABLE `xiuse_memberclassify` (
   `ClassRemark` varchar(500) DEFAULT NULL COMMENT '说明',
   `ClassifyMemberNum` int(11) NOT NULL DEFAULT '0' COMMENT '会员数量',
   `ClassifyTime` datetime NOT NULL COMMENT '修改时间',
-  `DelTag` tinyint(4) DEFAULT NULL COMMENT '删除标志，(0,启用；1，停用；2，删除。)',
-  PRIMARY KEY (`MemberClassifyId`)
+  `DelTag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标志，(0,启用；1，停用；2，删除。)',
+  `RestaurantId` char(32) NOT NULL COMMENT '餐厅Id',
+  PRIMARY KEY (`MemberClassifyId`),
+  KEY `MemberClassify_Key` (`RestaurantId`),
+  CONSTRAINT `MemberClassify_Key` FOREIGN KEY (`RestaurantId`) REFERENCES `xiuse_restaurant` (`RestaurantId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -303,6 +306,7 @@ CREATE TABLE `xiuse_user` (
   `UserRole` int(1) NOT NULL DEFAULT '0' COMMENT '0,是管理员；1，是员工。',
   `ParentUserId` varchar(32) NOT NULL DEFAULT '-1' COMMENT '上级用户Id，顶级为-1',
   `OwnRestaurant` int(1) DEFAULT '0' COMMENT '餐厅所有权（0，无；1，所有；）',
+  `DelTag` tinyint(4) DEFAULT NULL COMMENT '员工状态（0，正常；1，禁用；2，删除。）',
   `Time` datetime NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`UserId`),
   KEY `key-004` (`RestaurantId`),
@@ -312,4 +316,4 @@ CREATE TABLE `xiuse_user` (
 -- ----------------------------
 -- Records of xiuse_user
 -- ----------------------------
-INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000000', 'admin', 'weixin', '15811111111', 'admin@163.com', 'flaskjdflj===', '00000000000000000000000000000000', '0', '-1', '0', '2016-12-12 13:20:42');
+INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000000', 'admin', 'weixin', '15811111111', 'admin@163.com', 'flaskjdflj===', '00000000000000000000000000000000', '0', '-1', '0', null, '2016-12-12 13:20:42');

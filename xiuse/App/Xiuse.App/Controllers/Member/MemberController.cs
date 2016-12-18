@@ -12,7 +12,9 @@ using System.Web.Http;
 using Xiuse;
 namespace Xiuse.App.Controllers.Member
 {
-
+    /// <summary>
+    /// 会员信息接口
+    /// </summary>
     public class MemberController : ApiController
     {
         BLL.xiuse_member MemberBLL = new BLL.xiuse_member();

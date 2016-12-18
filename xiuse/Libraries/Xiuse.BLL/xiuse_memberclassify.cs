@@ -65,9 +65,32 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(MemberClassifyId);
         }
-        
 
-		/// <summary>
+        #region 作者xcf  修改时间 2016/12/18
+
+        /// <summary>
+        /// 获取餐厅的所有的会员类型
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
+        public List<Model.xiuse_memberclassify> GetModels(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetDatas(RestaurantId));
+        }
+
+        /// <summary>
+        /// 设置会员类型的状态（0,启用；1，停用；2，删除。）
+        /// </summary>
+        /// <param name="State">（0,启用；1，停用；2，删除。）</param>
+        /// <param name="MemberClassifyId">会员类别Id</param>
+        /// <returns></returns>
+        public bool SetMemberClassify(int State, string MemberClassifyId)
+        {
+            return dal.SetMemberClassify(State,MemberClassifyId);
+        }
+        #endregion
+
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">折扣ID[DiscountId]</param>
@@ -79,10 +102,10 @@ namespace Xiuse.BLL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string DiscountId,string ClassifyName,string ClassRemark,int ClassifyMemberNum,string ClassifyTime,byte DelTag, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string DiscountId,string ClassifyName,string ClassRemark,int ClassifyMemberNum,string ClassifyTime,byte DelTag,string RestaurantId, int StartIndex, int PageSize, out int RecordCount)
         {
             int count=0;
-            DataSet ds=dal.Search(DiscountId,ClassifyName,ClassRemark,ClassifyMemberNum,ClassifyTime,DelTag,StartIndex,PageSize,out count);
+            DataSet ds=dal.Search(DiscountId,ClassifyName,ClassRemark,ClassifyMemberNum,ClassifyTime,DelTag, RestaurantId, StartIndex,PageSize,out count);
             RecordCount=count;
             return ds;
         }

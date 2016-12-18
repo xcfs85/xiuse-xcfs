@@ -8,6 +8,9 @@ using Xiuse;
 
 namespace Xiuse.App.Controllers.Member
 {
+    /// <summary>
+    /// 会员返现记录接口
+    /// </summary>
     public class RebatesController : ApiController
     {
 

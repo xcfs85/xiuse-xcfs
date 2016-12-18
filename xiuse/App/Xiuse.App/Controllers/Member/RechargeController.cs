@@ -8,6 +8,9 @@ using Xiuse;
 
 namespace Xiuse.App.Controllers.Member
 {
+    /// <summary>
+    /// 会员充值记录接口
+    /// </summary>
     public class RechargeController : ApiController
     {
         Xiuse.BLL.xiuse_recharge BllRecharge = new BLL.xiuse_recharge();
