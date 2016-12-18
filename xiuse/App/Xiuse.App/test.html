@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="../Scripts/jQuery-2.1.4.min.js"></script>
+</head>
+<body>
+    <input type="button" value="test"id="test" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            var data = [{ "UserId": "00000000000000000000000000000001", "RestaurantId": "00000000000000000000000000000000", "UserName": "admin", "Weixin": "weixin", "CellPhone": 15811111111.0, "Email": "admin@163.com", "Password": "flaskjdflj===", "UserRole": 0, "ParentUserId": "-1", "OwnRestaurant": 0, "Time": "2016/12/12 13:20:42" }];
+            $("#test").click(function () {
+                alert("sdf1");
+                $.ajax({
+                    type: 'POST',
+                    url: "http://localhost:11919/api/User/AddUser",
+                    data: data,
+                    success: function(data)
+                    {
+                        data.UserId,
+                           data.Email;
+                    },
+                    dataType: "json"
+                });
+                alert("sdf2");
+            });
+        });
+
+    </script>
+</body>
+</html>

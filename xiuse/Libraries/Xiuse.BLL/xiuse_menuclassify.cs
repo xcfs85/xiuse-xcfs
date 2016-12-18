@@ -55,8 +55,15 @@ namespace Xiuse.BLL
         {
             return dal.Exists(ClassifyId);
         }
-        
-        
+
+        /// <summary>
+        ///  判断饭店是否存在
+        /// </summary>
+        public bool ExistsRestaurant(string RestaurantId)
+        {
+            return dal.Exists(RestaurantId);
+        }
+
         /// <summary>
         /// 获取实体
         /// </summary>
@@ -97,6 +104,13 @@ namespace Xiuse.BLL
         }
 
 
+        ///获取当前餐厅的所有菜品分类，条件餐厅ID
+        ///以list形式返回
+        /// 
+        public List<Xiuse.Model.xiuse_menuclassify> GetAllMenuClassify(string ResaurantId)
+        {
+            return DataSetTransModelListNoExpand(GetData("*", "Resaurant=" + ResaurantId));
+        }
         /// <summary>
         /// 获取数据[用于分页]
         /// </summary>
@@ -151,7 +165,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private List<Xiuse.Model.xiuse_menuclassify> DataSetTransModelListNoExpand(DataSet dataSet)
+       private List<Xiuse.Model.xiuse_menuclassify> DataSetTransModelListNoExpand(DataSet dataSet)
         {
             List<Xiuse.Model.xiuse_menuclassify> list = new List<Xiuse.Model.xiuse_menuclassify>();
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
@@ -167,7 +181,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private Xiuse.Model.xiuse_menuclassify DataSetTransModelNoExpand(DataSet dataSet)
+       private  Xiuse.Model.xiuse_menuclassify DataSetTransModelNoExpand(DataSet dataSet)
         {
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {
@@ -180,7 +194,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="ds">DataSet</param>
         /// <returns></returns>
-        private List<Xiuse.Model.xiuse_menuclassify> ConvertDSToModels(DataSet ds)
+      private  List<Xiuse.Model.xiuse_menuclassify> ConvertDSToModels(DataSet ds)
         {
             List<Xiuse.Model.xiuse_menuclassify> Tmp = new List<Model.xiuse_menuclassify>();
             if (ds.Tables[0].Rows.Count > 0)

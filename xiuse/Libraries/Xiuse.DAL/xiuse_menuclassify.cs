@@ -66,13 +66,23 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Select Count(1) From xiuse_menuclassify Where ClassifyId={0}",ClassifyId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
-        
+
+
+        /// <summary>
+        ///  判断这个饭店是否存在
+        /// </summary>
+        /// <parame name="ClassifyId">ClassifyId</param>
+        public bool ExistsRestaurant(string RestaurantId)
+        {
+            string strSql = String.Format("Select Count(1) From xiuse_menuclassify Where Restaurant={0}", RestaurantId);
+            return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
+        }
 
 
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="ClassifyId">ClassifyId</param>
+        /// <parame name="ClassifyId">ClassifyId</param>
         public Xiuse.Model.xiuse_menuclassify GetModel(string ClassifyId)
         {
              string strSql=String.Format(@"Select * From xiuse_menuclassify Where ClassifyId={0}",ClassifyId); 

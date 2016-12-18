@@ -239,6 +239,8 @@
     <Compile Include="Controllers\Member\MemberController.cs" />
     <Compile Include="Controllers\Member\RebatesController.cs" />
     <Compile Include="Controllers\Member\RechargeController.cs" />
+    <Compile Include="Controllers\Menu\MenuClassifyController.cs" />
+    <Compile Include="Controllers\Menu\MenuInfoController.cs" />
     <Compile Include="Controllers\Test\DefaultController.cs" />
     <Compile Include="Controllers\Test\TestController.cs" />
     <Compile Include="Controllers\Test\TestUserController.cs" />
@@ -298,6 +300,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="test.html" />
     <Content Include="Views\test.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

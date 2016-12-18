@@ -16,3 +16,9 @@ D:\document\Git\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities
 D:\document\Git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.csprojResolveAssemblyReference.cache
 D:\document\Git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.dll
 D:\document\Git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.pdb
+E:\洋洋学习\git\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.XML
+E:\洋洋学习\git\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.dll
+E:\洋洋学习\git\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.pdb
+E:\洋洋学习\git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.csprojResolveAssemblyReference.cache
+E:\洋洋学习\git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.dll
+E:\洋洋学习\git\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.pdb
