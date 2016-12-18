@@ -105,6 +105,15 @@ namespace Xiuse.BLL
         }
 
 
+        ///
+        ///获取某一餐厅、菜品分类下的所有菜品信息
+        /// 
+        public List<Xiuse.Model.xiuse_menus> GetMenuInfo(string RestaurantId, string MenuClassify)
+        {
+            return DataSetTransModelListNoExpand(GetData("*","RestaurantId="+RestaurantId+ "and ClassifyId" + MenuClassify));
+
+        }
+
         /// <summary>
         /// 获取数据[用于分页]
         /// </summary>
@@ -159,7 +168,7 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="dataSet"></param>
         /// <returns></returns>
-        private List<Xiuse.Model.xiuse_menus> DataSetTransModelListNoExpand(DataSet dataSet)
+        public List<Xiuse.Model.xiuse_menus> DataSetTransModelListNoExpand(DataSet dataSet)
         {
             List<Xiuse.Model.xiuse_menus> list = new List<Xiuse.Model.xiuse_menus>();
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)

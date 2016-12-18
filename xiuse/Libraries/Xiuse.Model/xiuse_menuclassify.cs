@@ -16,14 +16,16 @@ namespace Xiuse.Model
 	private int _ClassifyNet;
 	private string _ClassifyTag;
 	private string _ClassifyTime;
-        #endregion
+        private string _RestaurantId;
+        
+            #endregion
 
-        #region 成员属性...
-	
-	        /// <summary>
-	        /// 菜单分类[ClassifyId]
-	        /// </summary>
-	        public string ClassifyId
+            #region 成员属性...
+
+            /// <summary>
+            /// 菜单分类[ClassifyId]
+            /// </summary>
+            public string ClassifyId
 	        {
 	            get{ return _ClassifyId; }
 	            set{ _ClassifyId=value; }
@@ -83,7 +85,22 @@ namespace Xiuse.Model
 	            get{ return _ClassifyTime; }
 	            set{ _ClassifyTime=value; }
 	        }
-		
+
+  
+
+        public string RestaurantId
+        {
+            get
+            {
+                return _RestaurantId;
+            }
+
+            set
+            {
+                _RestaurantId = value;
+            }
+        }
+
         #endregion
     }
 }
