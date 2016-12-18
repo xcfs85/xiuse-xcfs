@@ -66,13 +66,23 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Select Count(1) From xiuse_user Where UserId={0}",UserId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
-        
+
+        /// <summary>
+        ///  判断WORKER是否存在
+        /// </summary>
+        /// <parame name="UserId">UserId</param>
+        public bool WorkerExists(string UserId)
+        {
+            string strSql = String.Format("Select Count(1) From xiuse_user Where UserId={0} and UserRole=1", UserId);
+            return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
+        }
+
 
 
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="UserId">UserId</param>
+        /// <parame name="UserId">UserId</param>
         public Xiuse.Model.xiuse_user GetModel(string UserId)
         {
              string strSql=String.Format(@"Select * From xiuse_user Where UserId={0}",UserId); 
@@ -100,6 +110,16 @@ namespace  Xiuse.DAL
             }
         }
 
+
+
+        ///修改员工权限
+
+        public bool FixWorker(string WorkerId, int DelTag)
+        {
+            string strSql = String.Format(@"Update xiuse_user set DelTag={0} where Userid={1}",DelTag,WorkerId);
+
+            return AosyMySql.ExecuteforBool(strSql);
+        }
         /*
          * 获取全部实体
          * 版本1.00 修改时间2016/12/12 @xcfs85
@@ -110,6 +130,39 @@ namespace  Xiuse.DAL
         public List <Xiuse.Model.xiuse_user> GetModels()
         {
             string strSql = String.Format(@"Select * From xiuse_user ");
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            List<Xiuse.Model.xiuse_user> models = new List<Model.xiuse_user>();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    Xiuse.Model.xiuse_user model = new Xiuse.Model.xiuse_user();
+                    model.UserId = (string)dr["UserId"];
+                    model.RestaurantId = (string)dr["RestaurantId"];
+                    model.UserName = dr["UserName"].ToString();
+                    model.Weixin = dr["Weixin"].ToString();
+                    model.CellPhone = (decimal)dr["CellPhone"];
+                    model.Email = dr["Email"].ToString();
+                    model.Password = dr["Password"].ToString();
+                    model.UserRole = (int)dr["UserRole"];
+                    model.ParentUserId = dr["ParentUserId"].ToString();
+                    model.OwnRestaurant = (int)dr["OwnRestaurant"];
+                    model.Time = dr["Time"].ToString();
+                    models.Add(model);
+                }
+                return models;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 获取worker全部实体
+        /// </summary>
+        public List<Xiuse.Model.xiuse_user> GetWorkerModels()
+        {
+            string strSql = String.Format(@"Select * From xiuse_user where UserRole=1");
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             List<Xiuse.Model.xiuse_user> models = new List<Model.xiuse_user>();
             if (ds.Tables[0].Rows.Count > 0)
