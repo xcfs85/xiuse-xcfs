@@ -63,7 +63,11 @@ namespace Xiuse.App.Controllers.Restaurant
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
+        [Route("GetAllRestaurants")]
+        public List<Model.xiuse_restaurant> GetAllRest()
+        {
+            return RestBLL.GetAllRestaurants();
+        }
 
         [Route("SearchRestaurantbyId")]
         public Model.xiuse_restaurant GetModel(string RestaurantId)
