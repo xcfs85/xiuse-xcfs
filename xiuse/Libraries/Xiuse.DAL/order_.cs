@@ -37,9 +37,9 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.order_ model)
         {
             string strSql=String.Format(@"Update order_ Set 
-            DeskId={0},BillAmount={1},AccountsPayable={2},Refunds={3},DishCount={4},OrderState={5},Cash={6},BankCard={7},WeiXin={8},Alipay={9},MembersCard={10},OrderbeginTime='{11}',OrderEndTime='{12}' 
-            Where OrderId={13}",
-            model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,model.OrderId);
+            DeskId={0},BillAmount={1},AccountsPayable={2},Refunds={3},DishCount={4},OrderState={5},Cash={6},BankCard={7},WeiXin={8},Alipay={9},MembersCard={10},OrderbeginTime='{11}',OrderEndTime='{12}', ClearDeskState={13}
+            Where OrderId={14}",
+            model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,model.ClearDeskState,model.OrderId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -95,6 +95,7 @@ namespace  Xiuse.DAL
 				model.MembersCard=(decimal)dr["MembersCard"];
 				model.OrderbeginTime=dr["OrderbeginTime"].ToString();
 				model.OrderEndTime=dr["OrderEndTime"].ToString();
+                model.ClearDeskState = (byte)dr["ClearDeskState"];
                 return model;
             }
             else
@@ -124,7 +125,7 @@ namespace  Xiuse.DAL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,byte OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,string OrderbeginTime,string OrderEndTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,byte OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,string OrderbeginTime,string OrderEndTime,byte ClearDeskState, int StartIndex, int PageSize, out int RecordCount)
         {
             #region 条件语句...
             StringBuilder strWhere=new StringBuilder();
@@ -175,11 +176,14 @@ namespace  Xiuse.DAL
 
             if(OrderbeginTime!=null && OrderbeginTime.Length>0)
                 strWhere.Append(" And OrderbeginTime='"+OrderbeginTime+"'");
-            
 
-            if(OrderEndTime!=null && OrderEndTime.Length>0)
-                strWhere.Append(" And OrderEndTime='"+OrderEndTime+"'");
             
+            if (OrderEndTime!=null && OrderEndTime.Length>0)
+                strWhere.Append(" And OrderEndTime='"+OrderEndTime+"'");
+
+            if (ClearDeskState.ToString().Length > 0)
+                strWhere.Append(" And ClearDeskState='" + ClearDeskState + "'");
+
             string where=strWhere.ToString().Substring(4,strWhere.Length-4);
             #endregion
 

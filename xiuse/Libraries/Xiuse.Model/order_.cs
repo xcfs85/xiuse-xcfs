@@ -24,14 +24,15 @@ namespace Xiuse.Model
 	private decimal _MembersCard;
 	private string _OrderbeginTime;
 	private string _OrderEndTime;
+    private byte _ClearDeskState;
         #endregion
 
         #region 成员属性...
-	
-	        /// <summary>
-	        /// 订单号[OrderId]
-	        /// </summary>
-	        public string OrderId
+
+        /// <summary>
+        /// 订单号[OrderId]
+        /// </summary>
+        public string OrderId
 	        {
 	            get{ return _OrderId; }
 	            set{ _OrderId=value; }
@@ -179,7 +180,14 @@ namespace Xiuse.Model
 	            get{ return _OrderEndTime; }
 	            set{ _OrderEndTime=value; }
 	        }
-		
+        /// <summary>
+        /// 0,没有清台；1，已经清台；
+        /// </summary>
+		public byte ClearDeskState
+        {
+            get;
+            set;
+        }
         #endregion
     }
 }

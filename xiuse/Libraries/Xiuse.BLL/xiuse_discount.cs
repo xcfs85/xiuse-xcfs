@@ -65,9 +65,29 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(DiscountId);
         }
-        
+        #region 作者xcf  时间2016/12/19
+        /// <summary>
+        /// 获取餐厅所有的折扣信息
+        /// </summary>
+        /// <param name="RestaurantId">餐厅的Id</param>
+        /// <returns></returns>
+        public List<Model.xiuse_discount> GetModels(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetDiscountData(RestaurantId));
+        }
+        /// <summary>
+        /// 设置折扣的状态（1,启用；0，禁用;2,删除；）
+        /// </summary>
+        /// <param name="DiscountId">折扣的ID</param>
+        /// <param name="State">折扣的状态（1,启用；0，禁用;2,删除；）</param>
+        /// <returns></returns>
+        public bool SetDiscountState(string DiscountId, int State)
+        {
+            return dal.SetDiscountState(DiscountId,State);
+        }
+        #endregion
 
-		/// <summary>
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">[RestaurantId]</param>
