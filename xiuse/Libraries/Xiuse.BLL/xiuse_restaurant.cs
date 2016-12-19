@@ -65,9 +65,21 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(RestaurantId);
         }
-        
 
-		/// <summary>
+
+
+        /// <summary>
+        /// 获取当前系统中的所有餐厅
+        /// </summary>
+        public List<Model.xiuse_restaurant> GetAllRestaurants()
+        {
+            return DataSetTransModelListNoExpand(dal.GetData("*",""));
+        }
+
+
+     
+
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">餐厅名称[RestaurantName]</param>
