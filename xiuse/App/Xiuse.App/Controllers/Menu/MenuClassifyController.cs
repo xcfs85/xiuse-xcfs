@@ -20,6 +20,7 @@ using Xiuse;
 
 namespace Xiuse.App.Controllers.Menu
 {
+    [RoutePrefix("api/Menu")]
     public class MenuClassifyController : ApiController
     {
         BLL.xiuse_menuclassify MenuBLL = new BLL.xiuse_menuclassify();
@@ -78,4 +79,4 @@ namespace Xiuse.App.Controllers.Menu
 
 
 }
-}
+

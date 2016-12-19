@@ -48,7 +48,7 @@ namespace Xiuse.BLL
         }
         
         /// <summary>
-        ///  ÅĞ¶ÏÊÇ·ñ´æÔÚ
+        ///  ÅĞ¶Ï²ÍÌüÊÇ·ñ´æÔÚ
         /// </summary>
         /// <param name="RestaurantId">RestaurantId</param>
         public bool Exists(string RestaurantId)

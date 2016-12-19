@@ -242,6 +242,7 @@
     <Compile Include="Controllers\Member\RechargeController.cs" />
     <Compile Include="Controllers\Menu\MenuClassifyController.cs" />
     <Compile Include="Controllers\Menu\MenuInfoController.cs" />
+    <Compile Include="Controllers\Restaurant\DeskController.cs" />
     <Compile Include="Controllers\Test\DefaultController.cs" />
     <Compile Include="Controllers\Test\TestController.cs" />
     <Compile Include="Controllers\Test\TestUserController.cs" />

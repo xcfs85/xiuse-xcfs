@@ -15,6 +15,7 @@ namespace Xiuse.BLL
     {
        
         private readonly Xiuse.DAL.xiuse_desk dal=new Xiuse.DAL.xiuse_desk();
+        private readonly Xiuse.DAL.xiuse_restaurant Restdal = new Xiuse.DAL.xiuse_restaurant();
 
         public xiuse_desk(){}
         
@@ -48,15 +49,37 @@ namespace Xiuse.BLL
         }
         
         /// <summary>
-        ///  判断是否存在
+        ///  判断餐桌是否存在
         /// </summary>
         /// <param name="DeskId">DeskId</param>
         public bool Exists(string DeskId)
         {
             return dal.Exists(DeskId);
         }
-        
-        
+
+
+
+        /// <summary>
+        ///  判断餐厅是否存在
+        /// </summary>
+        /// <param name="RestaurantId">RestaurantId</param>
+        public bool RestaurantExists(string RestaurantId)
+        {
+            return Restdal.Exists(RestaurantId);
+        }
+
+
+
+
+
+        ///
+        ///获取某一餐厅的所有餐桌信息
+        /// 
+        public List<Xiuse.Model.xiuse_desk> GetAllDesk(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(GetData("*", "RestaurantId=" + RestaurantId));
+
+        }
         /// <summary>
         /// 获取实体
         /// </summary>
