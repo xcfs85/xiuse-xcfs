@@ -25,6 +25,8 @@ namespace Xiuse.Model
 	private string _OrderbeginTime;
 	private string _OrderEndTime;
     private byte _ClearDeskState;
+    private string _ServiceUserId;
+    private int _CustomerNum;
         #endregion
 
         #region 成员属性...
@@ -185,8 +187,24 @@ namespace Xiuse.Model
         /// </summary>
 		public byte ClearDeskState
         {
-            get;
-            set;
+            get { return _ClearDeskState; }
+            set { _ClearDeskState = value; }
+        }
+        /// <summary>
+        /// 顾客数量
+        /// </summary>
+        public int CustomerNum
+        {
+            get { return _CustomerNum; }
+            set { _CustomerNum = value; }
+        }
+        /// <summary>
+        /// 服务员的Id
+        /// </summary>
+        public string ServiceUserId
+        {
+            get { return _ServiceUserId; }
+            set { _ServiceUserId = value; }
         }
         #endregion
     }

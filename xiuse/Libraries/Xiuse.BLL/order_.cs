@@ -86,10 +86,10 @@ namespace Xiuse.BLL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,byte OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,string OrderbeginTime,string OrderEndTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,byte OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,byte ClearDeskState, int CustomerNum, string ServiceUserId, string OrderbeginTime,string OrderEndTime, int StartIndex, int PageSize, out int RecordCount)
         {
             int count=0;
-            DataSet ds=dal.Search(DeskId,BillAmount,AccountsPayable,Refunds,DishCount,OrderState,Cash,BankCard,WeiXin,Alipay,MembersCard,OrderbeginTime,OrderEndTime,StartIndex,PageSize,out count);
+            DataSet ds=dal.Search(DeskId,BillAmount,AccountsPayable,Refunds,DishCount,OrderState,Cash,BankCard,WeiXin,Alipay,MembersCard, OrderbeginTime,OrderEndTime, ClearDeskState, CustomerNum, ServiceUserId, StartIndex,PageSize,out count);
             RecordCount=count;
             return ds;
         }
@@ -211,6 +211,9 @@ namespace Xiuse.BLL
                     model.MembersCard = (decimal)dr["MembersCard"];
                     model.OrderbeginTime = dr["OrderbeginTime"].ToString();
                     model.OrderEndTime = dr["OrderEndTime"].ToString();
+                    model.ClearDeskState = (byte)dr["ClearDeskState"];
+                    model.ServiceUserId = dr["ServiceUserId"].ToString();
+                    model.CustomerNum = (int)dr["CustomerNum"];
                     Tmp.Add(model);
                 }
             }
