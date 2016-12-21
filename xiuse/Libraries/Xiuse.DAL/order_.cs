@@ -86,15 +86,15 @@ namespace  Xiuse.DAL
 				model.BillAmount=(decimal)dr["BillAmount"];
 				model.AccountsPayable=(decimal)dr["AccountsPayable"];
 				model.Refunds=(decimal)dr["Refunds"];
-				model.DishCount=(byte)dr["DishCount"];
-				model.OrderState=(byte)dr["OrderState"];
+				model.DishCount=(int)dr["DishCount"];
+				model.OrderState=(bool)dr["OrderState"];
 				model.Cash=(decimal)dr["Cash"];
 				model.BankCard=(decimal)dr["BankCard"];
 				model.WeiXin=(decimal)dr["WeiXin"];
 				model.Alipay=(decimal)dr["Alipay"];
 				model.MembersCard=(decimal)dr["MembersCard"];
-				model.OrderbeginTime=dr["OrderbeginTime"].ToString();
-				model.OrderEndTime=dr["OrderEndTime"].ToString();
+				model.OrderbeginTime=(DateTime)dr["OrderbeginTime"];
+				model.OrderEndTime=(DateTime)dr["OrderEndTime"];
                 return model;
             }
             else

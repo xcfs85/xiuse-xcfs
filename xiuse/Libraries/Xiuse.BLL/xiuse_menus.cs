@@ -219,7 +219,7 @@ namespace Xiuse.BLL
                     model.MenuInstruction = dr["MenuInstruction"].ToString();
                     model.SaleState = (int)dr["SaleState"];
                     model.MenuState = (int)dr["MenuState"];
-                    model.MenuTime = dr["MenuTime"].ToString();
+                    model.MenuTime = (DateTime)dr["MenuTime"];
                     Tmp.Add(model);
                 }
             }

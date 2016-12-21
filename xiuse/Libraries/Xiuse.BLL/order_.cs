@@ -103,7 +103,12 @@ namespace Xiuse.BLL
         {
             return dal.GetData(Fields,Wheres);
         }
-
+        ///获取当天所有的账单
+        /// 
+        public List<Model.order_> GetDailyBills(string condition)
+        {
+            return DataSetTransModelListNoExpand(GetData("*", condition));
+        }
 
         /// <summary>
         /// 获取数据[用于分页]
@@ -202,15 +207,15 @@ namespace Xiuse.BLL
                     model.BillAmount = (decimal)dr["BillAmount"];
                     model.AccountsPayable = (decimal)dr["AccountsPayable"];
                     model.Refunds = (decimal)dr["Refunds"];
-                    model.DishCount = (byte)dr["DishCount"];
-                    model.OrderState = (byte)dr["OrderState"];
+                    model.DishCount = (int)dr["DishCount"];
+                    model.OrderState = (bool)dr["OrderState"];
                     model.Cash = (decimal)dr["Cash"];
                     model.BankCard = (decimal)dr["BankCard"];
                     model.WeiXin = (decimal)dr["WeiXin"];
                     model.Alipay = (decimal)dr["Alipay"];
                     model.MembersCard = (decimal)dr["MembersCard"];
-                    model.OrderbeginTime = dr["OrderbeginTime"].ToString();
-                    model.OrderEndTime = dr["OrderEndTime"].ToString();
+                    model.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
+                    model.OrderEndTime = (DateTime)dr["OrderEndTime"];
                     Tmp.Add(model);
                 }
             }
