@@ -66,13 +66,35 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Select Count(1) From xiuse_desk Where DeskId={0}",DeskId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
-        
 
+
+        ///
+        ///清理桌子
+        ///餐桌的状态：0，空桌；1，未支付；2，已支付；
+        /// orderstate: 0,没有清台；1，已经清台；
+        public bool ClearDesk(string DeskId)
+        {
+            string strSql = string.Format("Select OrderState from order_ where  DeskId={0}", DeskId);
+            DataSet OrderState = AosyMySql.ExecuteforDataSet(strSql);
+            if (OrderState.Tables[0].Rows[0].ToString() == "0")
+                return false;
+            else
+            {
+                string sql = string.Format("update order_ set CleanDeskState=1 where  DeskId={0}", DeskId);
+                string sql2=string.Format("update xiuse.desk where DeskState=0 where  DeskId={0}", DeskId);
+
+                AosyMySql.ExecuteNonQuery(sql);
+                AosyMySql.ExecuteNonQuery(sql2);
+                return true;
+            }
+                
+
+        }
 
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="DeskId">DeskId</param>
+        /// <parame name="DeskId">DeskId</param>
         public Xiuse.Model.xiuse_desk GetModel(string DeskId)
         {
              string strSql=String.Format(@"Select * From xiuse_desk Where DeskId={0}",DeskId); 

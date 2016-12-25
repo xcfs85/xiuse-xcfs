@@ -80,6 +80,14 @@ namespace Xiuse.BLL
             return DataSetTransModelListNoExpand(GetData("*", "RestaurantId=" + RestaurantId));
 
         }
+        ///清理已付款的桌子
+        /// 
+        ///餐桌的状态：0，空桌；1，未支付；2，已支付；
+        /// orderstate: 0,没有清台；1，已经清台；
+        public bool ClearDesk(string DeskId)
+        {
+            return dal.ClearDesk(DeskId);
+        }
         /// <summary>
         /// 获取实体
         /// </summary>

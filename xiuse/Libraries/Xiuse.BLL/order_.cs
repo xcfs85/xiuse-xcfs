@@ -110,6 +110,21 @@ namespace Xiuse.BLL
             return DataSetTransModelListNoExpand(GetData("*", condition));
         }
 
+        ///
+        ///获取某一餐厅的所有未结账餐桌的金额
+        /// 
+
+        public List<Xiuse.Model.order_> GetUnpaidDesks(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetUnpaidDesks(RestaurantId));
+        }
+
+
+        ///获取某一餐厅最近一笔已支付的金额
+        public List<Xiuse.Model.order_> GetPaidLatest(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetPaidLatest(RestaurantId));
+        }
         /// <summary>
         /// 获取数据[用于分页]
         /// </summary>

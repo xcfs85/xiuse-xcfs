@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xiuse.App", "App\Xiuse.App\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.DataBase", "4.DataBase", "{21CAC507-8104-4815-B7DA-FF7C2D5D7C35}"
 	ProjectSection(SolutionItems) = preProject
-		D:\Document And Settings2\Administrator\Desktop\xiuse.sql = D:\Document And Settings2\Administrator\Desktop\xiuse.sql
+		D:\用户目录\我的文档\xiuse.sql = D:\用户目录\我的文档\xiuse.sql
 	EndProjectSection
 EndProject
 Global
