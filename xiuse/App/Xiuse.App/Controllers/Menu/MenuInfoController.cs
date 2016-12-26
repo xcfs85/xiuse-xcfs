@@ -24,7 +24,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("GetAllMenus")]
         public List<Model.xiuse_menus> GetAllMenus(string ResaurantId,string MenuClassifyId)
         {
-            if (ResaurantId == null && MenuClassifyId==null)
+            if (ResaurantId == null || MenuClassifyId==null)
             {
                 throw new HttpRequestException();
             }
@@ -34,7 +34,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("AddMenu")]
         public HttpResponseMessage PostAddMenu([FromBody]Model.xiuse_menus model)
         {
-            if (model == null && MenuBLL.Exists(model.MenuId))
+            if (model == null|| MenuBLL.Exists(model.MenuId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -47,7 +47,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("UpdateMenu")]
         public HttpResponseMessage PostUpdateMenu([FromBody]Model.xiuse_menus model)
         {
-            if (model == null && MenuBLL.Exists(model.MenuId))
+            if (model == null ||MenuBLL.Exists(model.MenuId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -60,7 +60,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("DeleteMenu")]
         public HttpResponseMessage DeleteDelMenuClassify([FromBody]String id)
         {
-            if (id == null && MenuBLL.Exists(id))
+            if (id == null|| MenuBLL.Exists(id)==false)
             {
                 throw new HttpRequestException();
             }

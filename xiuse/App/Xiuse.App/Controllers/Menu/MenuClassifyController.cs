@@ -28,7 +28,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("GetAllMenuClassify")]
         public List<Model.xiuse_menuclassify> GetAllMenuClassify(string ResaurantId)
         {
-            if (ResaurantId == null&&MenuBLL.ExistsRestaurant(ResaurantId))
+            if (ResaurantId == null||MenuBLL.ExistsRestaurant(ResaurantId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -38,7 +38,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("AddMenuClassify")]
         public HttpResponseMessage PostAddMenuClassify([FromBody]Model.xiuse_menuclassify model)
         {
-            if (model == null && MenuBLL.Exists(model.ClassifyId))
+            if (model == null|| MenuBLL.Exists(model.ClassifyId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -51,7 +51,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("UpdateMenuClassify")]
         public HttpResponseMessage PostUpdateMenuClassify([FromBody]Model.xiuse_menuclassify model)
         {
-            if (model == null && MenuBLL.Exists(model.ClassifyId))
+            if (model == null || MenuBLL.Exists(model.ClassifyId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -64,7 +64,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("DeleteMenuClassify")]
         public HttpResponseMessage DeleteDelMenuClassify([FromBody]String id)
         {
-            if (id == null && MenuBLL.Exists(id))
+            if (id == null || MenuBLL.Exists(id)==false)
             {
                 throw new HttpRequestException();
             }

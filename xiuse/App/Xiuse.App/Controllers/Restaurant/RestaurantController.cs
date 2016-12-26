@@ -27,7 +27,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("AddRest")]
         public HttpResponseMessage PostAddRest([FromBody]Model.xiuse_restaurant model)
         {
-            if (model == null && RestBLL.Exists(model.RestaurantId))
+            if (model == null||RestBLL.Exists(model.RestaurantId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -40,7 +40,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("UpdateRest")]
         public HttpResponseMessage PostUpdateRest([FromBody]Model.xiuse_restaurant model)
         {
-            if (model == null && RestBLL.Exists(model.RestaurantId))
+            if (model == null || RestBLL.Exists(model.RestaurantId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -54,7 +54,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("DeleteRest")]
         public HttpResponseMessage DeleteAddRest([FromBody]string id)
         {
-            if (id == null && RestBLL.Exists(id))
+            if (id == null || RestBLL.Exists(id)==false)
             {
                 throw new HttpRequestException();
             }

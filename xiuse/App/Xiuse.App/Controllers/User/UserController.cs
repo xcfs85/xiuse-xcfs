@@ -35,7 +35,7 @@ namespace Xiuse.App.Controllers
         //通过用户id号查询
         public Model.xiuse_user GetXiuse_users(string id)
         {
-            if(id==null && new_user.Exists(id))
+            if(id==null||new_user.Exists(id)==false)
             {
                 throw new HttpRequestException();
             }
@@ -48,7 +48,7 @@ namespace Xiuse.App.Controllers
         //新建一个用户
         public HttpResponseMessage PostSetXiuse_users([FromBody] Model.xiuse_user user)
         {
-           if(user==null&&new_user.Exists(user.UserId))
+           if(user==null||new_user.Exists(user.UserId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -64,7 +64,7 @@ namespace Xiuse.App.Controllers
         //删除一个用户
         public HttpResponseMessage DeleteDelXiuse_users(string id)
         {
-            if (id== null && new_user.Exists(id))
+            if (id== null || new_user.Exists(id)==false)
             {
                 throw new HttpRequestException();
             }

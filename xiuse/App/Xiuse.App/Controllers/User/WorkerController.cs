@@ -34,7 +34,7 @@ namespace Xiuse.App.Controllers.User
         //通过用户id号查询
         public Model.xiuse_user GetWorker(string id)
         {
-            if (id == null && BLLWorker.WorkerExists(id))
+            if (id == null||BLLWorker.WorkerExists(id)==false)
             {
                 throw new HttpRequestException();
             }
@@ -47,7 +47,7 @@ namespace Xiuse.App.Controllers.User
         //新建一个用户
         public HttpResponseMessage PostAddWorker([FromBody] Model.xiuse_user user)
         {
-            if (user == null && BLLWorker.WorkerExists(user.UserId))
+            if (user == null|| BLLWorker.WorkerExists(user.UserId)==false)
             {
                 throw new HttpRequestException();
             }
@@ -66,7 +66,7 @@ namespace Xiuse.App.Controllers.User
         /// 2：删除
         public HttpResponseMessage PostFixWorker(string WorkerId,int tag)
         {
-            if (WorkerId== null && BLLWorker.WorkerExists(WorkerId))
+            if (WorkerId== null || BLLWorker.WorkerExists(WorkerId)==false)
             {
                 throw new HttpRequestException();
             }
