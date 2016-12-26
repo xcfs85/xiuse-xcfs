@@ -98,7 +98,29 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-        
+        #region 作者xcf  时间2016/12/19
+        /// <summary>
+        /// 获取餐厅所有的折扣信息
+        /// </summary>
+        /// <param name="RestaurantId">餐厅的Id</param>
+        /// <returns></returns>
+        public DataSet GetDiscountData(string RestaurantId)
+        {
+            string strSql = string.Format("Select * From xiuse_discount Where RestaurantId={0}", RestaurantId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
+        /// <summary>
+        /// 设置折扣的状态（1,启用；0，禁用;2,删除；）
+        /// </summary>
+        /// <param name="DiscountId">折扣的ID</param>
+        /// <param name="State">折扣的状态（1,启用；0，禁用;2,删除；）</param>
+        /// <returns></returns>
+        public bool SetDiscountState(string DiscountId,int State)
+        {
+            string strSql = string.Format("update xiuse_discount set DiscountState={0} where DiscountId={1}", DiscountId,State);
+            return AosyMySql.ExecuteforBool(strSql);
+        }
+        #endregion
 
 
         /// <summary>

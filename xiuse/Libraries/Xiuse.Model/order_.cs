@@ -15,23 +15,26 @@ namespace Xiuse.Model
 	private decimal _BillAmount;
 	private decimal _AccountsPayable;
 	private decimal _Refunds;
-	private int _DishCount;
-	private bool _OrderState;
+	private byte _DishCount;
+	private byte _OrderState;
 	private decimal _Cash;
 	private decimal _BankCard;
 	private decimal _WeiXin;
 	private decimal _Alipay;
 	private decimal _MembersCard;
-	private DateTime _OrderbeginTime;
-	private DateTime _OrderEndTime;
+	private string _OrderbeginTime;
+	private string _OrderEndTime;
+    private byte _ClearDeskState;
+    private string _ServiceUserId;
+    private int _CustomerNum;
         #endregion
 
         #region 成员属性...
-	
-	        /// <summary>
-	        /// 订单号[OrderId]
-	        /// </summary>
-	        public string OrderId
+
+        /// <summary>
+        /// 订单号[OrderId]
+        /// </summary>
+        public string OrderId
 	        {
 	            get{ return _OrderId; }
 	            set{ _OrderId=value; }
@@ -86,7 +89,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 菜品数量[DishCount]
 	        /// </summary>
-	        public int DishCount
+	        public byte DishCount
 	        {
 	            get{ return _DishCount; }
 	            set{ _DishCount=value; }
@@ -97,7 +100,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 订单状态（0，未支付；1，已支付）[OrderState]
 	        /// </summary>
-	        public bool OrderState
+	        public byte OrderState
 	        {
 	            get{ return _OrderState; }
 	            set{ _OrderState=value; }
@@ -163,7 +166,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 下单时间[OrderbeginTime]
 	        /// </summary>
-	        public DateTime OrderbeginTime
+	        public string OrderbeginTime
 	        {
 	            get{ return _OrderbeginTime; }
 	            set{ _OrderbeginTime=value; }
@@ -174,12 +177,35 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 用餐结束时间[OrderEndTime]
 	        /// </summary>
-	        public DateTime OrderEndTime
+	        public string OrderEndTime
 	        {
 	            get{ return _OrderEndTime; }
 	            set{ _OrderEndTime=value; }
 	        }
-		
+        /// <summary>
+        /// 0,没有清台；1，已经清台；
+        /// </summary>
+		public byte ClearDeskState
+        {
+            get { return _ClearDeskState; }
+            set { _ClearDeskState = value; }
+        }
+        /// <summary>
+        /// 顾客数量
+        /// </summary>
+        public int CustomerNum
+        {
+            get { return _CustomerNum; }
+            set { _CustomerNum = value; }
+        }
+        /// <summary>
+        /// 服务员的Id
+        /// </summary>
+        public string ServiceUserId
+        {
+            get { return _ServiceUserId; }
+            set { _ServiceUserId = value; }
+        }
         #endregion
     }
 }
