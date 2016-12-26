@@ -55,15 +55,25 @@ namespace Xiuse.BLL
         {
             return dal.Exists(UserId);
         }
-        
-        
+
+        public bool WorkerExists(string UserId)
+        {
+            return dal.WorkerExists(UserId);
+        }
         /// <summary>
-        /// 获取实体
+        /// 通过id查询实体
         /// </summary>
         /// <param name="UserId">UserId</param>
         public Xiuse.Model.xiuse_user GetModel(string UserId)
         {
             return dal.GetModel(UserId);
+        }
+
+        ///修改员工权限
+        /// 
+        public bool FixWorker(string WorkerId, int DelTag)
+        {
+            return dal.FixWorker(WorkerId,DelTag);
         }
         /*
          * 增加获取全部实体
@@ -74,10 +84,18 @@ namespace Xiuse.BLL
         /// <summary>
         /// 获取全部实体
         /// </summary>
-        /// <param name="UserId">UserId</param>
         public List<Xiuse.Model.xiuse_user> GetModels()
         {
             return dal.GetModels();
+        }
+
+        /// <summary>
+        /// 获取全部WORKER
+        /// </summary>
+
+        public List<Xiuse.Model.xiuse_user> GetWorkerModels()
+        {
+            return dal.GetWorkerModels();
         }
 
         /// <summary>

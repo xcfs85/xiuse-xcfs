@@ -86,7 +86,7 @@ namespace  Xiuse.DAL
 				model.Phone=dr["Phone"].ToString();
 				model.Site=dr["Site"].ToString();
 				model.Remark=dr["Remark"].ToString();
-				model.Time=dr["Time"].ToString();
+                model.Time = (DateTime)dr["Time"];
                 return model;
             }
             else

@@ -15,7 +15,7 @@ namespace Xiuse.Model
 	private string _Phone;
 	private string _Site;
 	private string _Remark;
-	private string _Time;
+	private DateTime _Time;
         #endregion
 
         #region 成员属性...
@@ -78,7 +78,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 更新时间[Time]
 	        /// </summary>
-	        public string Time
+	        public DateTime Time
 	        {
 	            get{ return _Time; }
 	            set{ _Time=value; }

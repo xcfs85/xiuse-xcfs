@@ -15,15 +15,15 @@ namespace Xiuse.Model
 	private decimal _BillAmount;
 	private decimal _AccountsPayable;
 	private decimal _Refunds;
-	private byte _DishCount;
-	private byte _OrderState;
+	private int _DishCount;
+	private bool _OrderState;
 	private decimal _Cash;
 	private decimal _BankCard;
 	private decimal _WeiXin;
 	private decimal _Alipay;
 	private decimal _MembersCard;
-	private string _OrderbeginTime;
-	private string _OrderEndTime;
+	private DateTime _OrderbeginTime;
+	private DateTime _OrderEndTime;
         #endregion
 
         #region 成员属性...
@@ -86,7 +86,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 菜品数量[DishCount]
 	        /// </summary>
-	        public byte DishCount
+	        public int DishCount
 	        {
 	            get{ return _DishCount; }
 	            set{ _DishCount=value; }
@@ -97,7 +97,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 订单状态（0，未支付；1，已支付）[OrderState]
 	        /// </summary>
-	        public byte OrderState
+	        public bool OrderState
 	        {
 	            get{ return _OrderState; }
 	            set{ _OrderState=value; }
@@ -163,7 +163,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 下单时间[OrderbeginTime]
 	        /// </summary>
-	        public string OrderbeginTime
+	        public DateTime OrderbeginTime
 	        {
 	            get{ return _OrderbeginTime; }
 	            set{ _OrderbeginTime=value; }
@@ -174,7 +174,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 用餐结束时间[OrderEndTime]
 	        /// </summary>
-	        public string OrderEndTime
+	        public DateTime OrderEndTime
 	        {
 	            get{ return _OrderEndTime; }
 	            set{ _OrderEndTime=value; }

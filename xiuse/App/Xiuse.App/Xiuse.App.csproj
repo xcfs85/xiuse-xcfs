@@ -240,10 +240,19 @@
     <Compile Include="Controllers\Member\MemberController.cs" />
     <Compile Include="Controllers\Member\RebatesController.cs" />
     <Compile Include="Controllers\Member\RechargeController.cs" />
+    <Compile Include="Controllers\Menu\MenuAllController.cs" />
+    <Compile Include="Controllers\Menu\MenuClassifyController.cs" />
+    <Compile Include="Controllers\Menu\MenuInfoController.cs" />
+    <Compile Include="Controllers\Restaurant\DeskController.cs" />
+    <Compile Include="Controllers\Restaurant\RestaurantController.cs" />
+    <Compile Include="Controllers\Revenue\DailyBillsController.cs" />
+    <Compile Include="Controllers\Revenue\DailyDishesController.cs" />
+    <Compile Include="Controllers\Revenue\DailyTurnoverController.cs" />
     <Compile Include="Controllers\Test\DefaultController.cs" />
     <Compile Include="Controllers\Test\TestController.cs" />
     <Compile Include="Controllers\Test\TestUserController.cs" />
     <Compile Include="Controllers\User\UserController.cs" />
+    <Compile Include="Controllers\User\WorkerController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

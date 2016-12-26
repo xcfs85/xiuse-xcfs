@@ -66,13 +66,34 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Select Count(1) From order_ Where OrderId={0}",OrderId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
-        
+
+
+
+        ///
+        ///获取某一餐厅的所有未结账餐桌的金额
+        /// 
+        public DataSet GetUnpaidDesks(string RestauratId)
+        {
+            string strSql = string.Format("Select order_.DeskId,order_.AccountsPayable from order_ left join xiuse_desk on xiuse_desk.DeskId=order_.DeskId where xiuse_desk.DeskState = 1 xiuse_desk.RestaurantId=" + RestauratId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            return ds;
+        }
+        ///
+        ///获取某一餐厅的最近一次结账的金额【最近一次到底是如何衡量。。。orderbegintime？orderendtime】
+        /// order_.OrderState :0是未支付，1是已支付
+        public DataSet GetPaidLatest(string RestauratId)
+        {
+            string strSql = string.Format("Select order_.DeskId,order_.AccountsPayable from order_ left join xiuse_desk on xiuse_desk.DeskId=order_.DeskId where order_.OrderState = 1 xiuse_desk.RestaurantId=" + RestauratId+" order by order_.orderendtime desc");
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            return ds;
+        }
+
 
 
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="OrderId">OrderId</param>
+        /// <parame name="OrderId">OrderId</param>
         public Xiuse.Model.order_ GetModel(string OrderId)
         {
              string strSql=String.Format(@"Select * From order_ Where OrderId={0}",OrderId); 
@@ -86,15 +107,15 @@ namespace  Xiuse.DAL
 				model.BillAmount=(decimal)dr["BillAmount"];
 				model.AccountsPayable=(decimal)dr["AccountsPayable"];
 				model.Refunds=(decimal)dr["Refunds"];
-				model.DishCount=(byte)dr["DishCount"];
-				model.OrderState=(byte)dr["OrderState"];
+				model.DishCount=(int)dr["DishCount"];
+				model.OrderState=(bool)dr["OrderState"];
 				model.Cash=(decimal)dr["Cash"];
 				model.BankCard=(decimal)dr["BankCard"];
 				model.WeiXin=(decimal)dr["WeiXin"];
 				model.Alipay=(decimal)dr["Alipay"];
 				model.MembersCard=(decimal)dr["MembersCard"];
-				model.OrderbeginTime=dr["OrderbeginTime"].ToString();
-				model.OrderEndTime=dr["OrderEndTime"].ToString();
+				model.OrderbeginTime=(DateTime)dr["OrderbeginTime"];
+				model.OrderEndTime=(DateTime)dr["OrderEndTime"];
                 return model;
             }
             else
