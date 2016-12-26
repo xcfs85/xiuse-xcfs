@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="memberconsumption.cs" />
+    <Compile Include="OrderBill.cs" />
     <Compile Include="ordermenu_.cs" />
     <Compile Include="order_.cs" />
     <Compile Include="Product.cs" />

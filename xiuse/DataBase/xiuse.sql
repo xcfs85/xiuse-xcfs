@@ -1,24 +1,16 @@
 /*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost
-Source Server Version : 50505
-Source Host           : localhost:3306
-Source Database       : xiuse
-
-Target Server Type    : MYSQL
-Target Server Version : 50505
-File Encoding         : 65001
-
-Date: 2016-12-18 20:53:53
+MySQL Data Transfer
+Source Host: localhost
+Source Database: xiuse
+Target Host: localhost
+Target Database: xiuse
+Date: 2016/12/19 16:44:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
 -- ----------------------------
--- Table structure for `memberconsumption`
+-- Table structure for memberconsumption
 -- ----------------------------
-DROP TABLE IF EXISTS `memberconsumption`;
 CREATE TABLE `memberconsumption` (
   `ConsumptionRecordsId` char(32) NOT NULL,
   `MemberCardNo` char(16) NOT NULL COMMENT '会员卡卡号',
@@ -34,19 +26,40 @@ CREATE TABLE `memberconsumption` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of memberconsumption
+-- Table structure for order_
 -- ----------------------------
+CREATE TABLE `order_` (
+  `OrderId` varchar(32) NOT NULL COMMENT '订单号',
+  `DeskId` char(32) NOT NULL COMMENT '餐桌Id',
+  `BillAmount` decimal(12,2) NOT NULL COMMENT '账单',
+  `AccountsPayable` decimal(12,2) NOT NULL COMMENT '应付款',
+  `Refunds` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '退款',
+  `DishCount` tinyint(11) NOT NULL COMMENT '菜品数量',
+  `OrderState` tinyint(1) DEFAULT '0' COMMENT '订单状态（0，未支付；1，已支付）',
+  `Cash` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '现金付款',
+  `BankCard` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '银行卡付款',
+  `WeiXin` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '微信付款',
+  `Alipay` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '支付宝付款',
+  `MembersCard` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '会员卡付款',
+  `ClearDeskState` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0,没有清台；1，已经清台；',
+  `OrderbeginTime` datetime NOT NULL COMMENT '下单时间',
+  `OrderEndTime` datetime NOT NULL COMMENT '用餐结束时间',
+  `ServiceUserId` char(32) NOT NULL COMMENT '服务员的Id',
+  `CustomerNum` int(11) DEFAULT NULL COMMENT '顾客数量',
+  PRIMARY KEY (`OrderId`),
+  KEY `DeskId` (`DeskId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for `ordermenu_`
+-- Table structure for ordermenu_
 -- ----------------------------
-DROP TABLE IF EXISTS `ordermenu_`;
 CREATE TABLE `ordermenu_` (
   `OrderMenuId` char(32) NOT NULL COMMENT '订单ID',
   `OrderId` char(32) NOT NULL,
-  `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
-  `MenuPrice` decimal(12,2) NOT NULL COMMENT '菜品价格',
-  `MenuTag` varchar(500) NOT NULL COMMENT '菜品标签',
+  `MenuName` varchar(500) DEFAULT NULL COMMENT '餐品名称',
+  `MenuPrice` decimal(12,2) DEFAULT '0.00' COMMENT '菜品价格',
+  `MenuTag` varchar(500) DEFAULT NULL COMMENT '菜品标签',
+  `MenuNum` int(11) NOT NULL DEFAULT '1' COMMENT '菜品数量',
   `MenuImage` varchar(500) DEFAULT NULL COMMENT '菜品图片',
   `MenuInstruction` varchar(5000) DEFAULT NULL COMMENT '菜品介绍',
   `DiscoutFlag` int(1) DEFAULT '0' COMMENT '是否有折扣（0,1）',
@@ -60,40 +73,8 @@ CREATE TABLE `ordermenu_` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of ordermenu_
+-- Table structure for xiuse_desk
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `order_`
--- ----------------------------
-DROP TABLE IF EXISTS `order_`;
-CREATE TABLE `order_` (
-  `OrderId` varchar(32) NOT NULL COMMENT '订单号',
-  `DeskId` char(32) NOT NULL COMMENT '餐桌Id',
-  `BillAmount` decimal(12,2) NOT NULL COMMENT '账单',
-  `AccountsPayable` decimal(12,2) NOT NULL COMMENT '应付款',
-  `Refunds` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '退款',
-  `DishCount` tinyint(1) NOT NULL COMMENT '菜品数量',
-  `OrderState` tinyint(1) DEFAULT '0' COMMENT '订单状态（0，未支付；1，已支付）',
-  `Cash` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '现金付款',
-  `BankCard` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '银行卡付款',
-  `WeiXin` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '微信付款',
-  `Alipay` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '支付宝付款',
-  `MembersCard` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '会员卡付款',
-  `OrderbeginTime` datetime NOT NULL COMMENT '下单时间',
-  `OrderEndTime` datetime DEFAULT NULL COMMENT '用餐结束时间',
-  PRIMARY KEY (`OrderId`),
-  KEY `DeskId` (`DeskId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of order_
--- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_desk`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_desk`;
 CREATE TABLE `xiuse_desk` (
   `DeskId` char(32) NOT NULL COMMENT '餐桌主键ID',
   `DeskName` varchar(100) NOT NULL COMMENT '餐桌名称',
@@ -108,13 +89,8 @@ CREATE TABLE `xiuse_desk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_desk
+-- Table structure for xiuse_discount
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_discount`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_discount`;
 CREATE TABLE `xiuse_discount` (
   `DiscountId` char(32) NOT NULL DEFAULT '' COMMENT '折扣ID',
   `DiscountName` varchar(250) NOT NULL COMMENT '折扣名称',
@@ -122,7 +98,7 @@ CREATE TABLE `xiuse_discount` (
   `DiscountContent` decimal(12,2) NOT NULL COMMENT '折扣金额',
   `DiscountMenus` varchar(1000) DEFAULT '' COMMENT '折扣菜品(-1，全部餐品；（菜品ID,菜品ID,菜品ID,菜品ID,菜品ID）,部门折扣)',
   `DiscountSection` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0,整单折扣；1，单品折扣',
-  `DiscountState` int(1) DEFAULT '0' COMMENT '1,启用；0，禁用',
+  `DiscountState` int(1) DEFAULT '0' COMMENT '1,启用；0，禁用;2,删除；',
   `DiscountVerification` int(1) DEFAULT '0' COMMENT '0,启用管理员验证；1,禁用管理员验证；',
   `RestaurantId` char(32) NOT NULL,
   `DiscountTime` datetime DEFAULT NULL COMMENT '更新时间',
@@ -132,13 +108,8 @@ CREATE TABLE `xiuse_discount` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_discount
+-- Table structure for xiuse_member
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_member`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_member`;
 CREATE TABLE `xiuse_member` (
   `MemberId` char(32) NOT NULL COMMENT '会员Id',
   `MemberCardNo` char(16) NOT NULL COMMENT '会员卡号',
@@ -157,13 +128,8 @@ CREATE TABLE `xiuse_member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_member
+-- Table structure for xiuse_memberclassify
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_memberclassify`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_memberclassify`;
 CREATE TABLE `xiuse_memberclassify` (
   `MemberClassifyId` char(32) NOT NULL COMMENT '会员类型',
   `DiscountId` char(32) NOT NULL COMMENT '折扣ID',
@@ -179,13 +145,8 @@ CREATE TABLE `xiuse_memberclassify` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_memberclassify
+-- Table structure for xiuse_menuclassify
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_menuclassify`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_menuclassify`;
 CREATE TABLE `xiuse_menuclassify` (
   `ClassifyId` char(32) NOT NULL COMMENT '菜单分类',
   `ClassifyInstruction` varchar(500) DEFAULT NULL COMMENT '品餐分类介绍',
@@ -198,13 +159,8 @@ CREATE TABLE `xiuse_menuclassify` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_menuclassify
+-- Table structure for xiuse_menus
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_menus`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_menus`;
 CREATE TABLE `xiuse_menus` (
   `MenuId` char(32) NOT NULL COMMENT '品餐Id',
   `MenuName` varchar(500) NOT NULL COMMENT '餐品名称',
@@ -228,13 +184,8 @@ CREATE TABLE `xiuse_menus` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_menus
+-- Table structure for xiuse_rebates
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_rebates`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_rebates`;
 CREATE TABLE `xiuse_rebates` (
   `RebatesId` char(32) NOT NULL COMMENT '返现记录Id',
   `MemberCardNo` char(16) NOT NULL COMMENT '会员卡号',
@@ -248,13 +199,8 @@ CREATE TABLE `xiuse_rebates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_rebates
+-- Table structure for xiuse_recharge
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_recharge`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_recharge`;
 CREATE TABLE `xiuse_recharge` (
   `RechargeId` char(32) NOT NULL COMMENT '充值记录Id',
   `RechargeType` tinyint(4) NOT NULL COMMENT '充值类型',
@@ -269,13 +215,8 @@ CREATE TABLE `xiuse_recharge` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_recharge
+-- Table structure for xiuse_restaurant
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `xiuse_restaurant`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_restaurant`;
 CREATE TABLE `xiuse_restaurant` (
   `RestaurantId` char(32) NOT NULL COMMENT '餐厅的Id',
   `RestaurantName` varchar(200) DEFAULT NULL COMMENT '餐厅名称',
@@ -287,14 +228,8 @@ CREATE TABLE `xiuse_restaurant` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_restaurant
+-- Table structure for xiuse_user
 -- ----------------------------
-INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000000', 'TestRN', '010-88888888', '北京', null, '2016-12-12 13:22:43');
-
--- ----------------------------
--- Table structure for `xiuse_user`
--- ----------------------------
-DROP TABLE IF EXISTS `xiuse_user`;
 CREATE TABLE `xiuse_user` (
   `UserId` char(32) NOT NULL COMMENT 'Id编号',
   `UserName` varchar(50) NOT NULL COMMENT '姓名',
@@ -314,6 +249,7 @@ CREATE TABLE `xiuse_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of xiuse_user
+-- Records 
 -- ----------------------------
+INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000000', 'TestRN', '010-88888888', '北京', null, '2016-12-12 13:22:43');
 INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000000', 'admin', 'weixin', '15811111111', 'admin@163.com', 'flaskjdflj===', '00000000000000000000000000000000', '0', '-1', '0', null, '2016-12-12 13:20:42');

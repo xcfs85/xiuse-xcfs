@@ -32,7 +32,7 @@ namespace Xiuse.App.Controllers
         }
         [Route("SearchbyId")]
         //用id号查询
-        public HttpResponseMessage GetXiuse_users(string id)
+        public IHttpActionResult GetXiuse_users(string id)
         {
             if(id==null && new_user.Exists(id))
             {
