@@ -48,7 +48,7 @@ namespace Xiuse.BLL
         }
         
         /// <summary>
-        ///  判断是否存在
+        ///  判断餐厅是否存在
         /// </summary>
         /// <param name="RestaurantId">RestaurantId</param>
         public bool Exists(string RestaurantId)
@@ -65,9 +65,21 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(RestaurantId);
         }
-        
 
-		/// <summary>
+
+
+        /// <summary>
+        /// 获取当前系统中的所有餐厅
+        /// </summary>
+        public List<Model.xiuse_restaurant> GetAllRestaurants()
+        {
+            return DataSetTransModelListNoExpand(dal.GetData("*",""));
+        }
+
+
+     
+
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">餐厅名称[RestaurantName]</param>
@@ -194,7 +206,7 @@ namespace Xiuse.BLL
                     model.Phone = dr["Phone"].ToString();
                     model.Site = dr["Site"].ToString();
                     model.Remark = dr["Remark"].ToString();
-                    model.Time = dr["Time"].ToString();
+                    model.Time = (DateTime)dr["Time"];
                     Tmp.Add(model);
                 }
             }

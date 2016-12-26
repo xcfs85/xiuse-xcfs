@@ -23,7 +23,7 @@ namespace Xiuse.Model
 	private string _MenuInstruction;
 	private int _SaleState;
 	private int _MenuState;
-	private string _MenuTime;
+	private DateTime _MenuTime;
         #endregion
 
         #region 成员属性...
@@ -174,7 +174,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 更新时间[MenuTime]
 	        /// </summary>
-	        public string MenuTime
+	        public DateTime MenuTime
 	        {
 	            get{ return _MenuTime; }
 	            set{ _MenuTime=value; }

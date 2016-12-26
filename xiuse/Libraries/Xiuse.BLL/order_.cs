@@ -86,10 +86,10 @@ namespace Xiuse.BLL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,byte OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,byte ClearDeskState, int CustomerNum, string ServiceUserId, string OrderbeginTime,string OrderEndTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,byte OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,string OrderbeginTime,string OrderEndTime, int StartIndex, int PageSize, out int RecordCount)
         {
             int count=0;
-            DataSet ds=dal.Search(DeskId,BillAmount,AccountsPayable,Refunds,DishCount,OrderState,Cash,BankCard,WeiXin,Alipay,MembersCard, OrderbeginTime,OrderEndTime, ClearDeskState, CustomerNum, ServiceUserId, StartIndex,PageSize,out count);
+            DataSet ds=dal.Search(DeskId,BillAmount,AccountsPayable,Refunds,DishCount,OrderState,Cash,BankCard,WeiXin,Alipay,MembersCard,OrderbeginTime,OrderEndTime,StartIndex,PageSize,out count);
             RecordCount=count;
             return ds;
         }
@@ -103,8 +103,28 @@ namespace Xiuse.BLL
         {
             return dal.GetData(Fields,Wheres);
         }
+        ///获取当天所有的账单
+        /// 
+        public List<Model.order_> GetDailyBills(string condition)
+        {
+            return DataSetTransModelListNoExpand(GetData("*", condition));
+        }
+
+        ///
+        ///获取某一餐厅的所有未结账餐桌的金额
+        /// 
+
+        public List<Xiuse.Model.order_> GetUnpaidDesks(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetUnpaidDesks(RestaurantId));
+        }
 
 
+        ///获取某一餐厅最近一笔已支付的金额
+        public List<Xiuse.Model.order_> GetPaidLatest(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetPaidLatest(RestaurantId));
+        }
         /// <summary>
         /// 获取数据[用于分页]
         /// </summary>
@@ -202,18 +222,15 @@ namespace Xiuse.BLL
                     model.BillAmount = (decimal)dr["BillAmount"];
                     model.AccountsPayable = (decimal)dr["AccountsPayable"];
                     model.Refunds = (decimal)dr["Refunds"];
-                    model.DishCount = (byte)dr["DishCount"];
-                    model.OrderState = (byte)dr["OrderState"];
+                    model.DishCount = (int)dr["DishCount"];
+                    model.OrderState = (bool)dr["OrderState"];
                     model.Cash = (decimal)dr["Cash"];
                     model.BankCard = (decimal)dr["BankCard"];
                     model.WeiXin = (decimal)dr["WeiXin"];
                     model.Alipay = (decimal)dr["Alipay"];
                     model.MembersCard = (decimal)dr["MembersCard"];
-                    model.OrderbeginTime = dr["OrderbeginTime"].ToString();
-                    model.OrderEndTime = dr["OrderEndTime"].ToString();
-                    model.ClearDeskState = (byte)dr["ClearDeskState"];
-                    model.ServiceUserId = dr["ServiceUserId"].ToString();
-                    model.CustomerNum = (int)dr["CustomerNum"];
+                    model.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
+                    model.OrderEndTime = (DateTime)dr["OrderEndTime"];
                     Tmp.Add(model);
                 }
             }

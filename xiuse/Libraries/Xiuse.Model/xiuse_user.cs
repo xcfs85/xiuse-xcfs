@@ -21,6 +21,7 @@ namespace Xiuse.Model
 	private string _ParentUserId;
 	private int _OwnRestaurant;
 	private string _Time;
+        private int _DelTag;
         #endregion
 
         #region ≥…‘± Ù–‘...
@@ -143,7 +144,20 @@ namespace Xiuse.Model
 	            get{ return _Time; }
 	            set{ _Time=value; }
 	        }
-		
+
+        public int DelTag
+        {
+            get
+            {
+                return _DelTag;
+            }
+
+            set
+            {
+                _DelTag = value;
+            }
+        }
+
         #endregion
     }
 }

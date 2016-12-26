@@ -1,11 +1,12 @@
 ﻿/*******************************************************************************
              用户接口类                                   
-             本类主要实现对会员Member各种操作的接口              
-             创建：zy       2016/12/15 
+             本类主要实现对用户各种操作的接口              
+             创建：zy       2016/12/18
 //1、查询所有的用户
-//2、添加菜品的分类。
-//3、更新菜品分类。
-//4、删除菜品分类。            
+//2、通过ID号查询用户，返回model
+//3、新建一个用户。
+//4、更新用户信息。
+//4、删除用户信息。            
  * *****************************************************************************/
 
 using System;
@@ -13,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
+using System.Web.Http;  
 using Xiuse;
 
 namespace Xiuse.App.Controllers
@@ -31,47 +32,46 @@ namespace Xiuse.App.Controllers
             return users;
         }
         [Route("SearchbyId")]
-        //用id号查询
-        public IHttpActionResult GetXiuse_users(string id)
+        //通过用户id号查询
+        public Model.xiuse_user GetXiuse_users(string id)
         {
-            if(id==null && new_user.Exists(id))
+            if(id==null||new_user.Exists(id)==false)
             {
                 throw new HttpRequestException();
             }
-            List<Model.xiuse_user> users = new_user.GetModels();
-            var user = users.FirstOrDefault((p) => p.UserId == id);
-       
-            return Ok(user);
+            Model.xiuse_user user = new_user.GetModel(id);
+            return user;
         }
+
+
         [Route("AddUser")]
-        //新建一个用户{重复检测如何实现}
-        public IHttpActionResult PostSetXiuse_users([FromBody] Model.xiuse_user user)
+        //新建一个用户
+        public HttpResponseMessage PostSetXiuse_users([FromBody] Model.xiuse_user user)
         {
-            //List<Model.xiuse_user> users = new_user.GetModels();
-            if (new_user.Insert(user) == true)
-            {
-                return Ok(user);
-            }
-            else
+           if(user==null||new_user.Exists(user.UserId)==false)
             {
                 throw new HttpRequestException();
             }
-           
+            if (new_user.Insert(user) == true)
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            else
+                return new HttpResponseMessage(HttpStatusCode.Gone);
+
         }
 
 
         [Route("DeletebyId")]
         //删除一个用户
-        public IHttpActionResult DeleteXiuse_users(string id)
+        public HttpResponseMessage DeleteDelXiuse_users(string id)
         {
-            if (new_user.Delete(id) == true)
-            {
-                return Ok();
-            }
-            else
+            if (id== null || new_user.Exists(id)==false)
             {
                 throw new HttpRequestException();
             }
+            if (new_user.Delete(id) == true)
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            else
+                return new HttpResponseMessage(HttpStatusCode.Gone);
         }
 
     }
