@@ -81,7 +81,7 @@ namespace  Xiuse.DAL
             else
             {
                 string sql = string.Format("update order_ set CleanDeskState=1 where  DeskId={0}", DeskId);
-                string sql2=string.Format("update xiuse.desk where DeskState=0 where  DeskId={0}", DeskId);
+                string sql2=string.Format("update xiuse.desk set DeskState=0 where  DeskId={0}", DeskId);
 
                 AosyMySql.ExecuteNonQuery(sql);
                 AosyMySql.ExecuteNonQuery(sql2);

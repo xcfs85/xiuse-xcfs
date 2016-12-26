@@ -83,7 +83,7 @@ namespace  Xiuse.DAL
         /// order_.OrderState :0是未支付，1是已支付
         public DataSet GetPaidLatest(string RestauratId)
         {
-            string strSql = string.Format("Select order_.DeskId,order_.AccountsPayable from order_ left join xiuse_desk on xiuse_desk.DeskId=order_.DeskId where order_.OrderState = 1 xiuse_desk.RestaurantId=" + RestauratId+" order by order_.orderendtime");
+            string strSql = string.Format("Select order_.DeskId,order_.AccountsPayable from order_ left join xiuse_desk on xiuse_desk.DeskId=order_.DeskId where order_.OrderState = 1 xiuse_desk.RestaurantId=" + RestauratId+" order by order_.orderendtime desc");
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             return ds;
         }
