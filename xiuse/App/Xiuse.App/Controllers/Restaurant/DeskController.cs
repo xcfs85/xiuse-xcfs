@@ -30,7 +30,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("AddDesk")]
         public HttpResponseMessage PostAddDesk([FromBody]Model.xiuse_desk model)
         {
-            if (model == null || DeskBLL.Exists(model.DeskId)==false)
+            if (model == null || DeskBLL.Exists(model.DeskId) == false)
             {
                 throw new HttpRequestException();
             }
@@ -43,7 +43,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("UpdateDesk")]
         public HttpResponseMessage PostUpdateDesk([FromBody]Model.xiuse_desk model)
         {
-            if (model == null || DeskBLL.Exists(model.DeskId)==false)
+            if (model == null || DeskBLL.Exists(model.DeskId) == false)
             {
                 throw new HttpRequestException();
             }
@@ -56,7 +56,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("DeleteDesk")]
         public HttpResponseMessage DeleteDelDeskClassify([FromBody]String id)
         {
-            if (id == null || DeskBLL.Exists(id)==false)
+            if (id == null || DeskBLL.Exists(id) == false)
             {
                 throw new HttpRequestException();
             }
@@ -71,7 +71,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("GetAllDesks")]
         public List<Model.xiuse_desk> GetAllDesks(string RestaurantId)
         {
-            if (RestaurantId == null ||DeskBLL.RestaurantExists(RestaurantId)==false)
+            if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)
             {
                 throw new HttpRequestException();
             }
@@ -81,7 +81,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("GetUnpaidDesks")]
         public List<Model.order_> GetUnpaidDesks(string RestaurantId)
         {
-            if (RestaurantId == null|| DeskBLL.RestaurantExists(RestaurantId)==false)
+            if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)
             {
                 throw new HttpRequestException();
             }
@@ -92,7 +92,7 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("GetPaidLatest")]
         public List<Model.order_> GetPaidLatest(string RestaurantId)
         {
-            if (RestaurantId == null|| DeskBLL.RestaurantExists(RestaurantId)==false)
+            if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)
             {
                 throw new HttpRequestException();
             }
@@ -107,9 +107,9 @@ namespace Xiuse.App.Controllers.Restaurant
                 throw new HttpRequestException();
             }
             if (DeskBLL.ClearDesk(DeskId))
-               return new HttpResponseMessage(HttpStatusCode.OK);
+                return new HttpResponseMessage(HttpStatusCode.OK);
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
+    }
 }
