@@ -76,3 +76,16 @@ E:\XIUSE-18\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.pdb
 E:\XIUSE-18\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.csprojResolveAssemblyReference.cache
 E:\XIUSE-18\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.dll
 E:\XIUSE-18\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.pdb
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.DAL.dll
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.DAL.pdb
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.dll
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.dll
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\Maticsoft.DBUtility.dll
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\System.Data.SQLite.dll
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.pdb
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\DotNet.Utilities.xml
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\bin\Debug\Xiuse.Model.pdb
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.csprojResolveAssemblyReference.cache
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.dll
+E:\Xiuse_2017\xiuse\Libraries\Xiuse.DAL\obj\Debug\Xiuse.DAL.pdb

@@ -46,7 +46,16 @@ namespace Xiuse.BLL
         {
             return dal.Delete(OrderId);
         }
-        
+
+        ///<summary>
+        /// 退单操作
+        /// </summary>
+        /// 
+        public bool BackOrder(Xiuse.Model.order_ Order)
+        {
+            return dal.BackOrder(Order);
+        }
+
         /// <summary>
         ///  判断是否存在
         /// </summary>
@@ -119,7 +128,34 @@ namespace Xiuse.BLL
             return DataSetTransModelListNoExpand(dal.GetUnpaidDesks(RestaurantId));
         }
 
+        /// <summary>
+        /// 获取当天餐厅的特定餐桌的所有未清台的账单
+        /// </summary>
+        /// <param name="DeskId">餐桌Id</param>
+        public List<OrderBill> GetUncleanedDesksbyId(string DeskId)
+        {
+            return dal.GetUncleanedDesksbyId(DeskId);
+        }
 
+        /// <summary>
+        /// 获取当天餐厅的餐桌的所有未清台的账单
+        /// </summary>
+        /// <param name="RestaurantId">餐厅Id</param>
+        /// <returns></returns>
+        public List<OrderBill> GetAllUncleanedDesks(string RestaurantId)
+        {
+            return dal.GetAllUncleanedDesks(RestaurantId);
+        }
+
+
+        ///
+        ///获取订单详情
+        ///参数：订单id
+        /// 
+        public OrderBill GetOrderBill(string orderId)
+        {
+            return dal.GetOrderBill(orderId);
+        }
         ///获取某一餐厅最近一笔已支付的金额
         public List<Xiuse.Model.order_> GetPaidLatest(string RestaurantId)
         {

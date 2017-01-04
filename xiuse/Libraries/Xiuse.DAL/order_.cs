@@ -67,7 +67,17 @@ namespace  Xiuse.DAL
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
-
+        ///<summary>
+        /// 退单操作
+        /// </summary>
+        /// 
+        public bool BackOrder(Xiuse.Model.order_ Order)
+        {
+            string strSql = String.Format(@"Update order_ Set 
+            Refunds={0},OrderState=2,Cash=0,BankCard=0,WeiXin=0,Alipay=0 Where OrderId={1}",
+          Order.AccountsPayable,Order.OrderId);
+            return AosyMySql.ExecuteforBool(strSql);
+        }
 
         ///
         ///获取某一餐厅的所有未结账餐桌的金额
@@ -78,6 +88,176 @@ namespace  Xiuse.DAL
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             return ds;
         }
+
+        /// <summary>
+        /// 获取当天餐厅的餐桌的所有未清台的账单
+        /// </summary>
+        /// <param name="RestaurantId">餐厅Id</param>
+        /// <returns></returns>
+        public List<OrderBill> GetAllUncleanedDesks(string RestaurantId)
+        {
+            string strSql = string.Format("select * from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId={0} and date(orderendtime)=date(curdate())and order_.ClearDeskState='0'", RestaurantId);
+            //string strSql2=string.Format("select * from ordermenu_ where orderid in (select orderid from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId={0}and order_.ClearDeskState='0'", RestauratId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            List<OrderBill> OB = new List<OrderBill>();
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                DataRow dr = ds.Tables[0].Rows[i];
+                OrderBill modelBill = new OrderBill();
+                modelBill.Order.OrderId = dr["OrderId"].ToString();
+                modelBill.Order.DeskId = (string)dr["DeskId"];
+                modelBill.Order.BillAmount = (decimal)dr["BillAmount"];
+                modelBill.Order.AccountsPayable = (decimal)dr["AccountsPayable"];
+                modelBill.Order.Refunds = (decimal)dr["Refunds"];
+                modelBill.Order.DishCount = (int)dr["DishCount"];
+                modelBill.Order.OrderState = (int)dr["OrderState"];
+                modelBill.Order.Cash = (decimal)dr["Cash"];
+                modelBill.Order.BankCard = (decimal)dr["BankCard"];
+                modelBill.Order.WeiXin = (decimal)dr["WeiXin"];
+                modelBill.Order.Alipay = (decimal)dr["Alipay"];
+                modelBill.Order.MembersCard = (decimal)dr["MembersCard"];
+                modelBill.Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
+                modelBill.Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
+                string strSql2 = string.Format("select * from ordermenu_ where orderid={0}", modelBill.Order.OrderId);
+                DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
+                for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
+                {
+                    DataRow dr2 = ds2.Tables[0].Rows[j];
+                    Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
+                    
+                    modelMenu.OrderMenuId= (string)dr["OrderMenuId"];
+                    modelMenu.OrderId = (string)dr["OrderId"];
+                    modelMenu.MenuName = dr["MenuName"].ToString();
+                    modelMenu.MenuPrice = (decimal)dr["MenuPrice"];
+                    modelMenu.MenuTag = dr["MenuTag"].ToString();
+                    modelMenu.MenuImage = dr["MenuImage"].ToString();
+                    modelMenu.MenuInstruction = dr["MenuInstruction"].ToString();
+                    modelMenu.DiscoutFlag = (bool)dr["DiscoutFlag"];
+                    modelMenu.DiscountName = dr["DiscountName"].ToString();
+                    modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
+                    modelMenu.DiscountType = (byte)dr["DiscountType"];
+                    modelMenu.MenuServing = (bool)dr["MenuServing"];
+                    modelBill.Ordermenu.Add(modelMenu);
+                }
+                OB.Add(modelBill);
+            }
+         
+            return OB;
+        }
+
+        /// <summary>
+        /// 获取当天餐厅的特定餐桌的所有未清台的账单
+        /// </summary>
+        /// <param name="DeskId">餐桌Id</param>
+        public List<OrderBill> GetUncleanedDesksbyId(string DeskId)
+        {
+            string strSql = string.Format("select * from order_  where deskid={0}and order_.ClearDeskState='0'and date(orderendtime)=date(curdate())", DeskId);
+            //string strSql2=string.Format("select * from ordermenu_ where orderid in (select orderid from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId={0}and order_.ClearDeskState='0'", RestauratId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            List<OrderBill> OB = new List<OrderBill>();
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                DataRow dr = ds.Tables[0].Rows[i];
+                OrderBill modelBill = new OrderBill();
+                modelBill.Order.OrderId = dr["OrderId"].ToString();
+                modelBill.Order.DeskId = (string)dr["DeskId"];
+                modelBill.Order.BillAmount = (decimal)dr["BillAmount"];
+                modelBill.Order.AccountsPayable = (decimal)dr["AccountsPayable"];
+                modelBill.Order.Refunds = (decimal)dr["Refunds"];
+                modelBill.Order.DishCount = (int)dr["DishCount"];
+                modelBill.Order.OrderState = (int)dr["OrderState"];
+                modelBill.Order.Cash = (decimal)dr["Cash"];
+                modelBill.Order.BankCard = (decimal)dr["BankCard"];
+                modelBill.Order.WeiXin = (decimal)dr["WeiXin"];
+                modelBill.Order.Alipay = (decimal)dr["Alipay"];
+                modelBill.Order.MembersCard = (decimal)dr["MembersCard"];
+                modelBill.Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
+                modelBill.Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
+                string strSql2 = string.Format("select * from ordermenu_ where orderid={0}", modelBill.Order.OrderId);
+                DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
+                for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
+                {
+                    DataRow dr2 = ds2.Tables[0].Rows[j];
+                    Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
+
+                    modelMenu.OrderMenuId = (string)dr["OrderMenuId"];
+                    modelMenu.OrderId = (string)dr["OrderId"];
+                    modelMenu.MenuName = dr["MenuName"].ToString();
+                    modelMenu.MenuPrice = (decimal)dr["MenuPrice"];
+                    modelMenu.MenuTag = dr["MenuTag"].ToString();
+                    modelMenu.MenuImage = dr["MenuImage"].ToString();
+                    modelMenu.MenuInstruction = dr["MenuInstruction"].ToString();
+                    modelMenu.DiscoutFlag = (bool)dr["DiscoutFlag"];
+                    modelMenu.DiscountName = dr["DiscountName"].ToString();
+                    modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
+                    modelMenu.DiscountType = (byte)dr["DiscountType"];
+                    modelMenu.MenuServing = (bool)dr["MenuServing"];
+                    modelBill.Ordermenu.Add(modelMenu);
+                }
+                OB.Add(modelBill);
+            }
+
+            return OB;
+        }
+        ///
+        ///获取订单详情
+        ///参数：订单id
+        /// 
+        public OrderBill GetOrderBill(string orderId)
+        {
+            //  string strSql = string.Format("select * from order_  left join ordermenu_ on order_.orderId = ordermenu_.orderId where orderId={0}", orderId);
+            string strSql = string.Format("select * from order_ where orderId={0}",orderId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Xiuse.Model.OrderBill modelBill = new Xiuse.Model.OrderBill();
+                DataRow dr = ds.Tables[0].Rows[0];
+                modelBill.Order.OrderId = dr["OrderId"].ToString();
+                modelBill.Order.DeskId = (string)dr["DeskId"];
+                modelBill.Order.BillAmount = (decimal)dr["BillAmount"];
+                modelBill.Order.AccountsPayable = (decimal)dr["AccountsPayable"];
+                modelBill.Order.Refunds = (decimal)dr["Refunds"];
+                modelBill.Order.DishCount = (int)dr["DishCount"];
+                modelBill.Order.OrderState = (int)dr["OrderState"];
+                modelBill.Order.Cash = (decimal)dr["Cash"];
+                modelBill.Order.BankCard = (decimal)dr["BankCard"];
+                modelBill.Order.WeiXin = (decimal)dr["WeiXin"];
+                modelBill.Order.Alipay = (decimal)dr["Alipay"];
+                modelBill.Order.MembersCard = (decimal)dr["MembersCard"];
+                modelBill.Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
+                modelBill.Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
+                string strSql2 = string.Format("select * from ordermenu_ where orderid={0}", orderId);
+                DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
+                for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
+                {
+                    DataRow dr2 = ds2.Tables[0].Rows[j];
+                    Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
+
+                    modelMenu.OrderMenuId = (string)dr["OrderMenuId"];
+                    modelMenu.OrderId = (string)dr["OrderId"];
+                    modelMenu.MenuName = dr["MenuName"].ToString();
+                    modelMenu.MenuPrice = (decimal)dr["MenuPrice"];
+                    modelMenu.MenuTag = dr["MenuTag"].ToString();
+                    modelMenu.MenuImage = dr["MenuImage"].ToString();
+                    modelMenu.MenuInstruction = dr["MenuInstruction"].ToString();
+                    modelMenu.DiscoutFlag = (bool)dr["DiscoutFlag"];
+                    modelMenu.DiscountName = dr["DiscountName"].ToString();
+                    modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
+                    modelMenu.DiscountType = (byte)dr["DiscountType"];
+                    modelMenu.MenuServing = (bool)dr["MenuServing"];
+                    modelBill.Ordermenu.Add(modelMenu);
+                }
+                return modelBill;
+            }
+            else
+            {
+                return null;
+            }
+         
+        }
+
+
+        ///
         ///
         ///获取某一餐厅的最近一次结账的金额【最近一次到底是如何衡量。。。orderbegintime？orderendtime】
         /// order_.OrderState :0是未支付，1是已支付

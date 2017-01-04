@@ -245,6 +245,7 @@
     <Compile Include="Controllers\Menu\MenuClassifyController.cs" />
     <Compile Include="Controllers\Menu\MenuInfoController.cs" />
     <Compile Include="Controllers\OrderBill\OrderBillController.cs" />
+    <Compile Include="Controllers\OrderBill\OrderController.cs" />
     <Compile Include="Controllers\Restaurant\DeskController.cs" />
     <Compile Include="Controllers\Restaurant\RestaurantController.cs" />
     <Compile Include="Controllers\Revenue\DailyBillsController.cs" />

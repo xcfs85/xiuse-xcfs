@@ -50,7 +50,7 @@ namespace Xiuse.App.Controllers.Member
         [Route("AddMembers")]
         public HttpResponseMessage PostAddMmeber([FromBody]Model.xiuse_member member)
         {
-            if (member == null && MemberBLL.ExistsMember(member))
+            if (member == null || MemberBLL.ExistsMember(member)==false)
             {
                 throw new HttpRequestException();
             }
@@ -68,7 +68,7 @@ namespace Xiuse.App.Controllers.Member
         public HttpResponseMessage PostUpdateMmeber([FromBody]Model.xiuse_member member)
         {
 
-            if (member == null && MemberBLL.ExistsMember(member))
+            if (member == null || MemberBLL.ExistsMember(member)==false)
             {
                 throw new HttpRequestException();
             }
