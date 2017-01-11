@@ -25,7 +25,7 @@ namespace Xiuse.App.Controllers.OrderBill
     [RoutePrefix("api/Order")]
     public class OrderController : ApiController
     {
-     BLL.order_ OrderBLL=new BLL.order_();
+        BLL.order_ OrderBLL = new BLL.order_();
         BLL.ordermenu_ OrderMenuBLL = new BLL.ordermenu_();
         /// <summary>
         /// 添加订单
@@ -35,7 +35,7 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("AddOrder")]
         public HttpResponseMessage PostAddOrder([FromBody]Model.order_ order)
         {
-            if (order == null||OrderBLL.Exists(order.OrderId) )
+            if (order == null || OrderBLL.Exists(order.OrderId))
             {
                 throw new HttpRequestException();
             }
@@ -104,7 +104,7 @@ namespace Xiuse.App.Controllers.OrderBill
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
         ///<summary>
-        /// 退单操作---理解为删除订单操作
+        /// 退单操作
         /// </summary>
         /// 
         [Route("BackOrder")]
@@ -124,14 +124,14 @@ namespace Xiuse.App.Controllers.OrderBill
                 Order.OrderState = 2;
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
-                
+
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-            ///<summary>
-            /// 设定已上菜品
-            /// 
-            /// </summary>
+        ///<summary>
+        /// 设定已上菜品
+        /// 
+        /// </summary>
         [Route("IsOnTable")]
         public HttpResponseMessage PostSetOnTable([FromBody]Model.ordermenu_ orderMenu)
         {
@@ -150,10 +150,10 @@ namespace Xiuse.App.Controllers.OrderBill
         ///<summary>
         /// 添加订单折扣   
         /// </summary>
-       [Route("AddDiscount")]
-        public HttpResponseMessage PostAddDiscount([FromBody]Model.ordermenu_ orderMenu,Model.xiuse_discount Discount)
+        [Route("AddDiscount")]
+        public HttpResponseMessage PostAddDiscount([FromBody]Model.ordermenu_ orderMenu, Model.xiuse_discount Discount)
         {
-            
+
             if (orderMenu == null || OrderMenuBLL.Exists(orderMenu.OrderId))
             {
                 throw new HttpRequestException();
@@ -169,7 +169,7 @@ namespace Xiuse.App.Controllers.OrderBill
         /// 修改订单折扣   
         /// 类型
         /// </summary>
-        [Route("AddDiscount")]
+        [Route("ChangeDiscount")]
         public HttpResponseMessage PostUpdateDiscount([FromBody]Model.ordermenu_ orderMenu)
         {
             orderMenu.MenuServing = true;
@@ -185,7 +185,8 @@ namespace Xiuse.App.Controllers.OrderBill
         ///<summary>
         /// 添加小费
         /// </summary>
-
+        //[Route("AddTips")]
+        //public HttpResponseMessage PostAddTips([FromBody]Model.order_ Order)
 
 
 
@@ -193,9 +194,9 @@ namespace Xiuse.App.Controllers.OrderBill
         /// 增加抹零折扣
         /// </summary>
         [Route("AddMoveTailDiscount")]
-        public HttpResponseMessage PostAddMoveTailDiscount([FromBody]Model.order_ Order,decimal Discount)
+        public HttpResponseMessage PostAddMoveTailDiscount([FromBody]Model.order_ Order, decimal Discount)
         {
-          
+
             if (Order == null || OrderMenuBLL.Exists(Order.OrderId))
             {
                 throw new HttpRequestException();
@@ -207,3 +208,4 @@ namespace Xiuse.App.Controllers.OrderBill
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
     }
+}
