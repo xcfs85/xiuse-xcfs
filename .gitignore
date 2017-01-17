@@ -17,3 +17,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/xiuse/App/Xiuse.App/obj/Debug
+/xiuse/App/Xiuse.App/bin
+/xiuse/Libraries
+/xiuse/Infrastructure/DotNet.Utilities
