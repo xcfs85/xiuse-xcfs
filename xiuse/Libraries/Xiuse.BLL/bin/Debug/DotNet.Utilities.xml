@@ -1064,6 +1064,48 @@
             <param name="filePath">csv文件路径</param>
             <param name="n">表示第n行是字段title,第n+1行是记录开始</param>
         </member>
+        <member name="M:DotNet.Utilities.DESPERSION.Encrypt(System.Byte[],System.Byte[])">
+              加密
+            @param inText  需要加密的字节数组
+            @param Key     密钥
+            @return        加密后的字节数组
+        </member>
+        <member name="M:DotNet.Utilities.DESPERSION.Descrypt(System.Byte[],System.Byte[])">
+             解密
+            @param inText  需解密的字节数组
+            @param Key     密钥
+            @return        解密后的字节数组
+        </member>
+        <member name="M:DotNet.Utilities.DESPERSION.Encrypt(System.String)">
+            加密字符串
+            @param msg   需要加密的字符串
+            @return      加密后的支付串
+        </member>
+        <member name="M:DotNet.Utilities.DESPERSION.Decrypt(System.String)">
+            解密字符串
+            @param msg   加密字符串
+            @return      解密的字符串
+        </member>
+        <member name="M:DotNet.Utilities.DESPERSION.StrToHex(System.String)">
+            将字符串转为十六进制,BLOB/CLOB时常用
+            @param value    字符串
+            @return         16进制字符串
+        </member>
+        <member name="M:DotNet.Utilities.DESPERSION.HexToStr(System.String)">
+            将十六进制改为字符串
+            @param hex    16进制字符串
+            @return       字符串
+        </member>
+        <member name="M:DotNet.Utilities.DESPERSION.hexToBytes(System.String)">
+            将十六进制字符串改为字节数组
+            @param hex    16进制字符串
+            @return       字节数组
+        </member>
+        <member name="M:DotNet.Utilities.DESPERSION.bytesToHex(System.Byte[])">
+            将字节数组改为16进制字符串
+            @param bytes    字节数组
+            @return         16进制字符串
+        </member>
         <member name="T:DotNet.Utilities.MySecurity">
             <summary>
             MySecurity(安全类) 的摘要说明。

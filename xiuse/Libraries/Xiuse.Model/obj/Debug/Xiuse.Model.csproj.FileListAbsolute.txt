@@ -26,3 +26,8 @@ E:\Xiuse_2017\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.pdb
 E:\Xiuse_2017\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.csprojResolveAssemblyReference.cache
 E:\Xiuse_2017\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.dll
 E:\Xiuse_2017\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.pdb
+D:\2017616\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.dll
+D:\2017616\xiuse\Libraries\Xiuse.Model\bin\Debug\Xiuse.Model.pdb
+D:\2017616\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.csprojResolveAssemblyReference.cache
+D:\2017616\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.dll
+D:\2017616\xiuse\Libraries\Xiuse.Model\obj\Debug\Xiuse.Model.pdb
