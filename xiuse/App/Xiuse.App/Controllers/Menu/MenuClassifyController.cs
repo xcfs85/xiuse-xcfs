@@ -25,14 +25,14 @@ namespace Xiuse.App.Controllers.Menu
     {
         BLL.xiuse_menuclassify MenuBLL = new BLL.xiuse_menuclassify();
 
-        [Route("GetAllMenuClassify")]
-        public List<Model.xiuse_menuclassify> GetAllMenuClassify(string ResaurantId)
+        [Route("GetMenuClassifies")]
+        public List<Model.xiuse_menuclassify> GetMenuClassifies(string RestaurantId)
         {
-            if (ResaurantId == null||MenuBLL.ExistsRestaurant(ResaurantId)==false)
+            if (RestaurantId == null||MenuBLL.ExistsRestaurant(RestaurantId)==false)
             {
                 throw new HttpRequestException();
             }
-            return GetAllMenuClassify(ResaurantId);
+            return MenuBLL.GetMenuClassifies(RestaurantId);
         }
 
         [Route("AddMenuClassify")]

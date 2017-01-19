@@ -66,13 +66,23 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Select Count(1) From xiuse_restaurant Where RestaurantId={0}",RestaurantId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
-        
+
+
+        ///
+        ///获取用户对应的所有餐厅
+        ///
+        public DataSet UserRestaurant(string UserId)
+        {
+            string strSql = string.Format(@"Select * from xiuse_restaurant where RestaurantId=(select RestaurantId from xiuse_user where UserId={0})", UserId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
+
 
 
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="RestaurantId">RestaurantId</param>
+        /// <parame name="RestaurantId">RestaurantId</param>
         public Xiuse.Model.xiuse_restaurant GetModel(string RestaurantId)
         {
              string strSql=String.Format(@"Select * From xiuse_restaurant Where RestaurantId={0}",RestaurantId); 

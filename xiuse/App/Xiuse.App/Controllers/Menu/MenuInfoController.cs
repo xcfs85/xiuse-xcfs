@@ -22,13 +22,13 @@ namespace Xiuse.App.Controllers.Menu
     {
         BLL.xiuse_menus MenuBLL = new BLL.xiuse_menus();
         [Route("GetAllMenus")]
-        public List<Model.xiuse_menus> GetAllMenus(string ResaurantId,string MenuClassifyId)
+        public List<Model.xiuse_menus> GetAllMenus(string RestaurantId,string MenuClassifyId)
         {
-            if (ResaurantId == null || MenuClassifyId==null)
+            if (RestaurantId == null || MenuClassifyId==null)
             {
                 throw new HttpRequestException();
             }
-            return MenuBLL.GetMenuInfo(ResaurantId,MenuClassifyId);
+            return MenuBLL.GetMenuInfo(RestaurantId,MenuClassifyId);
         }
 
         [Route("AddMenu")]

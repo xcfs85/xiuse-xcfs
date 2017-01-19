@@ -76,8 +76,14 @@ namespace Xiuse.BLL
             return DataSetTransModelListNoExpand(dal.GetData("*",""));
         }
 
-
-     
+        ///
+        ///获取用户对应的所有餐厅
+        ///
+        public List<Model.xiuse_restaurant> UserRestaurant(string UserId)
+        {
+            return DataSetTransModelListNoExpand(dal.UserRestaurant(UserId));
+                
+        }
 
         /// <summary>
         /// 搜索数据

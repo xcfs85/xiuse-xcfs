@@ -12,7 +12,7 @@ namespace Xiuse.Model
         #region 成员变量...
 	private string _RechargeId;
 	private string _MemberId;
-	private byte _RechargeType;
+	private Int16 _RechargeType;
 	private decimal _RechargeAmount;
 	private decimal _Balance;
 	private string _MemberCardNo;
@@ -46,7 +46,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 充值类型[RechargeType]
 	        /// </summary>
-	        public byte RechargeType
+	        public Int16 RechargeType
 	        {
 	            get{ return _RechargeType; }
 	            set{ _RechargeType=value; }

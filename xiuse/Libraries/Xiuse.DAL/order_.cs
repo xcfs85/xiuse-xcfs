@@ -110,7 +110,7 @@ namespace  Xiuse.DAL
                 modelBill.Order.AccountsPayable = (decimal)dr["AccountsPayable"];
                 modelBill.Order.Refunds = (decimal)dr["Refunds"];
                 modelBill.Order.DishCount = (int)dr["DishCount"];
-                modelBill.Order.OrderState = (int)dr["OrderState"];
+                modelBill.Order.OrderState = (short)dr["OrderState"];
                 modelBill.Order.Cash = (decimal)dr["Cash"];
                 modelBill.Order.BankCard = (decimal)dr["BankCard"];
                 modelBill.Order.WeiXin = (decimal)dr["WeiXin"];
@@ -132,11 +132,11 @@ namespace  Xiuse.DAL
                     modelMenu.MenuTag = dr["MenuTag"].ToString();
                     modelMenu.MenuImage = dr["MenuImage"].ToString();
                     modelMenu.MenuInstruction = dr["MenuInstruction"].ToString();
-                    modelMenu.DiscoutFlag = (bool)dr["DiscoutFlag"];
+                    modelMenu.DiscoutFlag = (short)dr["DiscoutFlag"];
                     modelMenu.DiscountName = dr["DiscountName"].ToString();
                     modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
                     modelMenu.DiscountType = (byte)dr["DiscountType"];
-                    modelMenu.MenuServing = (bool)dr["MenuServing"];
+                    modelMenu.MenuServing = (short)dr["MenuServing"];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
                 OB.Add(modelBill);
@@ -165,7 +165,7 @@ namespace  Xiuse.DAL
                 modelBill.Order.AccountsPayable = (decimal)dr["AccountsPayable"];
                 modelBill.Order.Refunds = (decimal)dr["Refunds"];
                 modelBill.Order.DishCount = (int)dr["DishCount"];
-                modelBill.Order.OrderState = (int)dr["OrderState"];
+                modelBill.Order.OrderState = (short)dr["OrderState"];
                 modelBill.Order.Cash = (decimal)dr["Cash"];
                 modelBill.Order.BankCard = (decimal)dr["BankCard"];
                 modelBill.Order.WeiXin = (decimal)dr["WeiXin"];
@@ -187,11 +187,11 @@ namespace  Xiuse.DAL
                     modelMenu.MenuTag = dr["MenuTag"].ToString();
                     modelMenu.MenuImage = dr["MenuImage"].ToString();
                     modelMenu.MenuInstruction = dr["MenuInstruction"].ToString();
-                    modelMenu.DiscoutFlag = (bool)dr["DiscoutFlag"];
+                    modelMenu.DiscoutFlag = (short)dr["DiscoutFlag"];
                     modelMenu.DiscountName = dr["DiscountName"].ToString();
                     modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
-                    modelMenu.DiscountType = (byte)dr["DiscountType"];
-                    modelMenu.MenuServing = (bool)dr["MenuServing"];
+                    modelMenu.DiscountType = (short)dr["DiscountType"];
+                    modelMenu.MenuServing = (short)dr["MenuServing"];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
                 OB.Add(modelBill);
@@ -206,26 +206,29 @@ namespace  Xiuse.DAL
         public OrderBill GetOrderBill(string orderId)
         {
             //  string strSql = string.Format("select * from order_  left join ordermenu_ on order_.orderId = ordermenu_.orderId where orderId={0}", orderId);
+
             string strSql = string.Format("select * from order_ where orderId={0}",orderId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 Xiuse.Model.OrderBill modelBill = new Xiuse.Model.OrderBill();
+                Xiuse.Model.order_ Order = new Xiuse.Model.order_();
                 DataRow dr = ds.Tables[0].Rows[0];
-                modelBill.Order.OrderId = dr["OrderId"].ToString();
-                modelBill.Order.DeskId = (string)dr["DeskId"];
-                modelBill.Order.BillAmount = (decimal)dr["BillAmount"];
-                modelBill.Order.AccountsPayable = (decimal)dr["AccountsPayable"];
-                modelBill.Order.Refunds = (decimal)dr["Refunds"];
-                modelBill.Order.DishCount = (int)dr["DishCount"];
-                modelBill.Order.OrderState = (int)dr["OrderState"];
-                modelBill.Order.Cash = (decimal)dr["Cash"];
-                modelBill.Order.BankCard = (decimal)dr["BankCard"];
-                modelBill.Order.WeiXin = (decimal)dr["WeiXin"];
-                modelBill.Order.Alipay = (decimal)dr["Alipay"];
-                modelBill.Order.MembersCard = (decimal)dr["MembersCard"];
-                modelBill.Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
-                modelBill.Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
+                 Order.OrderId = dr["OrderId"].ToString();
+                Order.DeskId = (string)dr["DeskId"];
+                Order.BillAmount = (decimal)dr["BillAmount"];
+                Order.AccountsPayable = (decimal)dr["AccountsPayable"];
+                Order.Refunds = (decimal)dr["Refunds"];
+               Order.DishCount = (int)dr["DishCount"];
+                Order.OrderState = (short)dr["OrderState"];
+                Order.Cash = (decimal)dr["Cash"];
+                Order.BankCard = (decimal)dr["BankCard"];
+                Order.WeiXin = (decimal)dr["WeiXin"];
+                 Order.Alipay = (decimal)dr["Alipay"];
+                Order.MembersCard = (decimal)dr["MembersCard"];
+                Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
+                Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
+                modelBill.Order = Order;
                 string strSql2 = string.Format("select * from ordermenu_ where orderid={0}", orderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
@@ -233,18 +236,18 @@ namespace  Xiuse.DAL
                     DataRow dr2 = ds2.Tables[0].Rows[j];
                     Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
 
-                    modelMenu.OrderMenuId = (string)dr["OrderMenuId"];
-                    modelMenu.OrderId = (string)dr["OrderId"];
-                    modelMenu.MenuName = dr["MenuName"].ToString();
-                    modelMenu.MenuPrice = (decimal)dr["MenuPrice"];
-                    modelMenu.MenuTag = dr["MenuTag"].ToString();
-                    modelMenu.MenuImage = dr["MenuImage"].ToString();
-                    modelMenu.MenuInstruction = dr["MenuInstruction"].ToString();
-                    modelMenu.DiscoutFlag = (bool)dr["DiscoutFlag"];
-                    modelMenu.DiscountName = dr["DiscountName"].ToString();
-                    modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
-                    modelMenu.DiscountType = (byte)dr["DiscountType"];
-                    modelMenu.MenuServing = (bool)dr["MenuServing"];
+                    modelMenu.OrderMenuId = (string)dr2["OrderMenuId"];
+                    modelMenu.OrderId = (string)dr2["OrderId"];
+                    modelMenu.MenuName = dr2["MenuName"].ToString();
+                    modelMenu.MenuPrice = (decimal)dr2["MenuPrice"];
+                    modelMenu.MenuTag = dr2["MenuTag"].ToString();
+                    modelMenu.MenuImage = dr2["MenuImage"].ToString();
+                    modelMenu.MenuInstruction = dr2["MenuInstruction"].ToString();
+                    modelMenu.DiscoutFlag = (short)dr2["DiscoutFlag"];
+                    modelMenu.DiscountName = dr2["DiscountName"].ToString();
+                    modelMenu.DiscountContent = (decimal)dr2["DiscountContent"];
+                    modelMenu.DiscountType = (byte)dr2["DiscountType"];
+                    modelMenu.MenuServing = (short)dr2["MenuServing"];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
                 return modelBill;
@@ -288,7 +291,7 @@ namespace  Xiuse.DAL
 				model.AccountsPayable=(decimal)dr["AccountsPayable"];
 				model.Refunds=(decimal)dr["Refunds"];
 				model.DishCount=(int)dr["DishCount"];
-				model.OrderState=(int)dr["OrderState"];
+				model.OrderState=(short)dr["OrderState"];
 				model.Cash=(decimal)dr["Cash"];
 				model.BankCard=(decimal)dr["BankCard"];
 				model.WeiXin=(decimal)dr["WeiXin"];
@@ -325,7 +328,7 @@ namespace  Xiuse.DAL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,byte OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,string OrderbeginTime,string OrderEndTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string DeskId,decimal BillAmount,decimal AccountsPayable,decimal Refunds,byte DishCount,short OrderState,decimal Cash,decimal BankCard,decimal WeiXin,decimal Alipay,decimal MembersCard,string OrderbeginTime,string OrderEndTime, int StartIndex, int PageSize, out int RecordCount)
         {
             #region 条件语句...
             StringBuilder strWhere=new StringBuilder();

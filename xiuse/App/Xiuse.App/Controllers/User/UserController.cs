@@ -73,6 +73,19 @@ namespace Xiuse.App.Controllers
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
+        //返回User对应的Restaurant
+        [Route("UserwithRestaurant")]
+        public List<Xiuse.Model.xiuse_restaurant> UserRestaurant(string id)
+        {
+            BLL.xiuse_restaurant rest= new BLL.xiuse_restaurant();
+            if (id == null || new_user.Exists(id) == false)
+            {
+                throw new HttpRequestException();
+            }
+            return rest.UserRestaurant(id);
 
+        }
     }
+
+    
 }

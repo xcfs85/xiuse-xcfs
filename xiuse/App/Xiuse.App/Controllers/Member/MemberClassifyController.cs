@@ -10,24 +10,25 @@ namespace Xiuse.App.Controllers.Member
 {
     /// <summary>
     /// 会员类型接口
-    /// </summary>
+    /// </summary
+   [RoutePrefix("api/Members")]
     public class MemberClassifyController : ApiController
     {
         BLL.xiuse_memberclassify BllMemberClassify = new BLL.xiuse_memberclassify();
         /// <summary>
         /// 获取当前餐厅的所有会员的类型
         /// </summary>
-        /// <param name="ResaurantId">餐厅Id</param>
+        /// <param name="RestaurantId">餐厅Id</param>
         /// <returns></returns>
         [Route("MemberClassify")]
-        public List<Model.xiuse_memberclassify> GetMemberClassify(string ResaurantId)
+        public List<Model.xiuse_memberclassify> GetMemberClassify(string RestaurantId)
         {
-            return BllMemberClassify.GetModels(ResaurantId);
+            return BllMemberClassify.GetModels(RestaurantId);
         }
         /// <summary>
         /// 更新当前餐厅的会员类型
         /// </summary>
-        /// <param name="ResaurantId">餐厅Id</param>
+        /// <param name="RestaurantId">餐厅Id</param>
         /// <returns></returns>
         [Route("UpdateMemberClassify")]
         public HttpResponseMessage PostUpdateMemberClassify(Model.xiuse_memberclassify MemberClassify)

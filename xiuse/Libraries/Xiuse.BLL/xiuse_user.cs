@@ -60,6 +60,15 @@ namespace Xiuse.BLL
         {
             return dal.WorkerExists(UserId);
         }
+
+        ///登录判断用户名、密码
+        /// 
+        public string AffirmUser(string UserName, string Password)
+        {
+            return dal.AffirmUser(UserName, Password);
+        }
+
+
         /// <summary>
         /// 通过id查询实体
         /// </summary>
@@ -229,12 +238,12 @@ namespace Xiuse.BLL
                     model.RestaurantId = (string)dr["RestaurantId"];
                     model.UserName = dr["UserName"].ToString();
                     model.Weixin = dr["Weixin"].ToString();
-                    model.CellPhone = (decimal)dr["CellPhone"];
+                    model.CellPhone = (string)dr["CellPhone"];
                     model.Email = dr["Email"].ToString();
                     model.Password = dr["Password"].ToString();
-                    model.UserRole = (int)dr["UserRole"];
+                    model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
-                    model.OwnRestaurant = (int)dr["OwnRestaurant"];
+                    model.OwnRestaurant = (short)dr["OwnRestaurant"];
                     model.Time = dr["Time"].ToString();
                     Tmp.Add(model);
                 }

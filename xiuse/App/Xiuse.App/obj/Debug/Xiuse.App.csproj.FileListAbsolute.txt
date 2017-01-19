@@ -1006,3 +1006,6 @@ D:\2017616\xiuse\App\Xiuse.App\bin\zh-Hans\System.Web.Http.Owin.resources.dll
 D:\2017616\xiuse\App\Xiuse.App\obj\Debug\Xiuse.App.csprojResolveAssemblyReference.cache
 D:\2017616\xiuse\App\Xiuse.App\obj\Debug\Xiuse.App.dll
 D:\2017616\xiuse\App\Xiuse.App\obj\Debug\Xiuse.App.pdb
+D:\2017616\xiuse\App\Xiuse.App\bin\System.Web.Cors.dll
+D:\2017616\xiuse\App\Xiuse.App\bin\System.Web.Http.Cors.dll
+D:\2017616\xiuse\App\Xiuse.App\bin\System.Web.Http.Cors.xml

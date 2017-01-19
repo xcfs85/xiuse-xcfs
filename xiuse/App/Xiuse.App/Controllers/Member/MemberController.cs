@@ -12,6 +12,7 @@ using System.Web.Http;
 using Xiuse;
 namespace Xiuse.App.Controllers.Member
 {
+    [RoutePrefix("api/Members")]
     /// <summary>
     /// 会员信息接口
     /// </summary>

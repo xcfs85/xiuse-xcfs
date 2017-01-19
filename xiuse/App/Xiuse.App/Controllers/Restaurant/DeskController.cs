@@ -39,7 +39,8 @@ namespace Xiuse.App.Controllers.Restaurant
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
+        
+       
         [Route("UpdateDesk")]
         public HttpResponseMessage PostUpdateDesk([FromBody]Model.xiuse_desk model)
         {
@@ -65,8 +66,7 @@ namespace Xiuse.App.Controllers.Restaurant
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
-
+       
 
         [Route("GetAllDesks")]
         public List<Model.xiuse_desk> GetAllDesks(string RestaurantId)

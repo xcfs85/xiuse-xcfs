@@ -13,7 +13,7 @@ namespace Xiuse.Model
 	private string _ConsumptionRecordsId;
 	private string _MemberId;
 	private string _MemberCardNo;
-	private byte _CRecordsType;
+	private Int16 _CRecordsType;
 	private decimal _Amount;
 	private decimal _Balance;
 	private string _ConsumptionTime;
@@ -58,7 +58,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 消费类型[CRecordsType]
 	        /// </summary>
-	        public byte CRecordsType
+	        public Int16 CRecordsType
 	        {
 	            get{ return _CRecordsType; }
 	            set{ _CRecordsType=value; }

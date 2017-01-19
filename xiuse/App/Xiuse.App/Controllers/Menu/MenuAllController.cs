@@ -23,18 +23,20 @@ using Xiuse.Model;
 
 namespace Xiuse.App.Controllers.Menu
 {
-
+ [RoutePrefix("api/Menu")]
     public class MenuAll : ApiController
     {
-        public Xiuse.Model.MenuAll GetAllMenuClassify(string ResaurantId)
+        [Route("GetAllClassifies")]
+        public Xiuse.Model.MenuAll GetAllMenuClassify(string RestaurantId)
         {
+
             Xiuse.Model.MenuAll ma = new Xiuse.Model.MenuAll();
             MenuClassifyController mcc = new MenuClassifyController();
-            ma.LstMenuClassifies = mcc.GetAllMenuClassify(ResaurantId);
+            ma.LstMenuClassifies = mcc.GetMenuClassifies(RestaurantId);
             MenuInfoController mic = new MenuInfoController();
             foreach (xiuse_menuclassify mc in ma.LstMenuClassifies)
             {
-                ma.LstMenuItems.AddRange(mic.GetAllMenus(ResaurantId, mc.ClassifyId));
+                ma.LstMenuItems.AddRange(mic.GetAllMenus(RestaurantId, mc.ClassifyId));
             }
             return ma;
               

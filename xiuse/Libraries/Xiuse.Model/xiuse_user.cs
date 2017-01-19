@@ -14,14 +14,14 @@ namespace Xiuse.Model
 	private string _RestaurantId;
 	private string _UserName;
 	private string _Weixin;
-	private decimal _CellPhone;
+	private string _CellPhone;
 	private string _Email;
 	private string _Password;
-	private int _UserRole;
+	private Int16 _UserRole;
 	private string _ParentUserId;
-	private int _OwnRestaurant;
+	private Int16 _OwnRestaurant;
 	private string _Time;
-        private int _DelTag;
+        private Int16 _DelTag;
         #endregion
 
         #region 成员属性...
@@ -73,7 +73,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 手机号[CellPhone]
 	        /// </summary>
-	        public decimal CellPhone
+	        public string CellPhone
 	        {
 	            get{ return _CellPhone; }
 	            set{ _CellPhone=value; }
@@ -106,7 +106,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 0,是管理员；1，是员工。[UserRole]
 	        /// </summary>
-	        public int UserRole
+	        public short UserRole
 	        {
 	            get{ return _UserRole; }
 	            set{ _UserRole=value; }
@@ -128,7 +128,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 餐厅所有权（0，无；1，所有；）[OwnRestaurant]
 	        /// </summary>
-	        public int OwnRestaurant
+	        public short OwnRestaurant
 	        {
 	            get{ return _OwnRestaurant; }
 	            set{ _OwnRestaurant=value; }
@@ -145,7 +145,7 @@ namespace Xiuse.Model
 	            set{ _Time=value; }
 	        }
 
-        public int DelTag
+        public short DelTag
         {
             get
             {

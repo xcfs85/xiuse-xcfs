@@ -107,9 +107,9 @@ namespace Xiuse.BLL
         ///获取当前餐厅的所有菜品分类，条件餐厅ID
         ///以list形式返回
         /// 
-        public List<Xiuse.Model.xiuse_menuclassify> GetAllMenuClassify(string ResaurantId)
+        public List<Xiuse.Model.xiuse_menuclassify> GetMenuClassifies(string RestaurantId)
         {
-            return DataSetTransModelListNoExpand(GetData("*", "Resaurant=" + ResaurantId));
+            return DataSetTransModelListNoExpand(GetData("*", "Resaurant=" + RestaurantId));
         }
         /// <summary>
         /// 获取数据[用于分页]
@@ -206,7 +206,7 @@ namespace Xiuse.BLL
                     model.ClassifyId = (string)dr["ClassifyId"];
                     model.ClassifyInstruction = dr["ClassifyInstruction"].ToString();
                     model.ClassifyNo = (int)dr["ClassifyNo"];
-                    model.ClassifyNet = (int)dr["ClassifyNet"];
+                    model.ClassifyNet = (short)dr["ClassifyNet"];
                     model.ClassifyTag = dr["ClassifyTag"].ToString();
                     model.ClassifyTime = dr["ClassifyTime"].ToString();
                     Tmp.Add(model);

@@ -22,7 +22,8 @@ namespace Xiuse.App
 
             // Web API 路由
             config.MapHttpAttributeRoutes();
-            config.Filters.Add(new SecurityFilter());
+            //配置token
+            //config.Filters.Add(new SecurityFilter());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

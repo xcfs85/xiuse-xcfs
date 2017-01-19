@@ -94,7 +94,7 @@ namespace  Xiuse.DAL
 				model.ClassifyId=(string)dr["ClassifyId"];
 				model.ClassifyInstruction=dr["ClassifyInstruction"].ToString();
 				model.ClassifyNo=(int)dr["ClassifyNo"];
-				model.ClassifyNet=(int)dr["ClassifyNet"];
+				model.ClassifyNet=(short)dr["ClassifyNet"];
 				model.ClassifyTag=dr["ClassifyTag"].ToString();
 				model.ClassifyTime=dr["ClassifyTime"].ToString();
                 return model;

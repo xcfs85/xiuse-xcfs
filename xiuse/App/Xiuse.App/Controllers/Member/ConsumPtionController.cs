@@ -11,6 +11,7 @@ namespace Xiuse.App.Controllers.Member
     /// <summary>
     /// 会员消费信息接口
     /// </summary>
+    [RoutePrefix("api/Members")]
     public class ConsumPtionController : ApiController
     {
 
@@ -18,22 +19,22 @@ namespace Xiuse.App.Controllers.Member
         /// <summary>
         /// 获取当前餐厅的所有会员的消费记录
         /// </summary>
-        /// <param name="ResaurantId"></param>
+        /// <param name="RestaurantId"></param>
         /// <returns></returns>
         [Route("ConsumPtion")]
-        public List<Model.memberconsumption> GetConsumPtion(string ResaurantId)
+        public List<Model.memberconsumption> GetConsumPtion(string RestaurantId)
         {
-            return BllConsumption.GetModels(ResaurantId);
+            return BllConsumption.GetModels(RestaurantId);
         }
         /// <summary>
         /// 搜索当前餐厅的的消费记录
         /// </summary>
-        /// <param name="ResaurantId"></param>
+        /// <param name="RestaurantId"></param>
         /// <returns></returns>
         [Route("SearchConsumPtion")]
-        public List<Model.memberconsumption> GetSearchConsumPtion(string ResaurantId,string Condition)
+        public List<Model.memberconsumption> GetSearchConsumPtion(string RestaurantId,string Condition)
         {
-            return BllConsumption.Search(ResaurantId, Condition);
+            return BllConsumption.Search(RestaurantId, Condition);
         }
         /// <summary>
         /// 添加会员的消费记录

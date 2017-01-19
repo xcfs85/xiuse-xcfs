@@ -99,7 +99,7 @@ namespace  Xiuse.DAL
 				model.MemberCell=dr["MemberCell"].ToString();
 				model.MemberReference=dr["MemberReference"].ToString();
 				model.MemberPassword=dr["MemberPassword"].ToString();
-				model.MemberState=(bool)dr["MemberState"];
+				model.MemberState=(short)dr["MemberState"];
 				model.MemberTime=dr["MemberTime"].ToString();
 				model.RestaurantId=(string)dr["RestaurantId"];
                 return model;

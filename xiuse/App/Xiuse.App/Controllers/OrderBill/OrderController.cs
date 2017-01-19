@@ -135,7 +135,7 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("IsOnTable")]
         public HttpResponseMessage PostSetOnTable([FromBody]Model.ordermenu_ orderMenu)
         {
-            orderMenu.MenuServing = true;
+            orderMenu.MenuServing = 1;
             if (orderMenu == null || OrderMenuBLL.Exists(orderMenu.OrderId))
             {
                 throw new HttpRequestException();
@@ -172,7 +172,7 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("ChangeDiscount")]
         public HttpResponseMessage PostUpdateDiscount([FromBody]Model.ordermenu_ orderMenu)
         {
-            orderMenu.MenuServing = true;
+            orderMenu.MenuServing = 1;
             if (orderMenu == null || OrderMenuBLL.Exists(orderMenu.OrderId))
             {
                 throw new HttpRequestException();

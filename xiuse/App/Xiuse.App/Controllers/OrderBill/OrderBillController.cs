@@ -32,8 +32,8 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("SameDayOrderDesk")]
         public List<Model.OrderBill> GetSameDayOrderDesk(string DeskId)
         {
-            Order.GetUncleanedDesksbyId(DeskId);
-            return null;
+            return Order.GetUncleanedDesksbyId(DeskId);
+         
         }
         /// <summary>
         /// 获取当天餐厅的所有未清台的账单
@@ -43,8 +43,8 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("SameDayOrder")]
         public List<Model.OrderBill> GetSameDayOrder(string RestaurantId)
         {
-            Order.GetAllUncleanedDesks(RestaurantId);
-            return null;
+           return  Order.GetAllUncleanedDesks(RestaurantId);
+
         }
         /// <summary>
         /// 获取订单的详单
@@ -55,8 +55,18 @@ namespace Xiuse.App.Controllers.OrderBill
         public Model.OrderBill GetOrderBill(string OrderId)
         {
             //todo
-            Order.GetOrderBill(OrderId);
-            return null;
+            return Order.GetOrderBill(OrderId);
+            
+        }
+        /// <summary>
+        ///获取账单 
+        /// </summary>
+        /// <param name="OrderId"></param>
+        /// <returns></returns>
+        [Route("BillById")]
+        public Model.order_ GetBillById(string OrderId)
+        {
+            return Order.GetModel(OrderId);
         }
     }
 }

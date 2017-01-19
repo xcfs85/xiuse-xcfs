@@ -106,10 +106,10 @@ namespace  Xiuse.DAL
 				model.DeskId=(string)dr["DeskId"];
 				model.RestaurantId=dr["RestaurantId"].ToString();
 				model.DeskName=dr["DeskName"].ToString();
-				model.TakeOut=(bool)dr["TakeOut"];
-				model.DeskDel=(bool)dr["DeskDel"];
-				model.DeskState=(byte)dr["DeskState"];
-				model.DeskTime=dr["DeskTime"].ToString();
+				model.TakeOut=(short)dr["TakeOut"];
+				model.DeskDel=(short)dr["DeskDel"];
+                model.DeskState=(byte)dr["DeskState"];
+				model.DeskTime=(DateTime)dr["DeskTime"];
                 return model;
             }
             else
@@ -132,7 +132,7 @@ namespace  Xiuse.DAL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string RestaurantId,string DeskName,bool TakeOut,bool DeskDel,byte DeskState,string DeskTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string RestaurantId,string DeskName,int TakeOut,int DeskDel,byte DeskState,string DeskTime, int StartIndex, int PageSize, out int RecordCount)
         {
             #region 条件语句...
             StringBuilder strWhere=new StringBuilder();
@@ -191,6 +191,11 @@ namespace  Xiuse.DAL
             return AosyMySql.ExecuteforDataSet(strSql);
         }
 
+        public DataSet test(string RestaurantId)
+        {
+            string strSql = string.Format(@"Select * from xiuse_desk where RestaurantId={0}", RestaurantId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
 
         /// <summary>
         /// 获取数据[用于分页]

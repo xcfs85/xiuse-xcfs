@@ -259,7 +259,7 @@ namespace Xiuse.BLL
                     model.AccountsPayable = (decimal)dr["AccountsPayable"];
                     model.Refunds = (decimal)dr["Refunds"];
                     model.DishCount = (int)dr["DishCount"];
-                    model.OrderState = (int)dr["OrderState"];
+                    model.OrderState = (short)dr["OrderState"];
                     model.Cash = (decimal)dr["Cash"];
                     model.BankCard = (decimal)dr["BankCard"];
                     model.WeiXin = (decimal)dr["WeiXin"];
