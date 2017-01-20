@@ -18,24 +18,24 @@ namespace Xiuse.Model
 {
     public class MenuAll
     {
-        List<xiuse_menuclassify> _LstMenuClassifies;
+        xiuse_menuclassify _MenuClassifies;
         List<xiuse_menus> _LstMenuItems;
         public MenuAll()
         {
-            _LstMenuClassifies = new List<xiuse_menuclassify>();
+            _MenuClassifies = new xiuse_menuclassify();
             _LstMenuItems = new List<xiuse_menus>();
         }
 
-        public List<xiuse_menuclassify> LstMenuClassifies
+        public xiuse_menuclassify MenuClassifies
         {
             get
             {
-                return _LstMenuClassifies;
+                return _MenuClassifies;
             }
 
             set
             {
-                _LstMenuClassifies = value;
+                _MenuClassifies = value;
             }
         }
 

@@ -66,8 +66,12 @@ namespace Xiuse.App.Controllers.Restaurant
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-       
 
+        /// <summary>
+        /// 获取餐厅的所有餐桌。
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
         [Route("GetAllDesks")]
         public List<Model.xiuse_desk> GetAllDesks(string RestaurantId)
         {
@@ -78,7 +82,28 @@ namespace Xiuse.App.Controllers.Restaurant
             return DeskBLL.GetAllDesk(RestaurantId);
         }
 
+        [Route("AllDesksWithAccount")]
+
+        /// <summary>
+        /// 获取某一餐厅所有餐桌信息（包含餐桌费用）
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
+        public DataSet GetAllDesksWithAccount(string RestaurantId)
+        {
+            if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)
+            {
+                throw new HttpRequestException();
+            }
+            return DeskBLL.GetAllDesksWithAccount(RestaurantId);
+        }
+
+
+
         [Route("GetUnpaidDesks")]
+        ///
+        ///获取某一餐厅的所有未结账餐桌的金额
+        ///
         public List<Model.order_> GetUnpaidDesks(string RestaurantId)
         {
             if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)
@@ -88,7 +113,11 @@ namespace Xiuse.App.Controllers.Restaurant
             return OrderBLL.GetUnpaidDesks(RestaurantId);
         }
 
-
+        /// <summary>
+        /// 获取某一餐厅最近一笔已支付的金额
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
         [Route("GetPaidLatest")]
         public List<Model.order_> GetPaidLatest(string RestaurantId)
         {
@@ -99,6 +128,11 @@ namespace Xiuse.App.Controllers.Restaurant
             return OrderBLL.GetPaidLatest(RestaurantId);
         }
 
+        /// <summary>
+        /// 清理已付款的餐桌
+        /// </summary>
+        /// <param name="DeskId"></param>
+        /// <returns></returns>
         [Route("CleanDesk")]
         public HttpResponseMessage PostClearDesk(string DeskId)
         {

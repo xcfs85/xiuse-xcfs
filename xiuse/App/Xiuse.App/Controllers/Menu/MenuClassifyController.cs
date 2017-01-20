@@ -26,7 +26,10 @@ namespace Xiuse.App.Controllers.Menu
         BLL.xiuse_menuclassify MenuBLL = new BLL.xiuse_menuclassify();
 
         [Route("GetMenuClassifies")]
-        public List<Model.xiuse_menuclassify> GetMenuClassifies(string RestaurantId)
+        ///
+        ///获取当前餐厅的所有菜品分类，条件餐厅ID
+        ///
+        public DataSet GetMenuClassifies(string RestaurantId)
         {
             if (RestaurantId == null||MenuBLL.ExistsRestaurant(RestaurantId)==false)
             {

@@ -13,9 +13,9 @@ namespace Xiuse.Model
 	private string _ClassifyId;
 	private string _ClassifyInstruction;
 	private int _ClassifyNo;
-	private Int16 _ClassifyNet;
+	private int _ClassifyNet;
 	private string _ClassifyTag;
-	private string _ClassifyTime;
+	private DateTime _ClassifyTime;
         private string _RestaurantId;
         
             #endregion
@@ -58,7 +58,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 隐藏分类 (网上点单客户无法使用) 1,隐藏分类。0不隐藏分类。[ClassifyNet]
 	        /// </summary>
-	        public Int16 ClassifyNet
+	        public int ClassifyNet
 	        {
 	            get{ return _ClassifyNet; }
 	            set{ _ClassifyNet=value; }
@@ -80,7 +80,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 分类更新时间[ClassifyTime]
 	        /// </summary>
-	        public string ClassifyTime
+	        public DateTime ClassifyTime
 	        {
 	            get{ return _ClassifyTime; }
 	            set{ _ClassifyTime=value; }

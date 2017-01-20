@@ -77,13 +77,22 @@ namespace Xiuse.BLL
         /// 
         public List<Xiuse.Model.xiuse_desk> GetAllDesk(string RestaurantId)
         {
-            DataSet a = new DataSet();
-            a = GetData("*", "RestaurantId=" + RestaurantId);
-            DataSet B = new DataSet();
-            B = dal.test(RestaurantId);
             return DataSetTransModelListNoExpand(GetData("*", "RestaurantId=" + RestaurantId));
 
         }
+
+        /// <summary>
+        /// 获取某一餐厅所有餐桌信息（包含餐桌费用）
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
+        public DataSet GetAllDesksWithAccount(string RestaurantId)
+        {
+
+            return dal.GetAllDesksWithAccount(RestaurantId);
+        }
+
+
         ///清理已付款的桌子
         /// 
         ///餐桌的状态：0，空桌；1，未支付；2，已支付；

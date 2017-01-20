@@ -110,7 +110,7 @@ namespace Xiuse.BLL
         /// 
         public List<Xiuse.Model.xiuse_menus> GetMenuInfo(string RestaurantId, string MenuClassify)
         {
-            return DataSetTransModelListNoExpand(GetData("*","RestaurantId="+RestaurantId+ "and ClassifyId" + MenuClassify));
+            return DataSetTransModelListNoExpand(GetData("*"," RestaurantId ="+RestaurantId+ " and ClassifyId =" + MenuClassify));
 
         }
 

@@ -256,7 +256,7 @@
     <Compile Include="Controllers\Member\MemberController.cs" />
     <Compile Include="Controllers\Member\RebatesController.cs" />
     <Compile Include="Controllers\Member\RechargeController.cs" />
-    <Compile Include="Controllers\Menu\MenuAllController.cs" />
+    <Compile Include="Controllers\Menu\FullMenuController.cs" />
     <Compile Include="Controllers\Menu\MenuClassifyController.cs" />
     <Compile Include="Controllers\Menu\MenuInfoController.cs" />
     <Compile Include="Controllers\OrderBill\OrderBillController.cs" />

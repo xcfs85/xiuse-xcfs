@@ -85,7 +85,7 @@ namespace Xiuse.BLL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string ClassifyInstruction,int ClassifyNo,int ClassifyNet,string ClassifyTag,string ClassifyTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string ClassifyInstruction,int ClassifyNo,short ClassifyNet,string ClassifyTag,string ClassifyTime, int StartIndex, int PageSize, out int RecordCount)
         {
             int count=0;
             DataSet ds=dal.Search(ClassifyInstruction,ClassifyNo,ClassifyNet,ClassifyTag,ClassifyTime,StartIndex,PageSize,out count);
@@ -107,9 +107,15 @@ namespace Xiuse.BLL
         ///获取当前餐厅的所有菜品分类，条件餐厅ID
         ///以list形式返回
         /// 
-        public List<Xiuse.Model.xiuse_menuclassify> GetMenuClassifies(string RestaurantId)
+        public List<Xiuse.Model.xiuse_menuclassify> GetClassifies(string RestaurantId)
         {
-            return DataSetTransModelListNoExpand(GetData("*", "Resaurant=" + RestaurantId));
+            return DataSetTransModelListNoExpand(GetData("*", "RestaurantId=" + RestaurantId));
+        }
+
+        ///获取当前餐厅的所有菜品分类，条件餐厅ID
+        public DataSet GetMenuClassifies(string RestaurantId)
+        {
+            return GetData("*", "RestaurantId=" + RestaurantId);
         }
         /// <summary>
         /// 获取数据[用于分页]
@@ -170,6 +176,8 @@ namespace Xiuse.BLL
             List<Xiuse.Model.xiuse_menuclassify> list = new List<Xiuse.Model.xiuse_menuclassify>();
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {
+             
+
                 list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.xiuse_menuclassify>(dataSet, 0));
                 return list;
             }
@@ -208,7 +216,7 @@ namespace Xiuse.BLL
                     model.ClassifyNo = (int)dr["ClassifyNo"];
                     model.ClassifyNet = (short)dr["ClassifyNet"];
                     model.ClassifyTag = dr["ClassifyTag"].ToString();
-                    model.ClassifyTime = dr["ClassifyTime"].ToString();
+                    model.ClassifyTime = (DateTime)dr["ClassifyTime"];
                     Tmp.Add(model);
                 }
             }
