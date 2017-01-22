@@ -24,15 +24,6 @@ namespace Xiuse.App.Controllers.Security
             string staffId = "";
             //验证用户名密码
             staffId = user.AffirmUser(UserName, PassWord);
-            //if (true)
-            //{
-            
-                
-            //}
-            //else
-            //{
-            //    staffId = "";
-            //}
             //判断参数是否合法
             if (string.IsNullOrEmpty(staffId))
             {
