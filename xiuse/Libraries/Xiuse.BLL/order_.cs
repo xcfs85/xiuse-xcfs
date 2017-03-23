@@ -172,6 +172,47 @@ namespace Xiuse.BLL
         {
            return dal.ExecuteUpdate(updatefield,wheres);
         }
+
+        //<summary>
+        /// 退单操作
+        /// </summary>
+        /// 
+        public bool BackOrder(Xiuse.Model.order_ Order)
+        {
+            return dal.BackOrder(Order);
+        }
+
+        
+
+        /// <summary>
+        /// 获取当天餐厅的特定餐桌的所有未清台的账单
+        /// </summary>
+        /// <param name="DeskId">餐桌Id</param>
+        public List<OrderBill> GetUncleanedDesksbyId(string DeskId)
+        {
+            return dal.GetUncleanedDesksbyId(DeskId);
+        }
+
+        /// <summary>
+        /// 获取当天餐厅的餐桌的所有未清台的账单
+        /// </summary>
+        /// <param name="RestaurantId">餐厅Id</param>
+        /// <returns></returns>
+        public List<OrderBill> GetAllUncleanedDesks(string RestaurantId)
+        {
+            return dal.GetAllUncleanedDesks(RestaurantId);
+        }
+
+
+        ///
+        ///获取订单详情
+        ///参数：订单id
+        /// 
+        public OrderBill GetOrderBill(string orderId)
+        {
+            return dal.GetOrderBill(orderId);
+        }
+       
         #region 工具类
         /// <summary>
         /// 把DataSet转成List泛型集合(expand无关联实体)
