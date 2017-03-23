@@ -44,3 +44,8 @@ D:\软件\2017616\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utiliti
 D:\软件\2017616\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.csprojResolveAssemblyReference.cache
 D:\软件\2017616\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.dll
 D:\软件\2017616\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.pdb
+G:\xcf\Git\xiuse\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.XML
+G:\xcf\Git\xiuse\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.dll
+G:\xcf\Git\xiuse\xiuse\Infrastructure\DotNet.Utilities\bin\Debug\DotNet.Utilities.pdb
+G:\xcf\Git\xiuse\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.dll
+G:\xcf\Git\xiuse\xiuse\Infrastructure\DotNet.Utilities\obj\Debug\DotNet.Utilities.pdb
