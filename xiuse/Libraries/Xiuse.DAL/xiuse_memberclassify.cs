@@ -108,6 +108,9 @@ namespace  Xiuse.DAL
             return AosyMySql.ExecuteforDataSet(strSql);
         }
 
+
+
+
         /// <summary>
         /// 设置会员类型的状态（0,启用；1，停用；2，删除。）
         /// </summary>

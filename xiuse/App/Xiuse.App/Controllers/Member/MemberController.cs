@@ -65,6 +65,7 @@ namespace Xiuse.App.Controllers.Member
         /// </summary>
         /// <param name="member">会员信息</param>
         /// <returns></returns>
+        [HttpPost]
         [Route("UpdateMembers")]
         public HttpResponseMessage PostUpdateMmeber([FromBody]Model.xiuse_member member)
         {
@@ -84,9 +85,12 @@ namespace Xiuse.App.Controllers.Member
         /// <param name="MemberId">会员的ID</param>
         /// <param name="flag">会员的启用状态</param>
         /// <returns></returns>
+        [HttpPost]
         [Route("SetMemberState")]
-        public HttpResponseMessage PostSetMemberState([FromBody] string MemberId,bool flag)
+        public HttpResponseMessage PostSetMemberState(dynamic obj)
         {
+            string MemberId = Convert.ToString(obj.MemberId);
+            bool flag = Convert.ToBoolean(obj.flag);
             if (MemberId == null)
                 throw new HttpRequestException();
             if(MemberBLL.SetMemberState(MemberId,flag))

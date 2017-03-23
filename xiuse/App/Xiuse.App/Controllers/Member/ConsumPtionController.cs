@@ -40,7 +40,7 @@ namespace Xiuse.App.Controllers.Member
         /// 添加会员的消费记录
         /// </summary>
         /// <param name="memberconsumption">消费记录对象</param>
-        /// <returns></returns>
+        [HttpPost]
         [Route("AddConsumPtion")]
         public HttpResponseMessage PostAddConsumPtion(Model.memberconsumption memberconsumption)
         {

@@ -99,12 +99,12 @@ namespace Xiuse.BLL
         }
 
         /// <summary>
-        /// 获取全部WORKER
+        /// 获取当前餐厅全部WORKER
         /// </summary>
 
-        public List<Xiuse.Model.xiuse_user> GetWorkerModels()
+        public List<Xiuse.Model.xiuse_user> GetWorkerModels(string restaurantId)
         {
-            return dal.GetWorkerModels();
+            return dal.GetWorkerModels(restaurantId);
         }
 
         /// <summary>

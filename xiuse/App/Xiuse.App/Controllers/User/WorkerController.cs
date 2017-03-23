@@ -25,9 +25,9 @@ namespace Xiuse.App.Controllers.User
 
         [Route("GetAllWorkers")]
         //查询所有的用户
-        public List<Model.xiuse_user> GetAllXiuse_Workers()
+        public List<Model.xiuse_user> GetAllXiuse_Workers(string restaurantId)
         {
-            List<Model.xiuse_user> worker = BLLWorker.GetWorkerModels();
+            List<Model.xiuse_user> worker = BLLWorker.GetWorkerModels(restaurantId);
             return worker;
         }
         [Route("SearchWorkerbyId")]

@@ -26,7 +26,7 @@ namespace Xiuse.App.Controllers.Member
             return BllMemberClassify.GetModels(RestaurantId);
         }
         /// <summary>
-        /// 更新当前餐厅的会员类型
+        /// 更新当前餐厅的会员类型=>编辑
         /// </summary>
         /// <param name="RestaurantId">餐厅Id</param>
         /// <returns></returns>

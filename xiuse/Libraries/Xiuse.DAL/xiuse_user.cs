@@ -164,10 +164,11 @@ namespace  Xiuse.DAL
         }
         /// <summary>
         /// 获取worker全部实体
+        /// worker的UserRole=1
         /// </summary>
-        public List<Xiuse.Model.xiuse_user> GetWorkerModels()
+        public List<Xiuse.Model.xiuse_user> GetWorkerModels(string restaurantId)
         {
-            string strSql = String.Format(@"Select * From xiuse_user where UserRole=1");
+            string strSql = String.Format(@"Select * From xiuse_user where UserRole=1 and RestaurantId='{0}'",restaurantId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             List<Xiuse.Model.xiuse_user> models = new List<Model.xiuse_user>();
             if (ds.Tables[0].Rows.Count > 0)
