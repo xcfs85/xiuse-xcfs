@@ -220,8 +220,8 @@ namespace Xiuse.BLL
                     model.DiscountContent = (decimal)dr["DiscountContent"];
                     model.DiscountMenus = dr["DiscountMenus"].ToString();
                     model.DiscountSection = (byte)dr["DiscountSection"];
-                    model.DiscountState = (bool)dr["DiscountState"];
-                    model.DiscountVerification = (int)dr["DiscountVerification"];
+                    model.DiscountState = (short)dr["DiscountState"];
+                    model.DiscountVerification = (short)dr["DiscountVerification"];
                     model.DiscountTime = dr["DiscountTime"].ToString();
                     Tmp.Add(model);
                 }

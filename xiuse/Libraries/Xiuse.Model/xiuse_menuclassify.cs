@@ -15,7 +15,7 @@ namespace Xiuse.Model
 	private int _ClassifyNo;
 	private int _ClassifyNet;
 	private string _ClassifyTag;
-	private string _ClassifyTime;
+	private DateTime _ClassifyTime;
         private string _RestaurantId;
         
             #endregion
@@ -80,7 +80,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 分类更新时间[ClassifyTime]
 	        /// </summary>
-	        public string ClassifyTime
+	        public DateTime ClassifyTime
 	        {
 	            get{ return _ClassifyTime; }
 	            set{ _ClassifyTime=value; }

@@ -17,11 +17,11 @@ namespace Xiuse.Model
 	private string _MenuTag;
 	private string _MenuImage;
 	private string _MenuInstruction;
-	private bool _DiscoutFlag;
+	private Int16 _DiscoutFlag;
 	private string _DiscountName;
 	private decimal _DiscountContent;
-	private byte _DiscountType;
-	private bool _MenuServing;
+	private Int16 _DiscountType;
+	private short _MenuServing;
         #endregion
 
         #region 成员属性...
@@ -106,7 +106,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 是否有折扣（0,1）[DiscoutFlag]
 	        /// </summary>
-	        public bool DiscoutFlag
+	        public Int16 DiscoutFlag
 	        {
 	            get{ return _DiscoutFlag; }
 	            set{ _DiscoutFlag=value; }
@@ -139,7 +139,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 折扣类型(0:百分比 1：固定金额)[DiscountType]
 	        /// </summary>
-	        public byte DiscountType
+	        public Int16 DiscountType
 	        {
 	            get{ return _DiscountType; }
 	            set{ _DiscountType=value; }
@@ -150,7 +150,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 是否上菜[MenuServing]
 	        /// </summary>
-	        public bool MenuServing
+	        public short MenuServing
 	        {
 	            get{ return _MenuServing; }
 	            set{ _MenuServing=value; }

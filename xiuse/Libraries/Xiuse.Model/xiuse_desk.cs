@@ -13,10 +13,11 @@ namespace Xiuse.Model
 	private string _DeskId;
 	private string _RestaurantId;
 	private string _DeskName;
-	private bool _TakeOut;
-	private bool _DeskDel;
-	private byte _DeskState;
-	private string _DeskTime;
+	private Int16 _TakeOut;
+	private Int16 _DeskDel;
+	private Int16 _DeskState;
+	private DateTime _DeskTime;
+     //   private float _AccountPayable;
         #endregion
 
         #region 成员属性...
@@ -57,7 +58,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 是否接受外卖（0，不接受外卖。1接受外卖）[TakeOut]
 	        /// </summary>
-	        public bool TakeOut
+	        public Int16 TakeOut
 	        {
 	            get{ return _TakeOut; }
 	            set{ _TakeOut=value; }
@@ -68,7 +69,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 0,已删除。1正常[DeskDel]
 	        /// </summary>
-	        public bool DeskDel
+	        public Int16 DeskDel
 	        {
 	            get{ return _DeskDel; }
 	            set{ _DeskDel=value; }
@@ -79,7 +80,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 餐桌的状态：0，空桌；1，未支付；2，已支付；[DeskState]
 	        /// </summary>
-	        public byte DeskState
+	        public Int16 DeskState
 	        {
 	            get{ return _DeskState; }
 	            set{ _DeskState=value; }
@@ -90,12 +91,25 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 更新时间[DeskTime]
 	        /// </summary>
-	        public string DeskTime
+	        public DateTime DeskTime
 	        {
 	            get{ return _DeskTime; }
 	            set{ _DeskTime=value; }
 	        }
-		
+
+        //public float AccountPayable
+        //{
+        //    get
+        //    {
+        //        return _AccountPayable;
+        //    }
+
+        //    set
+        //    {
+        //        _AccountPayable = value;
+        //    }
+        //}
+
         #endregion
     }
 }

@@ -76,7 +76,13 @@ namespace  Xiuse.DAL
             string strSql = String.Format("Select Count(1) From xiuse_user Where UserId={0} and UserRole=1", UserId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
         }
-
+        ///µÇÂ¼ÅÐ¶ÏÓÃ»§Ãû¡¢ÃÜÂë
+        /// 
+        public string AffirmUser(string UserName, string Password)
+        {
+            string strSql = String.Format("Select UserId From xiuse_user Where Username={0} and Password={1}", UserName,Password);
+            return AosyMySql.ExecuteScalar(strSql).ToString();
+        }
 
 
         /// <summary>
@@ -95,12 +101,12 @@ namespace  Xiuse.DAL
 				model.RestaurantId=(string)dr["RestaurantId"];
 				model.UserName=dr["UserName"].ToString();
 				model.Weixin=dr["Weixin"].ToString();
-				model.CellPhone=(decimal)dr["CellPhone"];
+				model.CellPhone=(string)dr["CellPhone"];
 				model.Email=dr["Email"].ToString();
 				model.Password=dr["Password"].ToString();
-				model.UserRole=(int)dr["UserRole"];
+				model.UserRole=(short)dr["UserRole"];
 				model.ParentUserId=dr["ParentUserId"].ToString();
-				model.OwnRestaurant=(int)dr["OwnRestaurant"];
+				model.OwnRestaurant=(short)dr["OwnRestaurant"];
 				model.Time=dr["Time"].ToString();
                 return model;
             }
@@ -141,12 +147,12 @@ namespace  Xiuse.DAL
                     model.RestaurantId = (string)dr["RestaurantId"];
                     model.UserName = dr["UserName"].ToString();
                     model.Weixin = dr["Weixin"].ToString();
-                    model.CellPhone = (decimal)dr["CellPhone"];
+                    model.CellPhone = (string)dr["CellPhone"];
                     model.Email = dr["Email"].ToString();
                     model.Password = dr["Password"].ToString();
-                    model.UserRole = (int)dr["UserRole"];
+                    model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
-                    model.OwnRestaurant = (int)dr["OwnRestaurant"];
+                    model.OwnRestaurant = (short)dr["OwnRestaurant"];
                     model.Time = dr["Time"].ToString();
                     models.Add(model);
                 }
@@ -174,12 +180,12 @@ namespace  Xiuse.DAL
                     model.RestaurantId = (string)dr["RestaurantId"];
                     model.UserName = dr["UserName"].ToString();
                     model.Weixin = dr["Weixin"].ToString();
-                    model.CellPhone = (decimal)dr["CellPhone"];
+                    model.CellPhone = (string)dr["CellPhone"];
                     model.Email = dr["Email"].ToString();
                     model.Password = dr["Password"].ToString();
-                    model.UserRole = (int)dr["UserRole"];
+                    model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
-                    model.OwnRestaurant = (int)dr["OwnRestaurant"];
+                    model.OwnRestaurant = (short)dr["OwnRestaurant"];
                     model.Time = dr["Time"].ToString();
                     models.Add(model);
                 }

@@ -21,8 +21,8 @@ namespace Xiuse.Model
 	private string _MenuImage;
 	private int _MenuNo;
 	private string _MenuInstruction;
-	private int _SaleState;
-	private int _MenuState;
+	private Int16 _SaleState;
+	private Int16 _MenuState;
 	private DateTime _MenuTime;
         #endregion
 
@@ -152,7 +152,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 菜品销售状态（1限量销售，0不限量销售）[SaleState]
 	        /// </summary>
-	        public int SaleState
+	        public Int16 SaleState
 	        {
 	            get{ return _SaleState; }
 	            set{ _SaleState=value; }
@@ -163,7 +163,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 餐品状态（0，正常。1，停用。2，已删除。）[MenuState]
 	        /// </summary>
-	        public int MenuState
+	        public Int16 MenuState
 	        {
 	            get{ return _MenuState; }
 	            set{ _MenuState=value; }

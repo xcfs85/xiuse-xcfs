@@ -8,6 +8,7 @@ using Xiuse;
 
 namespace Xiuse.App.Controllers.Member
 {
+    [RoutePrefix("api/Members")]
     /// <summary>
     /// 会员充值记录接口
     /// </summary>

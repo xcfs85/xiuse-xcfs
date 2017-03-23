@@ -1,8 +1,4 @@
-﻿/*
-*作者：xcf
-*整合Bill详细信息类
-*时间：2016/12/19
-*/
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;

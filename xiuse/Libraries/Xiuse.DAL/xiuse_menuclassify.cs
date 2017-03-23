@@ -94,9 +94,9 @@ namespace  Xiuse.DAL
 				model.ClassifyId=(string)dr["ClassifyId"];
 				model.ClassifyInstruction=dr["ClassifyInstruction"].ToString();
 				model.ClassifyNo=(int)dr["ClassifyNo"];
-				model.ClassifyNet=(int)dr["ClassifyNet"];
+				model.ClassifyNet=(short)dr["ClassifyNet"];
 				model.ClassifyTag=dr["ClassifyTag"].ToString();
-				model.ClassifyTime=dr["ClassifyTime"].ToString();
+				model.ClassifyTime=(DateTime)dr["ClassifyTime"];
                 return model;
             }
             else
@@ -118,7 +118,7 @@ namespace  Xiuse.DAL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string ClassifyInstruction,int ClassifyNo,int ClassifyNet,string ClassifyTag,string ClassifyTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string ClassifyInstruction,int ClassifyNo,short ClassifyNet,string ClassifyTag,string ClassifyTime, int StartIndex, int PageSize, out int RecordCount)
         {
             #region 条件语句...
             StringBuilder strWhere=new StringBuilder();

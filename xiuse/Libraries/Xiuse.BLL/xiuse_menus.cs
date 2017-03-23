@@ -110,7 +110,7 @@ namespace Xiuse.BLL
         /// 
         public List<Xiuse.Model.xiuse_menus> GetMenuInfo(string RestaurantId, string MenuClassify)
         {
-            return DataSetTransModelListNoExpand(GetData("*","RestaurantId="+RestaurantId+ "and ClassifyId" + MenuClassify));
+            return DataSetTransModelListNoExpand(GetData("*"," RestaurantId ="+RestaurantId+ " and ClassifyId =" + MenuClassify));
 
         }
 
@@ -217,8 +217,8 @@ namespace Xiuse.BLL
                     model.MenuImage = dr["MenuImage"].ToString();
                     model.MenuNo = (int)dr["MenuNo"];
                     model.MenuInstruction = dr["MenuInstruction"].ToString();
-                    model.SaleState = (int)dr["SaleState"];
-                    model.MenuState = (int)dr["MenuState"];
+                    model.SaleState = (short)dr["SaleState"];
+                    model.MenuState = (short)dr["MenuState"];
                     model.MenuTime = (DateTime)dr["MenuTime"];
                     Tmp.Add(model);
                 }

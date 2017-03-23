@@ -68,6 +68,47 @@ namespace  Xiuse.DAL
         }
 
 
+
+        /// <summary>
+        /// 获取某一餐厅所有餐桌信息（包含餐桌费用）
+        ///查询当前餐桌的所有订单
+        //订单状态（0，未支付；1，已支付;2,退单）;
+        //餐桌的状态：0，空桌；1，未支付；2，已支付;
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
+        public DataSet GetAllDesksWithAccount(string RestaurantId)
+        {
+            string strSql = String.Format(@"select * from xiuse_desk where RestaurantId={0} and DeskState=1", RestaurantId);
+            DataSet a = new DataSet();
+            a = AosyMySql.ExecuteforDataSet(strSql);
+            if (a == null)
+                return null;
+            a.Tables[0].Columns.Add("AccountPayable");
+            
+            for (int i = 0; i < a.Tables[0].Rows.Count; i++)
+            {
+                //取同一桌子待付款的订单
+                string strSql2 = String.Format(@"select * from order_ where DeskId={0}", a.Tables[0].Rows[i]["DeskId"]);
+                decimal accountPayable = 0;
+                DataSet b = new DataSet();
+                b = AosyMySql.ExecuteforDataSet(strSql2);
+                for (int j = 0; j < b.Tables[0].Rows.Count; j++)
+                {
+                    DataRow dr = b.Tables[0].Rows[j];
+                    if ((short)dr["OrderState"] == 0)
+                    {
+                        accountPayable += (decimal)dr["AccountsPayable"];                       
+                    }
+
+                }
+                a.Tables[0].Rows[i]["AccountPayable"] = accountPayable;
+            }
+
+            return a;
+        }
+
+
         ///
         ///清理桌子
         ///餐桌的状态：0，空桌；1，未支付；2，已支付；
@@ -106,10 +147,10 @@ namespace  Xiuse.DAL
 				model.DeskId=(string)dr["DeskId"];
 				model.RestaurantId=dr["RestaurantId"].ToString();
 				model.DeskName=dr["DeskName"].ToString();
-				model.TakeOut=(bool)dr["TakeOut"];
-				model.DeskDel=(bool)dr["DeskDel"];
-				model.DeskState=(byte)dr["DeskState"];
-				model.DeskTime=dr["DeskTime"].ToString();
+				model.TakeOut=(short)dr["TakeOut"];
+				model.DeskDel=(short)dr["DeskDel"];
+                model.DeskState=(byte)dr["DeskState"];
+				model.DeskTime=(DateTime)dr["DeskTime"];
                 return model;
             }
             else
@@ -132,7 +173,7 @@ namespace  Xiuse.DAL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string RestaurantId,string DeskName,bool TakeOut,bool DeskDel,byte DeskState,string DeskTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string RestaurantId,string DeskName,int TakeOut,int DeskDel,byte DeskState,string DeskTime, int StartIndex, int PageSize, out int RecordCount)
         {
             #region 条件语句...
             StringBuilder strWhere=new StringBuilder();
@@ -191,6 +232,11 @@ namespace  Xiuse.DAL
             return AosyMySql.ExecuteforDataSet(strSql);
         }
 
+        public DataSet test(string RestaurantId)
+        {
+            string strSql = string.Format(@"Select * from xiuse_desk where RestaurantId={0}", RestaurantId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
 
         /// <summary>
         /// 获取数据[用于分页]

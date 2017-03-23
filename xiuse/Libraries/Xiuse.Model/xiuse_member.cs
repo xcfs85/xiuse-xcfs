@@ -18,7 +18,7 @@ namespace Xiuse.Model
 	private string _MemberCell;
 	private string _MemberReference;
 	private string _MemberPassword;
-	private bool _MemberState;
+	private Int16 _MemberState;
 	private string _MemberTime;
 	private string _RestaurantId;
         #endregion
@@ -116,7 +116,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 会员状态（0，禁用；1，启用；）[MemberState]
 	        /// </summary>
-	        public bool MemberState
+	        public Int16 MemberState
 	        {
 	            get{ return _MemberState; }
 	            set{ _MemberState=value; }

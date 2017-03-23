@@ -70,6 +70,7 @@
     <Compile Include="DbUtility\OleDbHelper.cs" />
     <Compile Include="DbUtility\OracleHelper.cs" />
     <Compile Include="DbUtility\SqlHelper.cs" />
+    <Compile Include="DEncrypt\DESPERSION.cs" />
     <Compile Include="DEncrypt\MySecurity.cs" />
     <Compile Include="Internet&amp;Url\AdslHelper.cs" />
     <Compile Include="Validate&amp;Tool\FormulaExpress.cs" />

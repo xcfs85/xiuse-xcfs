@@ -212,7 +212,7 @@ namespace DotNet.Utilities
                 return result;
 
             DataTable p_Data = p_DataSet.Tables[p_TableIndex];
-
+            
             for (int j = 0; j < p_Data.Rows.Count; j++)
             {
                 T _t = (T)Activator.CreateInstance(typeof(T));

@@ -84,12 +84,12 @@ namespace  Xiuse.DAL
 				model.DiscountId=(string)dr["DiscountId"];
 				model.RestaurantId=(string)dr["RestaurantId"];
 				model.DiscountName=dr["DiscountName"].ToString();
-				model.DiscountType=(byte)dr["DiscountType"];
+				model.DiscountType=(short)dr["DiscountType"];
 				model.DiscountContent=(decimal)dr["DiscountContent"];
 				model.DiscountMenus=dr["DiscountMenus"].ToString();
-				model.DiscountSection=(byte)dr["DiscountSection"];
-				model.DiscountState=(bool)dr["DiscountState"];
-				model.DiscountVerification=(int)dr["DiscountVerification"];
+				model.DiscountSection=(short)dr["DiscountSection"];
+				model.DiscountState=(short)dr["DiscountState"];
+				model.DiscountVerification=(short)dr["DiscountVerification"];
 				model.DiscountTime=dr["DiscountTime"].ToString();
                 return model;
             }

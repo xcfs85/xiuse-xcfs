@@ -92,8 +92,8 @@ namespace  Xiuse.DAL
 				model.MenuImage=dr["MenuImage"].ToString();
 				model.MenuNo=(int)dr["MenuNo"];
 				model.MenuInstruction=dr["MenuInstruction"].ToString();
-				model.SaleState=(int)dr["SaleState"];
-				model.MenuState=(int)dr["MenuState"];
+				model.SaleState=(short)dr["SaleState"];
+				model.MenuState=(short)dr["MenuState"];
 				model.MenuTime=(DateTime)dr["MenuTime"];
                 return model;
             }

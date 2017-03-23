@@ -11,14 +11,14 @@ namespace Xiuse.BLL
     /// <summary>
     /// [xiuse_desk] 业务逻辑处理
     /// </summary>
-    public class xiuse_desk 
+    public class xiuse_desk
     {
-       
-        private readonly Xiuse.DAL.xiuse_desk dal=new Xiuse.DAL.xiuse_desk();
+
+        private readonly Xiuse.DAL.xiuse_desk dal = new Xiuse.DAL.xiuse_desk();
         private readonly Xiuse.DAL.xiuse_restaurant Restdal = new Xiuse.DAL.xiuse_restaurant();
 
-        public xiuse_desk(){}
-        
+        public xiuse_desk() { }
+
         /// <summary>
         /// 增加一条数据
         /// </summary>
@@ -37,8 +37,8 @@ namespace Xiuse.BLL
         {
             return dal.Update(model);
         }
-        
-   
+
+
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -47,7 +47,7 @@ namespace Xiuse.BLL
         {
             return dal.Delete(DeskId);
         }
-        
+
         /// <summary>
         ///  判断餐桌是否存在
         /// </summary>
@@ -80,6 +80,19 @@ namespace Xiuse.BLL
             return DataSetTransModelListNoExpand(GetData("*", "RestaurantId=" + RestaurantId));
 
         }
+
+        /// <summary>
+        /// 获取某一餐厅所有餐桌信息（包含餐桌费用）
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
+        public DataSet GetAllDesksWithAccount(string RestaurantId)
+        {
+
+            return dal.GetAllDesksWithAccount(RestaurantId);
+        }
+
+
         ///清理已付款的桌子
         /// 
         ///餐桌的状态：0，空桌；1，未支付；2，已支付；
@@ -96,9 +109,9 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(DeskId);
         }
-        
 
-		/// <summary>
+
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">餐厅ID[RestaurantId]</param>
@@ -110,11 +123,11 @@ namespace Xiuse.BLL
         /// <param name="StartIndex">开始记录数</param>
         /// <param name="PageSize">每页显示记录数</param>
         /// <param name="RecordCount">记录总数</param>
-        public DataSet Search(string RestaurantId,string DeskName,bool TakeOut,bool DeskDel,byte DeskState,string DeskTime, int StartIndex, int PageSize, out int RecordCount)
+        public DataSet Search(string RestaurantId, string DeskName, int TakeOut, int DeskDel, byte DeskState, string DeskTime, int StartIndex, int PageSize, out int RecordCount)
         {
-            int count=0;
-            DataSet ds=dal.Search(RestaurantId,DeskName,TakeOut,DeskDel,DeskState,DeskTime,StartIndex,PageSize,out count);
-            RecordCount=count;
+            int count = 0;
+            DataSet ds = dal.Search(RestaurantId, DeskName, TakeOut, DeskDel, DeskState, DeskTime, StartIndex, PageSize, out count);
+            RecordCount = count;
             return ds;
         }
 
@@ -125,8 +138,9 @@ namespace Xiuse.BLL
         /// <param name="Wheres">条件[可为空]</param>
         public DataSet GetData(string Fields, string Wheres)
         {
-            return dal.GetData(Fields,Wheres);
+            return dal.GetData(Fields, Wheres);
         }
+
 
 
         /// <summary>
@@ -224,10 +238,10 @@ namespace Xiuse.BLL
                     model.DeskId = (string)dr["DeskId"];
                     model.RestaurantId = dr["RestaurantId"].ToString();
                     model.DeskName = dr["DeskName"].ToString();
-                    model.TakeOut = (bool)dr["TakeOut"];
-                    model.DeskDel = (bool)dr["DeskDel"];
-                    model.DeskState = (byte)dr["DeskState"];
-                    model.DeskTime = dr["DeskTime"].ToString();
+                    model.TakeOut = (short)dr["TakeOut"];
+                    model.DeskDel = (short)dr["DeskDel"];
+                    model.DeskState = (short)dr["DeskState"];
+                    model.DeskTime = (DateTime)dr["DeskTime"];
                     Tmp.Add(model);
                 }
             }

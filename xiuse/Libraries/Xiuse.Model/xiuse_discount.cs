@@ -13,12 +13,12 @@ namespace Xiuse.Model
 	private string _DiscountId;
 	private string _RestaurantId;
 	private string _DiscountName;
-	private byte _DiscountType;
+	private Int16 _DiscountType;
 	private decimal _DiscountContent;
 	private string _DiscountMenus;
-	private byte _DiscountSection;
-	private bool _DiscountState;
-	private int _DiscountVerification;
+	private Int16 _DiscountSection;
+	private Int16 _DiscountState;
+	private Int16 _DiscountVerification;
 	private string _DiscountTime;
         #endregion
 
@@ -60,7 +60,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 折扣类型(0:百分比 1：固定金额)[DiscountType]
 	        /// </summary>
-	        public byte DiscountType
+	        public Int16 DiscountType
 	        {
 	            get{ return _DiscountType; }
 	            set{ _DiscountType=value; }
@@ -93,7 +93,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 0,整单折扣；1，单品折扣[DiscountSection]
 	        /// </summary>
-	        public byte DiscountSection
+	        public Int16 DiscountSection
 	        {
 	            get{ return _DiscountSection; }
 	            set{ _DiscountSection=value; }
@@ -104,7 +104,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 1,启用；0，禁用[DiscountState]
 	        /// </summary>
-	        public bool DiscountState
+	        public Int16 DiscountState
 	        {
 	            get{ return _DiscountState; }
 	            set{ _DiscountState=value; }
@@ -115,7 +115,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 0,启用管理员验证；1,禁用管理员验证；[DiscountVerification]
 	        /// </summary>
-	        public int DiscountVerification
+	        public Int16 DiscountVerification
 	        {
 	            get{ return _DiscountVerification; }
 	            set{ _DiscountVerification=value; }

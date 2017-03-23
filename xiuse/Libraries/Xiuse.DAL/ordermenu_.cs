@@ -88,11 +88,11 @@ namespace  Xiuse.DAL
 				model.MenuTag=dr["MenuTag"].ToString();
 				model.MenuImage=dr["MenuImage"].ToString();
 				model.MenuInstruction=dr["MenuInstruction"].ToString();
-				model.DiscoutFlag=(bool)dr["DiscoutFlag"];
+				model.DiscoutFlag=(short)dr["DiscoutFlag"];
 				model.DiscountName=dr["DiscountName"].ToString();
 				model.DiscountContent=(decimal)dr["DiscountContent"];
 				model.DiscountType=(byte)dr["DiscountType"];
-				model.MenuServing=(bool)dr["MenuServing"];
+				model.MenuServing=(short)dr["MenuServing"];
                 return model;
             }
             else

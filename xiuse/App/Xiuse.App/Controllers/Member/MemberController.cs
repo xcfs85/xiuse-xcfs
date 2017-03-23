@@ -12,6 +12,7 @@ using System.Web.Http;
 using Xiuse;
 namespace Xiuse.App.Controllers.Member
 {
+    [RoutePrefix("api/Members")]
     /// <summary>
     /// 会员信息接口
     /// </summary>
@@ -50,7 +51,7 @@ namespace Xiuse.App.Controllers.Member
         [Route("AddMembers")]
         public HttpResponseMessage PostAddMmeber([FromBody]Model.xiuse_member member)
         {
-            if (member == null && MemberBLL.ExistsMember(member))
+            if (member == null || MemberBLL.ExistsMember(member)==false)
             {
                 throw new HttpRequestException();
             }
@@ -68,7 +69,7 @@ namespace Xiuse.App.Controllers.Member
         public HttpResponseMessage PostUpdateMmeber([FromBody]Model.xiuse_member member)
         {
 
-            if (member == null && MemberBLL.ExistsMember(member))
+            if (member == null || MemberBLL.ExistsMember(member)==false)
             {
                 throw new HttpRequestException();
             }
