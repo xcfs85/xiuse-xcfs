@@ -108,7 +108,7 @@ namespace  Xiuse.DAL
 				model.AccountsPayable=(decimal)dr["AccountsPayable"];
 				model.Refunds=(decimal)dr["Refunds"];
 				model.DishCount=(int)dr["DishCount"];
-				model.OrderState=(bool)dr["OrderState"];
+				model.OrderState=(int)dr["OrderState"];
 				model.Cash=(decimal)dr["Cash"];
 				model.BankCard=(decimal)dr["BankCard"];
 				model.WeiXin=(decimal)dr["WeiXin"];

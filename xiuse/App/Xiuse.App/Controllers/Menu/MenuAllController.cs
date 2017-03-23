@@ -34,7 +34,7 @@ namespace Xiuse.App.Controllers.Menu
             MenuInfoController mic = new MenuInfoController();
             foreach (xiuse_menuclassify mc in ma.LstMenuClassifies)
             {
-                ma.LstMenuItems.AddRange(mic.GetAllMenus(ResaurantId, mc.ClassifyId);
+                ma.LstMenuItems.AddRange(mic.GetAllMenus(ResaurantId, mc.ClassifyId));
             }
             return ma;
               
