@@ -234,6 +234,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Discount\DiscountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Member\ConsumPtionController.cs" />
     <Compile Include="Controllers\Member\MemberClassifyController.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Controllers\Menu\MenuAllController.cs" />
     <Compile Include="Controllers\Menu\MenuClassifyController.cs" />
     <Compile Include="Controllers\Menu\MenuInfoController.cs" />
+    <Compile Include="Controllers\OrderBill\OrderBillController.cs" />
     <Compile Include="Controllers\Restaurant\DeskController.cs" />
     <Compile Include="Controllers\Restaurant\RestaurantController.cs" />
     <Compile Include="Controllers\Revenue\DailyBillsController.cs" />
