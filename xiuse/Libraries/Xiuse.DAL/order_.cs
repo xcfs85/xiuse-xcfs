@@ -4,7 +4,6 @@ using System.Text;
 using System.Data;
 using Xiuse.Model;
 using Xiuse.DbUtility;
-using MySql.Data.MySqlClient;
 
 namespace  Xiuse.DAL
 {
