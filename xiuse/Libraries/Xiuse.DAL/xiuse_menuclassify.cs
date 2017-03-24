@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="ClassifyId">ClassifyId</param>
         public bool Delete(string ClassifyId)
         {
-            string strSql=String.Format("Delete From xiuse_menuclassify Where ClassifyId={0}",ClassifyId);
+            string strSql=String.Format("Delete From xiuse_menuclassify Where ClassifyId='{0}'",ClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="ClassifyId">ClassifyId</param>
         public bool Exists(string ClassifyId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_menuclassify Where ClassifyId={0}",ClassifyId);
+            string strSql=String.Format("Select Count(1) From xiuse_menuclassify Where ClassifyId='{0}'",ClassifyId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
@@ -73,7 +73,7 @@ namespace  Xiuse.DAL
         /// <parame name="ClassifyId">ClassifyId</param>
         public bool ExistsRestaurant(string RestaurantId)
         {
-            string strSql = String.Format("Select Count(1) From xiuse_menuclassify Where Restaurant={0}", RestaurantId);
+            string strSql = String.Format("Select Count(1) From xiuse_menuclassify Where Restaurant='{0}'", RestaurantId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
         }
 
@@ -84,7 +84,7 @@ namespace  Xiuse.DAL
         /// <parame name="ClassifyId">ClassifyId</param>
         public Xiuse.Model.xiuse_menuclassify GetModel(string ClassifyId)
         {
-             string strSql=String.Format(@"Select * From xiuse_menuclassify Where ClassifyId={0}",ClassifyId); 
+             string strSql=String.Format(@"Select * From xiuse_menuclassify Where ClassifyId='{0}'",ClassifyId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {

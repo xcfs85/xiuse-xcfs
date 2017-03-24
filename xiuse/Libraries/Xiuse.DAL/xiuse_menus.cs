@@ -36,7 +36,7 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_menus model)
         {
             string strSql=String.Format(@"Update xiuse_menus Set 
-            RestaurantId={0},ClassifyId={1},MenuName='{2}',MenuQuantity={3},MenuPrice={4},MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuNo={8},MenuInstruction='{9}',SaleState={10},MenuState={11},MenuTime='{12}' 
+            RestaurantId='{0}',ClassifyId={1},MenuName='{2}',MenuQuantity={3},MenuPrice={4},MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuNo={8},MenuInstruction='{9}',SaleState={10},MenuState={11},MenuTime='{12}' 
             Where MenuId={13}",
             model.RestaurantId,model.ClassifyId,model.MenuName,model.MenuQuantity,model.MenuPrice,model.MenuShortcut,model.MenuTag,model.MenuImage,model.MenuNo,model.MenuInstruction,model.SaleState,model.MenuState,model.MenuTime,model.MenuId);
             return AosyMySql.ExecuteforBool(strSql);
@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="MenuId">MenuId</param>
         public bool Delete(string MenuId)
         {
-            string strSql=String.Format("Delete From xiuse_menus Where MenuId={0}",MenuId);
+            string strSql=String.Format("Delete From xiuse_menus Where MenuId='{0}'",MenuId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="MenuId">MenuId</param>
         public bool Exists(string MenuId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_menus Where MenuId={0}",MenuId);
+            string strSql=String.Format("Select Count(1) From xiuse_menus Where MenuId='{0}'",MenuId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
         
@@ -74,7 +74,7 @@ namespace  Xiuse.DAL
          /// <parame name="MenuId">MenuId</param>
         public Xiuse.Model.xiuse_menus GetModel(string MenuId)
         {
-             string strSql=String.Format(@"Select * From xiuse_menus Where MenuId={0}",MenuId); 
+             string strSql=String.Format(@"Select * From xiuse_menus Where MenuId='{0}'",MenuId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {

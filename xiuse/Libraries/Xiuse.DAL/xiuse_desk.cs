@@ -36,8 +36,8 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_desk model)
         {
             string strSql=String.Format(@"Update xiuse_desk Set 
-            RestaurantId='{0}',DeskName='{1}',TakeOut={2},DeskDel={3},DeskState={4},DeskTime='{5}' 
-            Where DeskId={6}",
+            RestaurantId='{0}',DeskName='{1}',TakeOut='{2}',DeskDel='{3}',DeskState='{4}',DeskTime='{5}' 
+            Where DeskId='{6}'",
             model.RestaurantId,model.DeskName,model.TakeOut,model.DeskDel,model.DeskState,model.DeskTime,model.DeskId);
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="DeskId">DeskId</param>
         public bool Delete(string DeskId)
         {
-            string strSql=String.Format("Delete From xiuse_desk Where DeskId={0}",DeskId);
+            string strSql=String.Format("Delete From xiuse_desk Where DeskId='{0}'",DeskId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="DeskId">DeskId</param>
         public bool Exists(string DeskId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_desk Where DeskId={0}",DeskId);
+            string strSql=String.Format("Select Count(1) From xiuse_desk Where DeskId='{0}'",DeskId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
@@ -78,7 +78,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public DataSet GetAllDesksWithAccount(string RestaurantId)
         {
-            string strSql = String.Format(@"select * from xiuse_desk where RestaurantId={0} and DeskState=1", RestaurantId);
+            string strSql = String.Format(@"select * from xiuse_desk where RestaurantId='{0}' and DeskState=1", RestaurantId);
             DataSet a = new DataSet();
             a = AosyMySql.ExecuteforDataSet(strSql);
             if (a == null)
@@ -88,7 +88,7 @@ namespace  Xiuse.DAL
             for (int i = 0; i < a.Tables[0].Rows.Count; i++)
             {
                 //取同一桌子待付款的订单
-                string strSql2 = String.Format(@"select * from order_ where DeskId={0}", a.Tables[0].Rows[i]["DeskId"]);
+                string strSql2 = String.Format(@"select * from order_ where DeskId='{0}'", a.Tables[0].Rows[i]["DeskId"]);
                 decimal accountPayable = 0;
                 DataSet b = new DataSet();
                 b = AosyMySql.ExecuteforDataSet(strSql2);
@@ -114,14 +114,14 @@ namespace  Xiuse.DAL
         /// orderstate: 0,没有清台；1，已经清台；
         public bool ClearDesk(string DeskId)
         {
-            string strSql = string.Format("Select OrderState from order_ where  DeskId={0}", DeskId);
+            string strSql = string.Format("Select OrderState from order_ where  DeskId='{0}'", DeskId);
             DataSet OrderState = AosyMySql.ExecuteforDataSet(strSql);
             if (OrderState.Tables[0].Rows[0].ToString() == "0")
                 return false;
             else
             {
-                string sql = string.Format("update order_ set CleanDeskState=1 where  DeskId={0}", DeskId);
-                string sql2=string.Format("update xiuse.desk set DeskState=0 where  DeskId={0}", DeskId);
+                string sql = string.Format("update order_ set CleanDeskState=1 where  DeskId='{0}'", DeskId);
+                string sql2=string.Format("update xiuse.desk set DeskState=0 where  DeskId='{0}'", DeskId);
 
                 AosyMySql.ExecuteNonQuery(sql);
                 AosyMySql.ExecuteNonQuery(sql2);
@@ -137,7 +137,7 @@ namespace  Xiuse.DAL
         /// <parame name="DeskId">DeskId</param>
         public Xiuse.Model.xiuse_desk GetModel(string DeskId)
         {
-             string strSql=String.Format(@"Select * From xiuse_desk Where DeskId={0}",DeskId); 
+             string strSql=String.Format(@"Select * From xiuse_desk Where DeskId='{0}'",DeskId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {
@@ -233,7 +233,7 @@ namespace  Xiuse.DAL
 
         public DataSet test(string RestaurantId)
         {
-            string strSql = string.Format(@"Select * from xiuse_desk where RestaurantId={0}", RestaurantId);
+            string strSql = string.Format(@"Select * from xiuse_desk where RestaurantId='{0}'", RestaurantId);
             return AosyMySql.ExecuteforDataSet(strSql);
         }
 

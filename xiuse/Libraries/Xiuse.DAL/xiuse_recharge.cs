@@ -36,7 +36,7 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_recharge model)
         {
             string strSql=String.Format(@"Update xiuse_recharge Set 
-            MemberId={0},RechargeType={1},RechargeAmount={2},Balance={3},MemberCardNo='{4}',RechargeTime='{5}' 
+            MemberId='{0}',RechargeType={1},RechargeAmount={2},Balance={3},MemberCardNo='{4}',RechargeTime='{5}' 
             Where RechargeId={6}",
             model.MemberId,model.RechargeType,model.RechargeAmount,model.Balance,model.MemberCardNo,model.RechargeTime,model.RechargeId);
             return AosyMySql.ExecuteforBool(strSql);
@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="RechargeId">RechargeId</param>
         public bool Delete(string RechargeId)
         {
-            string strSql=String.Format("Delete From xiuse_recharge Where RechargeId={0}",RechargeId);
+            string strSql=String.Format("Delete From xiuse_recharge Where RechargeId='{0}'",RechargeId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="RechargeId">RechargeId</param>
         public bool Exists(string RechargeId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_recharge Where RechargeId={0}",RechargeId);
+            string strSql=String.Format("Select Count(1) From xiuse_recharge Where RechargeId='{0}'",RechargeId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
@@ -104,7 +104,7 @@ namespace  Xiuse.DAL
         /// <parame name="RechargeId">RechargeId</param>
         public Xiuse.Model.xiuse_recharge GetModel(string RechargeId)
         {
-             string strSql=String.Format(@"Select * From xiuse_recharge Where RechargeId={0}",RechargeId); 
+             string strSql=String.Format(@"Select * From xiuse_recharge Where RechargeId='{0}'",RechargeId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {

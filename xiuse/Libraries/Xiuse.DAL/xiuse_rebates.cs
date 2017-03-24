@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="RebatesId">RebatesId</param>
         public bool Delete(string RebatesId)
         {
-            string strSql=String.Format("Delete From xiuse_rebates Where RebatesId={0}",RebatesId);
+            string strSql=String.Format("Delete From xiuse_rebates Where RebatesId='{0}'",RebatesId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="RebatesId">RebatesId</param>
         public bool Exists(string RebatesId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_rebates Where RebatesId={0}",RebatesId);
+            string strSql=String.Format("Select Count(1) From xiuse_rebates Where RebatesId='{0}'",RebatesId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
         
@@ -74,7 +74,7 @@ namespace  Xiuse.DAL
          /// <parame name="RebatesId">RebatesId</param>
         public Xiuse.Model.xiuse_rebates GetModel(string RebatesId)
         {
-             string strSql=String.Format(@"Select * From xiuse_rebates Where RebatesId={0}",RebatesId); 
+             string strSql=String.Format(@"Select * From xiuse_rebates Where RebatesId='{0}'",RebatesId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {

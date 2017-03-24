@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="RestaurantId">RestaurantId</param>
         public bool Delete(string RestaurantId)
         {
-            string strSql=String.Format("Delete From xiuse_restaurant Where RestaurantId={0}",RestaurantId);
+            string strSql=String.Format("Delete From xiuse_restaurant Where RestaurantId='{0}'",RestaurantId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="RestaurantId">RestaurantId</param>
         public bool Exists(string RestaurantId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_restaurant Where RestaurantId={0}",RestaurantId);
+            string strSql=String.Format("Select Count(1) From xiuse_restaurant Where RestaurantId='{0}'",RestaurantId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
@@ -72,7 +72,7 @@ namespace  Xiuse.DAL
         ///
         public DataSet UserRestaurant(string UserId)
         {
-            string strSql = string.Format(@"Select * from xiuse_restaurant where RestaurantId=(select RestaurantId from xiuse_user where UserId={0})", UserId);
+            string strSql = string.Format(@"Select * from xiuse_restaurant where RestaurantId=(select RestaurantId from xiuse_user where UserId='{0}')", UserId);
             return AosyMySql.ExecuteforDataSet(strSql);
         }
 
@@ -84,7 +84,7 @@ namespace  Xiuse.DAL
         /// <parame name="RestaurantId">RestaurantId</param>
         public Xiuse.Model.xiuse_restaurant GetModel(string RestaurantId)
         {
-             string strSql=String.Format(@"Select * From xiuse_restaurant Where RestaurantId={0}",RestaurantId); 
+             string strSql=String.Format(@"Select * From xiuse_restaurant Where RestaurantId='{0}'",RestaurantId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {

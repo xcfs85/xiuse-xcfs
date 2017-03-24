@@ -48,7 +48,7 @@ namespace Xiuse.App.Controllers
         //新建一个用户
         public HttpResponseMessage PostSetXiuse_users([FromBody] Model.xiuse_user user)
         {
-           if(user==null||new_user.Exists(user.UserId)==false)
+           if(user==null||new_user.Exists(user.UserId))
             {
                 throw new HttpRequestException();
             }
@@ -75,14 +75,15 @@ namespace Xiuse.App.Controllers
         }
         //返回User对应的Restaurant
         [Route("UserwithRestaurant")]
-        public List<Xiuse.Model.xiuse_restaurant> UserRestaurant(string id)
+        [HttpGet]
+        public IQueryable<Xiuse.Model.xiuse_restaurant> UserRestaurant(string id)
         {
             BLL.xiuse_restaurant rest= new BLL.xiuse_restaurant();
             if (id == null || new_user.Exists(id) == false)
             {
                 throw new HttpRequestException();
             }
-            return rest.UserRestaurant(id);
+            return rest.UserRestaurant(id).AsQueryable();
 
         }
     }

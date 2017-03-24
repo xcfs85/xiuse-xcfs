@@ -36,7 +36,7 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.order_ model)
         {
             string strSql=String.Format(@"Update order_ Set 
-            DeskId={0},BillAmount={1},AccountsPayable={2},Refunds={3},DishCount={4},OrderState={5},Cash={6},BankCard={7},WeiXin={8},Alipay={9},MembersCard={10},OrderbeginTime='{11}',OrderEndTime='{12}' 
+            DeskId='{0}',BillAmount={1},AccountsPayable={2},Refunds={3},DishCount={4},OrderState={5},Cash={6},BankCard={7},WeiXin={8},Alipay={9},MembersCard={10},OrderbeginTime='{11}',OrderEndTime='{12}' 
             Where OrderId={13}",
             model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,model.OrderId);
             return AosyMySql.ExecuteforBool(strSql);
@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="OrderId">OrderId</param>
         public bool Delete(string OrderId)
         {
-            string strSql=String.Format("Delete From order_ Where OrderId={0}",OrderId);
+            string strSql=String.Format("Delete From order_ Where OrderId='{0}'",OrderId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="OrderId">OrderId</param>
         public bool Exists(string OrderId)
         {
-            string strSql=String.Format("Select Count(1) From order_ Where OrderId={0}",OrderId);
+            string strSql=String.Format("Select Count(1) From order_ Where OrderId='{0}'",OrderId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
@@ -73,7 +73,7 @@ namespace  Xiuse.DAL
         public bool BackOrder(Xiuse.Model.order_ Order)
         {
             string strSql = String.Format(@"Update order_ Set 
-            Refunds={0},OrderState=2,Cash=0,BankCard=0,WeiXin=0,Alipay=0 Where OrderId={1}",
+            Refunds='{0}',OrderState=2,Cash=0,BankCard=0,WeiXin=0,Alipay=0 Where OrderId={1}",
           Order.AccountsPayable,Order.OrderId);
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -95,8 +95,8 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public List<OrderBill> GetAllUncleanedDesks(string RestaurantId)
         {
-            string strSql = string.Format("select * from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId={0} and date(orderendtime)=date(curdate())and order_.ClearDeskState='0'", RestaurantId);
-            //string strSql2=string.Format("select * from ordermenu_ where orderid in (select orderid from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId={0}and order_.ClearDeskState='0'", RestauratId);
+            string strSql = string.Format("select * from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId='{0}' and date(orderendtime)=date(curdate())and order_.ClearDeskState='0'", RestaurantId);
+            //string strSql2=string.Format("select * from ordermenu_ where orderid in (select orderid from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId='{0}'and order_.ClearDeskState='0'", RestauratId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             List<OrderBill> OB = new List<OrderBill>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -117,7 +117,7 @@ namespace  Xiuse.DAL
                 modelBill.Order.MembersCard = (decimal)dr["MembersCard"];
                 modelBill.Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
                 modelBill.Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
-                string strSql2 = string.Format("select * from ordermenu_ where orderid={0}", modelBill.Order.OrderId);
+                string strSql2 = string.Format("select * from ordermenu_ where orderid='{0}'", modelBill.Order.OrderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                 {
@@ -150,8 +150,8 @@ namespace  Xiuse.DAL
         /// <param name="DeskId">²Í×ÀId</param>
         public List<OrderBill> GetUncleanedDesksbyId(string DeskId)
         {
-            string strSql = string.Format("select * from order_  where deskid={0}and order_.ClearDeskState='0'and date(orderendtime)=date(curdate())", DeskId);
-            //string strSql2=string.Format("select * from ordermenu_ where orderid in (select orderid from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId={0}and order_.ClearDeskState='0'", RestauratId);
+            string strSql = string.Format("select * from order_  where deskid='{0}'and order_.ClearDeskState='0'and date(orderendtime)=date(curdate())", DeskId);
+            //string strSql2=string.Format("select * from ordermenu_ where orderid in (select orderid from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId='{0}'and order_.ClearDeskState='0'", RestauratId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             List<OrderBill> OB = new List<OrderBill>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -172,7 +172,7 @@ namespace  Xiuse.DAL
                 modelBill.Order.MembersCard = (decimal)dr["MembersCard"];
                 modelBill.Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
                 modelBill.Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
-                string strSql2 = string.Format("select * from ordermenu_ where orderid={0}", modelBill.Order.OrderId);
+                string strSql2 = string.Format("select * from ordermenu_ where orderid='{0}'", modelBill.Order.OrderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                 {
@@ -204,9 +204,9 @@ namespace  Xiuse.DAL
         /// 
         public OrderBill GetOrderBill(string orderId)
         {
-            //  string strSql = string.Format("select * from order_  left join ordermenu_ on order_.orderId = ordermenu_.orderId where orderId={0}", orderId);
+            //  string strSql = string.Format("select * from order_  left join ordermenu_ on order_.orderId = ordermenu_.orderId where orderId='{0}'", orderId);
 
-            string strSql = string.Format("select * from order_ where orderId={0}",orderId);
+            string strSql = string.Format("select * from order_ where orderId='{0}'",orderId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -228,7 +228,7 @@ namespace  Xiuse.DAL
                 Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
                 Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
                 modelBill.Order = Order;
-                string strSql2 = string.Format("select * from ordermenu_ where orderid={0}", orderId);
+                string strSql2 = string.Format("select * from ordermenu_ where orderid='{0}'", orderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                 {
@@ -278,7 +278,7 @@ namespace  Xiuse.DAL
         /// <parame name="OrderId">OrderId</param>
         public Xiuse.Model.order_ GetModel(string OrderId)
         {
-             string strSql=String.Format(@"Select * From order_ Where OrderId={0}",OrderId); 
+             string strSql=String.Format(@"Select * From order_ Where OrderId='{0}'",OrderId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {

@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_user model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_user(RestaurantId,UserName,Weixin,CellPhone,Email,Password,UserRole,ParentUserId,OwnRestaurant,Time) 
-                                        values({0},'{1}','{2}',{3},'{4}','{5}',{6},'{7}',{8},'{9}')",
-                                        model.RestaurantId,model.UserName,model.Weixin,model.CellPhone,model.Email,model.Password,model.UserRole,model.ParentUserId,model.OwnRestaurant,model.Time);
+            string strSql=String.Format(@"Insert Into xiuse_user(RestaurantId,UserName,Weixin,CellPhone,Email,Password,UserRole,ParentUserId,OwnRestaurant,Time,UserId) 
+                                        values('{0}','{1}','{2}',{3},'{4}','{5}',{6},'{7}',{8},'{9}','{10}')",
+                                        model.RestaurantId,model.UserName,model.Weixin,model.CellPhone,model.Email,model.Password,model.UserRole,model.ParentUserId,model.OwnRestaurant,model.Time,model.UserId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,7 +36,7 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_user model)
         {
             string strSql=String.Format(@"Update xiuse_user Set 
-            RestaurantId={0},UserName='{1}',Weixin='{2}',CellPhone={3},Email='{4}',Password='{5}',UserRole={6},ParentUserId='{7}',OwnRestaurant={8},Time='{9}' 
+            RestaurantId='{0}',UserName='{1}',Weixin='{2}',CellPhone={3},Email='{4}',Password='{5}',UserRole={6},ParentUserId='{7}',OwnRestaurant={8},Time='{9}' 
             Where UserId={10}",
             model.RestaurantId,model.UserName,model.Weixin,model.CellPhone,model.Email,model.Password,model.UserRole,model.ParentUserId,model.OwnRestaurant,model.Time,model.UserId);
             return AosyMySql.ExecuteforBool(strSql);
@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="UserId">UserId</param>
         public bool Delete(string UserId)
         {
-            string strSql=String.Format("Delete From xiuse_user Where UserId={0}",UserId);
+            string strSql=String.Format("Delete From xiuse_user Where UserId='{0}'",UserId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="UserId">UserId</param>
         public bool Exists(string UserId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_user Where UserId={0}",UserId);
+            string strSql=String.Format("Select Count(1) From xiuse_user Where UserId='{0}'",UserId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
 
@@ -72,14 +72,14 @@ namespace  Xiuse.DAL
         /// <parame name="UserId">UserId</param>
         public bool WorkerExists(string UserId)
         {
-            string strSql = String.Format("Select Count(1) From xiuse_user Where UserId={0} and UserRole=1", UserId);
+            string strSql = String.Format("Select Count(1) From xiuse_user Where UserId='{0}' and UserRole=1", UserId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
         }
         ///登录判断用户名、密码
         /// 
         public string AffirmUser(string UserName, string Password)
         {
-            string strSql = String.Format("Select UserId From xiuse_user Where Username={0} and Password={1}", UserName,Password);
+            string strSql = String.Format("Select UserId From xiuse_user Where Username='{0}' and Password='{1}'", UserName,Password);
             return AosyMySql.ExecuteScalar(strSql).ToString();
         }
 
@@ -90,7 +90,7 @@ namespace  Xiuse.DAL
         /// <parame name="UserId">UserId</param>
         public Xiuse.Model.xiuse_user GetModel(string UserId)
         {
-             string strSql=String.Format(@"Select * From xiuse_user Where UserId={0}",UserId); 
+             string strSql=String.Format(@"Select * From xiuse_user Where UserId='{0}'",UserId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {
@@ -121,7 +121,7 @@ namespace  Xiuse.DAL
 
         public bool FixWorker(string WorkerId, int DelTag)
         {
-            string strSql = String.Format(@"Update xiuse_user set DelTag={0} where Userid={1}",DelTag,WorkerId);
+            string strSql = String.Format(@"Update xiuse_user set DelTag='{0}' where Userid={1}",DelTag,WorkerId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }

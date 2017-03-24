@@ -36,7 +36,7 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_memberclassify model)
         {
             string strSql=String.Format(@"Update xiuse_memberclassify Set 
-            DiscountId={0},ClassifyName='{1}',ClassRemark='{2}',ClassifyMemberNum={3},ClassifyTime='{4}',DelTag={5},RestaurantId={6} 
+            DiscountId='{0}',ClassifyName='{1}',ClassRemark='{2}',ClassifyMemberNum={3},ClassifyTime='{4}',DelTag={5},RestaurantId={6} 
             Where MemberClassifyId={7}",
             model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId,model.MemberClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="MemberClassifyId">MemberClassifyId</param>
         public bool Delete(string MemberClassifyId)
         {
-            string strSql=String.Format("Delete From xiuse_memberclassify Where MemberClassifyId={0}",MemberClassifyId);
+            string strSql=String.Format("Delete From xiuse_memberclassify Where MemberClassifyId='{0}'",MemberClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="MemberClassifyId">MemberClassifyId</param>
         public bool Exists(string MemberClassifyId)
         {
-            string strSql=String.Format("Select Count(1) From xiuse_memberclassify Where MemberClassifyId={0}",MemberClassifyId);
+            string strSql=String.Format("Select Count(1) From xiuse_memberclassify Where MemberClassifyId='{0}'",MemberClassifyId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
         
@@ -74,7 +74,7 @@ namespace  Xiuse.DAL
          /// <parame name="MemberClassifyId">MemberClassifyId</param>
         public Xiuse.Model.xiuse_memberclassify GetModel(string MemberClassifyId)
         {
-             string strSql=String.Format(@"Select * From xiuse_memberclassify Where MemberClassifyId={0}",MemberClassifyId); 
+             string strSql=String.Format(@"Select * From xiuse_memberclassify Where MemberClassifyId='{0}'",MemberClassifyId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {
@@ -104,7 +104,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public DataSet GetDatas(string RestaurantId)
         {
-            string strSql = String.Format(@"Select * From xiuse_memberclassify Where RestaurantId={0}", RestaurantId);
+            string strSql = String.Format(@"Select * From xiuse_memberclassify Where RestaurantId='{0}'", RestaurantId);
             return AosyMySql.ExecuteforDataSet(strSql);
         }
 
@@ -119,7 +119,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public bool SetMemberClassify(int State,string MemberClassifyId)
         {
-            string strSql = string.Format("update xiuse_memberclassify set DelTag={0} where MemberClassifyId={1}", State, MemberClassifyId);
+            string strSql = string.Format("update xiuse_memberclassify set DelTag='{0}' where MemberClassifyId={1}", State, MemberClassifyId);
             if (AosyMySql.ExecuteNonQuery(strSql) > 0)
                 return true;
             else

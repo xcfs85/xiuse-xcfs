@@ -36,7 +36,7 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.memberconsumption model)
         {
             string strSql=String.Format(@"Update memberconsumption Set 
-            MemberId={0},MemberCardNo={1},CRecordsType={2},Amount={3},Balance={4},ConsumptionTime='{5}',OrderId={6} 
+            MemberId='{0}',MemberCardNo={1},CRecordsType={2},Amount={3},Balance={4},ConsumptionTime='{5}',OrderId={6} 
             Where ConsumptionRecordsId={7}",
             model.MemberId,model.MemberCardNo,model.CRecordsType,model.Amount,model.Balance,model.ConsumptionTime,model.OrderId,model.ConsumptionRecordsId);
             return AosyMySql.ExecuteforBool(strSql);
@@ -50,7 +50,7 @@ namespace  Xiuse.DAL
         /// <parame name="ConsumptionRecordsId">ConsumptionRecordsId</param>
         public bool Delete(string ConsumptionRecordsId)
         {
-            string strSql=String.Format("Delete From memberconsumption Where ConsumptionRecordsId={0}",ConsumptionRecordsId);
+            string strSql=String.Format("Delete From memberconsumption Where ConsumptionRecordsId='{0}'",ConsumptionRecordsId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -62,7 +62,7 @@ namespace  Xiuse.DAL
         /// <parame name="ConsumptionRecordsId">ConsumptionRecordsId</param>
         public bool Exists(string ConsumptionRecordsId)
         {
-            string strSql=String.Format("Select Count(1) From memberconsumption Where ConsumptionRecordsId={0}",ConsumptionRecordsId);
+            string strSql=String.Format("Select Count(1) From memberconsumption Where ConsumptionRecordsId='{0}'",ConsumptionRecordsId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
         
@@ -74,7 +74,7 @@ namespace  Xiuse.DAL
          /// <parame name="ConsumptionRecordsId">ConsumptionRecordsId</param>
         public Xiuse.Model.memberconsumption GetModel(string ConsumptionRecordsId)
         {
-             string strSql=String.Format(@"Select * From memberconsumption Where ConsumptionRecordsId={0}",ConsumptionRecordsId); 
+             string strSql=String.Format(@"Select * From memberconsumption Where ConsumptionRecordsId='{0}'",ConsumptionRecordsId); 
             DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
             if(ds.Tables[0].Rows.Count>0)
             {
