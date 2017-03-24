@@ -15,10 +15,13 @@ namespace Xiuse.App.Controllers.Security
     public class ServiceController : ApiController
     {
         [Route("api/Authenticated")]
-        public HttpResponseMessage PostAuthenticated(string UserNameDS,string PassWordDS)
+        [HttpPost]
+        public HttpResponseMessage Authenticated(dynamic obj)
         {
-            string UserName = DESEncrypt.Decrypt(UserNameDS);
-            string PassWord = DESEncrypt.Decrypt(PassWordDS);
+            
+
+            string UserName = DESEncrypt.Decrypt(Convert.ToString(obj.UserNameDS));
+            string PassWord = DESEncrypt.Decrypt(Convert.ToString(obj.PassWordDS));
             Xiuse.BLL.xiuse_user user = new BLL.xiuse_user();
             ResultMsg resultMsg;
             string staffId = "";

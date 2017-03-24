@@ -43,21 +43,23 @@ namespace Xiuse.App
             //GetToken方法不需要进行签名验证
             if (actionContext.ActionDescriptor.ActionName == "Authenticated")
             {
-                if (string.IsNullOrEmpty(staffid) || (string.IsNullOrEmpty(timestamp) || string.IsNullOrEmpty(nonce)))
-                {
-                    resultMsg = new ResultMsg();
-                    resultMsg.StatusCode = (int)StatusCodeEnum.ParameterError;
-                    resultMsg.Info = StatusCodeEnum.ParameterError.GetEnumText();
-                    resultMsg.Data = "";
-                    actionContext.Response = HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
-                    base.OnActionExecuting(actionContext);
-                    return;
-                }
-                else
-                {
-                    base.OnActionExecuting(actionContext);
-                    return;
-                }
+                //if (string.IsNullOrEmpty(staffid) || (string.IsNullOrEmpty(timestamp) || string.IsNullOrEmpty(nonce)))
+                //{
+                //    resultMsg = new ResultMsg();
+                //    resultMsg.StatusCode = (int)StatusCodeEnum.ParameterError;
+                //    resultMsg.Info = StatusCodeEnum.ParameterError.GetEnumText();
+                //    resultMsg.Data = "";
+                //    actionContext.Response = HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
+                //    base.OnActionExecuting(actionContext);
+                //    return;
+                //}
+                //else
+                //{
+                //    base.OnActionExecuting(actionContext);
+                //    return;
+                //}
+                base.OnActionExecuting(actionContext);
+                return;
             }
 
 
