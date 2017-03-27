@@ -10,7 +10,9 @@ namespace Xiuse.App.Controllers.Discount
 {
     /// <summary>
     /// 折扣信息接口
-    /// </summary>
+    /// </summary>   
+
+    [RoutePrefix("api/Dis")]
     public class DiscountController : ApiController
     {
         BLL.xiuse_discount BllDiscount = new BLL.xiuse_discount();

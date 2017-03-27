@@ -18,8 +18,11 @@ namespace Xiuse.App.Controllers.Revenue
     [RoutePrefix("api/Revenue")]
     public class DailyBillsController : ApiController
     {
+        /// <summary>
+        /// 获取查询当日全部账单
+        /// </summary>
+        /// <returns></returns>
         [Route("DailyBills")]
-        ////获取查询当日全部账单
         public List<Model.order_> GetDailyBills()
         {
             BLL.order_ BLLOrder = new BLL.order_();
@@ -27,9 +30,12 @@ namespace Xiuse.App.Controllers.Revenue
             return BLLOrder.GetDailyBills(str);
         }
 
-
+        /// <summary>
+        /// 获取某一账单详情（用id号查询）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         [Route("BillDetal")]
-        //2、*获取某一账单详情（用id号查询）
         public Model.ordermenu_ GetBillDetal(string str)
         {
             BLL.ordermenu_ BLLMenu = new BLL.ordermenu_();

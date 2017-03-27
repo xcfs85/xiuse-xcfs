@@ -59,7 +59,7 @@ namespace Xiuse.App.Controllers.OrderBill
             
         }
         /// <summary>
-        ///获取账单 
+        ///获取账单 (id)
         /// </summary>
         /// <param name="OrderId"></param>
         /// <returns></returns>

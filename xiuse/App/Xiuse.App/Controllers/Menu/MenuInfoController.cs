@@ -21,6 +21,13 @@ namespace Xiuse.App.Controllers.Menu
     public class MenuInfoController : ApiController
     {
         BLL.xiuse_menus MenuBLL = new BLL.xiuse_menus();
+
+        /// <summary>
+        /// 获取当前餐厅当前分类下的所有菜品信息（条件菜品分类ID）
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <param name="MenuClassifyId"></param>
+        /// <returns></returns>
         [Route("GetAllMenus")]
         public List<Model.xiuse_menus> GetAllMenus(string RestaurantId,string MenuClassifyId)
         {
@@ -31,6 +38,11 @@ namespace Xiuse.App.Controllers.Menu
             return MenuBLL.GetMenuInfo(RestaurantId,MenuClassifyId);
         }
 
+        /// <summary>
+        /// 添加菜品信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("AddMenu")]
         public HttpResponseMessage PostAddMenu([FromBody]Model.xiuse_menus model)
         {
@@ -44,6 +56,11 @@ namespace Xiuse.App.Controllers.Menu
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
 
+        /// <summary>
+        /// 更新菜品信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("UpdateMenu")]
         public HttpResponseMessage PostUpdateMenu([FromBody]Model.xiuse_menus model)
         {
@@ -57,6 +74,12 @@ namespace Xiuse.App.Controllers.Menu
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
 
+
+        /// <summary>
+        /// 删除菜品信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("DeleteMenu")]
         public HttpResponseMessage DeleteDelMenuClassify([FromBody]String id)
         {

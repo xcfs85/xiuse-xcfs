@@ -23,16 +23,22 @@ namespace Xiuse.App.Controllers
     public class UserController : ApiController
     {
         BLL.xiuse_user new_user = new BLL.xiuse_user();
-
+        /// <summary>
+        /// 查询所有的用户
+        /// </summary>
+        /// <returns></returns>
         [Route("GetAllUsers")]
-        //查询所有的用户
         public List<Model.xiuse_user> GetAllXiuse_users()
         {
             List<Model.xiuse_user> users = new_user.GetModels();
             return users;
         }
+        /// <summary>
+        /// 通过ID查询用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("SearchbyId")]
-        //通过用户id号查询
         public Model.xiuse_user GetXiuse_users(string id)
         {
             if(id==null||new_user.Exists(id)==false)
@@ -43,9 +49,12 @@ namespace Xiuse.App.Controllers
             return user;
         }
 
-
+        /// <summary>
+        /// 添加一个用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [Route("AddUser")]
-        //新建一个用户
         public HttpResponseMessage PostSetXiuse_users([FromBody] Model.xiuse_user user)
         {
            if(user==null||new_user.Exists(user.UserId))
@@ -59,9 +68,12 @@ namespace Xiuse.App.Controllers
 
         }
 
-
+        /// <summary>
+        /// 通过ID删除一个用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("DeletebyId")]
-        //删除一个用户
         public HttpResponseMessage DeleteDelXiuse_users(string id)
         {
             if (id== null || new_user.Exists(id)==false)
@@ -73,7 +85,12 @@ namespace Xiuse.App.Controllers
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-        //返回User对应的Restaurant
+
+        /// <summary>
+        /// 返回User对应的Restaurant
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("UserwithRestaurant")]
         [HttpGet]
         public IQueryable<Xiuse.Model.xiuse_restaurant> UserRestaurant(string id)

@@ -25,10 +25,15 @@ namespace Xiuse.App.Controllers.Menu
     {
         BLL.xiuse_menuclassify MenuBLL = new BLL.xiuse_menuclassify();
 
-        [Route("GetMenuClassifies")]
-        ///
+        /// <summary>
+        ///   
         ///获取当前餐厅的所有菜品分类，条件餐厅ID
         ///
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
+        [Route("GetMenuClassifies")]
+      
         public DataSet GetMenuClassifies(string RestaurantId)
         {
             if (RestaurantId == null||MenuBLL.ExistsRestaurant(RestaurantId)==false)
@@ -37,7 +42,11 @@ namespace Xiuse.App.Controllers.Menu
             }
             return MenuBLL.GetMenuClassifies(RestaurantId);
         }
-
+        /// <summary>
+        /// 添加菜品的分类
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("AddMenuClassify")]
         public HttpResponseMessage PostAddMenuClassify([FromBody]Model.xiuse_menuclassify model)
         {
@@ -50,7 +59,11 @@ namespace Xiuse.App.Controllers.Menu
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
+        /// <summary>
+        /// 更新菜品分类
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("UpdateMenuClassify")]
         public HttpResponseMessage PostUpdateMenuClassify([FromBody]Model.xiuse_menuclassify model)
         {
@@ -63,7 +76,11 @@ namespace Xiuse.App.Controllers.Menu
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
+        /// <summary>
+        /// 删除菜品分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("DeleteMenuClassify")]
         public HttpResponseMessage DeleteDelMenuClassify([FromBody]String id)
         {

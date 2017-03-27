@@ -21,6 +21,11 @@ namespace Xiuse.App.Controllers.Menu
     [RoutePrefix("api/Menu")]
     public class FullMenuController : ApiController
     {
+        /// <summary>
+        ///  获取当前餐厅有菜品分类和菜品信息分类接口类  
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
         [Route("FullinRestaurant")]
         public List<Xiuse.Model.MenuAll> GetAllClassifies(string RestaurantId)
         {

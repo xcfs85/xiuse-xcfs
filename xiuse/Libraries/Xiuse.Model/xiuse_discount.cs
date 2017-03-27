@@ -19,7 +19,7 @@ namespace Xiuse.Model
 	private Int16 _DiscountSection;
 	private Int16 _DiscountState;
 	private Int16 _DiscountVerification;
-	private string _DiscountTime;
+	private DateTime _DiscountTime;
         #endregion
 
         #region 成员属性...
@@ -126,7 +126,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 更新时间[DiscountTime]
 	        /// </summary>
-	        public string DiscountTime
+	        public DateTime DiscountTime
 	        {
 	            get{ return _DiscountTime; }
 	            set{ _DiscountTime=value; }

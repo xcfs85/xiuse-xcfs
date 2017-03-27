@@ -23,15 +23,23 @@ namespace Xiuse.App.Controllers.User
     {
         BLL.xiuse_user BLLWorker = new BLL.xiuse_user();
 
-        [Route("GetAllWorkers")]
-        //查询所有的用户
+        /// <summary>
+        /// 查询一个饭店中所有的Worker
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns></returns>
+        [Route("GetAllWorkers")]      
         public List<Model.xiuse_user> GetAllXiuse_Workers(string restaurantId)
         {
             List<Model.xiuse_user> worker = BLLWorker.GetWorkerModels(restaurantId);
             return worker;
         }
+
+
+        /// <summary>
+        ///  通过用户id号查询Worker信息
+        /// </summary>
         [Route("SearchWorkerbyId")]
-        //通过用户id号查询
         public Model.xiuse_user GetWorker(string id)
         {
             if (id == null||BLLWorker.WorkerExists(id)==false)
@@ -42,9 +50,12 @@ namespace Xiuse.App.Controllers.User
             return user;
         }
 
-
+        /// <summary>
+        /// 新建一个worker
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [Route("AddWorker")]
-        //新建一个用户
         public HttpResponseMessage PostAddWorker([FromBody] Model.xiuse_user user)
         {
             if (user == null|| BLLWorker.WorkerExists(user.UserId)==false)
@@ -58,12 +69,17 @@ namespace Xiuse.App.Controllers.User
 
         }
 
-
-        [Route("FixWorkerbyId")]
-        ///设置员工权限
+        /// <summary>
+        /// 设置员工权限
+        ///
+        /// </summary>
         /// 0:正常
         /// 1：禁止
         /// 2：删除
+        /// <param name="WorkerId"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        [Route("FixWorkerbyId")]
         public HttpResponseMessage PostFixWorker(string WorkerId,int tag)
         {
             if (WorkerId== null || BLLWorker.WorkerExists(WorkerId)==false)

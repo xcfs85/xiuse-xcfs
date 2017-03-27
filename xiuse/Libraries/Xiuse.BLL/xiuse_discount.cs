@@ -222,7 +222,7 @@ namespace Xiuse.BLL
                     model.DiscountSection = (byte)dr["DiscountSection"];
                     model.DiscountState = (short)dr["DiscountState"];
                     model.DiscountVerification = (short)dr["DiscountVerification"];
-                    model.DiscountTime = dr["DiscountTime"].ToString();
+                    model.DiscountTime = (DateTime)dr["DiscountTime"];
                     Tmp.Add(model);
                 }
             }

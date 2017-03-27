@@ -24,6 +24,13 @@ namespace Xiuse.App.Controllers.Restaurant
     {
         
         BLL.xiuse_restaurant RestBLL = new BLL.xiuse_restaurant();
+
+
+        /// <summary>
+        /// 添加餐厅
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("AddRest")]
         public HttpResponseMessage PostAddRest([FromBody]Model.xiuse_restaurant model)
         {
@@ -37,6 +44,12 @@ namespace Xiuse.App.Controllers.Restaurant
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
 
+
+        /// <summary>
+        /// 更新餐厅信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("UpdateRest")]
         public HttpResponseMessage PostUpdateRest([FromBody]Model.xiuse_restaurant model)
         {
@@ -50,7 +63,11 @@ namespace Xiuse.App.Controllers.Restaurant
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
 
-
+        /// <summary>
+        /// 删除餐厅
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("DeleteRest")]
         public HttpResponseMessage DeleteAddRest([FromBody]string id)
         {
@@ -63,12 +80,20 @@ namespace Xiuse.App.Controllers.Restaurant
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
+        /// <summary>
+        /// 获取当前系统中的所有餐厅
+        /// </summary>
+        /// <returns></returns>
         [Route("GetAllRestaurants")]
         public List<Model.xiuse_restaurant> GetAllRest()
         {
             return RestBLL.GetAllRestaurants();
         }
-
+        /// <summary>
+        /// 查询餐厅（通过餐厅id号）
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
         [Route("SearchRestaurantbyId")]
         public Model.xiuse_restaurant GetModel(string RestaurantId)
         {
