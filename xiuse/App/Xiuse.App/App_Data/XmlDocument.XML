@@ -778,7 +778,7 @@
             获取餐厅的所有餐桌。
             </summary>
             <param name="RestaurantId"></param>
-            <returns></returns>
+            <returns>List Model.xiuse_desk </returns>
         </member>
         <member name="M:Xiuse.App.Controllers.Restaurant.DeskController.GetPaidLatest(System.String)">
             <summary>

@@ -75,7 +75,7 @@ namespace Xiuse.App.Controllers.Restaurant
         /// 获取餐厅的所有餐桌。
         /// </summary>
         /// <param name="RestaurantId"></param>
-        /// <returns></returns>
+        /// <returns>List Model.xiuse_desk </returns>
         [Route("GetAllDesks")]
         public List<Model.xiuse_desk> GetAllDesks(string RestaurantId)
         {
