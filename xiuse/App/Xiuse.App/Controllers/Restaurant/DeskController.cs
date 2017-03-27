@@ -85,18 +85,19 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("AllDesksWithAccount")]
 
         /// <summary>
-        ///// 获取某一餐厅所有餐桌信息（包含餐桌费用）
-        ///// </summary>
-        ///// <param name="RestaurantId"></param>
-        ///// <returns></returns>
+        /// 获取某一餐厅所有餐桌信息（包含餐桌费用）
+        /// </summary>
+        /// <param name="RestaurantId"></param>
+        /// <returns></returns>
         //public IQueryable<DataRow> GetAllDesksWithAccount(string RestaurantId)
-        //{
-        //    if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)
-        //    {
-        //        throw new HttpRequestException();
-        //    }
-        //    return DeskBLL.GetAllDesksWithAccount(RestaurantId).Tables[0].Rows.AsQueryable<DataRow>();
-        //}
+        public DataSet GetAllDesksWithAccount(string RestaurantId)
+        {
+            if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)
+            {
+                throw new HttpRequestException();
+            }
+            return DeskBLL.GetAllDesksWithAccount(RestaurantId);
+        }
 
 
 
