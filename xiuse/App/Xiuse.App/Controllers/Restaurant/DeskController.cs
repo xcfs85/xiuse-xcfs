@@ -53,7 +53,11 @@ namespace Xiuse.App.Controllers.Restaurant
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
+        /// <summary>
+        /// 删除餐桌
+        /// </summary>
+        /// <param name="id">餐桌ID</param>
+        /// <returns></returns>
         [Route("DeleteDesk")]
         public HttpResponseMessage DeleteDelDeskClassify([FromBody]String id)
         {
