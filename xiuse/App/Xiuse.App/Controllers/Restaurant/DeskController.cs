@@ -26,7 +26,11 @@ namespace Xiuse.App.Controllers.Restaurant
     {
         BLL.xiuse_desk DeskBLL = new BLL.xiuse_desk();
         BLL.order_ OrderBLL = new BLL.order_();
-
+        /// <summary>
+        /// 添加餐桌
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("AddDesk")]
         public HttpResponseMessage PostAddDesk([FromBody]Model.xiuse_desk model)
         {
@@ -40,7 +44,11 @@ namespace Xiuse.App.Controllers.Restaurant
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
         
-       
+       /// <summary>
+       /// 更新餐桌
+       /// </summary>
+       /// <param name="model"></param>
+       /// <returns></returns>
         [Route("UpdateDesk")]
         public HttpResponseMessage PostUpdateDesk([FromBody]Model.xiuse_desk model)
         {
@@ -86,13 +94,15 @@ namespace Xiuse.App.Controllers.Restaurant
             return DeskBLL.GetAllDesk(RestaurantId);
         }
 
-        [Route("AllDesksWithAccount")]
 
         /// <summary>
         /// 获取某一餐厅所有餐桌信息（包含餐桌费用）
         /// </summary>
         /// <param name="RestaurantId"></param>
         /// <returns></returns>
+        [Route("AllDesksWithAccount")]
+
+   
         //public IQueryable<DataRow> GetAllDesksWithAccount(string RestaurantId)
         public DataSet GetAllDesksWithAccount(string RestaurantId)
         {
@@ -104,11 +114,10 @@ namespace Xiuse.App.Controllers.Restaurant
         }
 
 
-
+        /// <summary>
+        /// 获取某一餐厅的所有未结账餐桌的金额
+        /// </summary>
         [Route("GetUnpaidDesks")]
-        ///
-        ///获取某一餐厅的所有未结账餐桌的金额
-        ///
         public List<Model.order_> GetUnpaidDesks(string RestaurantId)
         {
             if (RestaurantId == null || DeskBLL.RestaurantExists(RestaurantId) == false)

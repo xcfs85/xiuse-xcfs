@@ -23,8 +23,6 @@ namespace Xiuse.App.Controllers.Revenue
         /// <summary>
         /// 当日营业额接口类 
         /// </summary>
-        /// 1、<菜品数量>MenuNum
-        ///2、<账单金额>MenuBill
         /// <returns></returns>
         [Route("DailyTurnover")]
         public DataSet GetDailyTurnover()
