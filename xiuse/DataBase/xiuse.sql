@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: xiuse
 Target Host: localhost
 Target Database: xiuse
-Date: 2017/3/23 11:33:34
+Date: 2017/3/24 17:19:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `log` (
 -- Table structure for memberconsumption
 -- ----------------------------
 CREATE TABLE `memberconsumption` (
-  `ConsumptionRecordsId` char(32) NOT NULL,
+  `ConsumptionRecordsId` char(32) NOT NULL COMMENT '消费信息',
   `MemberCardNo` char(16) NOT NULL COMMENT '会员卡卡号',
   `MemberId` char(32) NOT NULL COMMENT '会员Id',
   `CRecordsType` smallint(4) NOT NULL COMMENT '消费类型',
@@ -283,6 +283,7 @@ INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000003', '第三桌'
 INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000004', '第四桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 13:59:32');
 INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000005', '第五桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 13:59:48');
 INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000006', '第六桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 14:00:07');
+INSERT INTO `xiuse_memberclassify` VALUES ('1', '1', '九折', null, '1', '2017-03-23 15:33:38', '0', '00000000000000000000000000000000');
 INSERT INTO `xiuse_menuclassify` VALUES ('001', '凉菜', '1', '0', null, '000000000000000000000001', '2016-12-20 11:07:37');
 INSERT INTO `xiuse_menuclassify` VALUES ('002', '热菜', '2', '0', null, '000000000000000000000001', '2016-12-20 11:08:27');
 INSERT INTO `xiuse_menuclassify` VALUES ('003', '饮料', '3', '0', null, '000000000000000000000001', '2016-12-20 11:14:09');
@@ -307,3 +308,4 @@ INSERT INTO `xiuse_menus` VALUES ('4005', '烙饼子', '100', '10.00', null, '',
 INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000000', 'TestRN', '010-88888888', '北京', null, '2016-12-12 13:22:43');
 INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000001', 'TestR1', '010-12345678', '北京', null, '2016-12-20 11:16:58');
 INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000000', 'admin', 'weixin', '15811111111', 'admin@163.com', 'flaskjdflj===', '00000000000000000000000000000000', '0', '-1', '0', null, '2016-12-12 13:20:42');
+INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000001', 'RitaTest', 'weixin', '15811112222', 'Rita@163.com', 'flaskjdflj===', '00000000000000000000000000000000', '0', '-1', '0', null, '2017-03-24 16:20:42');

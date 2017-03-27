@@ -53,7 +53,11 @@ namespace Xiuse.App.Controllers.Restaurant
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
-
+        /// <summary>
+        /// 删除餐桌
+        /// </summary>
+        /// <param name="id">餐桌ID</param>
+        /// <returns></returns>
         [Route("DeleteDesk")]
         public HttpResponseMessage DeleteDelDeskClassify([FromBody]String id)
         {
@@ -71,7 +75,7 @@ namespace Xiuse.App.Controllers.Restaurant
         /// 获取餐厅的所有餐桌。
         /// </summary>
         /// <param name="RestaurantId"></param>
-        /// <returns></returns>
+        /// <returns>List Model.xiuse_desk </returns>
         [Route("GetAllDesks")]
         public List<Model.xiuse_desk> GetAllDesks(string RestaurantId)
         {

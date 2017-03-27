@@ -18,10 +18,12 @@ namespace Xiuse.App.Controllers.Security
         [HttpPost]
         public HttpResponseMessage Authenticated(dynamic obj)
         {
-            
-
-            string UserName = DESEncrypt.Decrypt(Convert.ToString(obj.UserNameDS));
-            string PassWord = DESEncrypt.Decrypt(Convert.ToString(obj.PassWordDS));
+           
+            //string key = SessionHelper.GetSession("key").ToString();
+            //string UserName = DESEncrypt.DecryptJS(Convert.ToString(obj.UserNameDS),key);
+            //string PassWord = DESEncrypt.DecryptJS(Convert.ToString(obj.PassWordDS),key);
+            string UserName = Convert.ToString(obj.UserNameDS);
+            string PassWord = Convert.ToString(obj.PassWordDS);
             Xiuse.BLL.xiuse_user user = new BLL.xiuse_user();
             ResultMsg resultMsg;
             string staffId = "";

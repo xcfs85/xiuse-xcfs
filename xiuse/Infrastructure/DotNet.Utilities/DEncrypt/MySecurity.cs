@@ -257,7 +257,7 @@ namespace DotNet.Utilities
                 return "";
             }
             //返回MD5值的字符串表示
-            return MD5(text);
+            return MD5(Encoding.UTF8.GetBytes(text));
         }
 
         /// <summary>
