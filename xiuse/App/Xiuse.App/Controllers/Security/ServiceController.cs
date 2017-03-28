@@ -12,18 +12,26 @@ using DotNet.Utilities;
 
 namespace Xiuse.App.Controllers.Security
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ServiceController : ApiController
     {
+        /// <summary>
+        /// 验证登录
+        /// </summary>
+        /// <param name="obj">参数：UserNameDS，PassWordDS</param>
+        /// <returns></returns>
         [Route("api/Authenticated")]
         [HttpPost]
         public HttpResponseMessage Authenticated(dynamic obj)
         {
            
-            //string key = SessionHelper.GetSession("key").ToString();
-            //string UserName = DESEncrypt.DecryptJS(Convert.ToString(obj.UserNameDS),key);
-            //string PassWord = DESEncrypt.DecryptJS(Convert.ToString(obj.PassWordDS),key);
-            string UserName = Convert.ToString(obj.UserNameDS);
-            string PassWord = Convert.ToString(obj.PassWordDS);
+            string key = SessionHelper.GetSession("key").ToString();
+            string UserName = DESEncrypt.DecryptJS(Convert.ToString(obj.UserNameDS), key);
+            string PassWord = DESEncrypt.DecryptJS(Convert.ToString(obj.PassWordDS), key);
+            //string UserName = Convert.ToString(obj.UserNameDS);
+            //string PassWord = Convert.ToString(obj.PassWordDS);
             Xiuse.BLL.xiuse_user user = new BLL.xiuse_user();
             ResultMsg resultMsg;
             string staffId = "";
@@ -33,8 +41,9 @@ namespace Xiuse.App.Controllers.Security
             if (string.IsNullOrEmpty(staffId))
             {
                 resultMsg = new ResultMsg();
-                resultMsg.StatusCode = (int)StatusCodeEnum.ParameterError;
-                resultMsg.Info = StatusCodeEnum.ParameterError.GetEnumText();
+                resultMsg.StatusCode = (int)StatusCodeEnum.Success;
+                //resultMsg.Info = StatusCodeEnum.ParameterError.GetEnumText();
+                resultMsg.Info = "1";
                 resultMsg.Data = "";
                 return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
             }
@@ -53,12 +62,32 @@ namespace Xiuse.App.Controllers.Security
             //返回token信息
             resultMsg = new ResultMsg();
             resultMsg.StatusCode = (int)StatusCodeEnum.Success;
-            resultMsg.Info = "";
+            resultMsg.Info = "0";
             resultMsg.Data = token;
 
             return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
             //return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
         }
-       
+
+        /// <summary>
+        /// 获取秘钥
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/key")]
+        [HttpGet]
+        public string Key()
+        {
+            string key = String.Empty;
+            if (SessionHelper.GetSession("key") == null)
+            {
+                key = RandomHelper.GetRandomString(8, true, true, true, false, "");
+                SessionHelper.SetSession("key", key);
+            }
+            else
+                key = SessionHelper.GetSession("key").ToString();
+
+
+            return key;
+        }
     }
 }

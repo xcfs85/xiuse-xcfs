@@ -6,7 +6,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>G:\webxiuse</_PublishTargetUrl>
+    <_PublishTargetUrl>\\192.168.10.150\webxiuse</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
@@ -82,7 +82,7 @@
       <publishTime>03/23/2017 09:53:14</publishTime>
     </File>
     <File Include="bin/DotNet.Utilities.dll">
-      <publishTime>03/27/2017 10:55:23</publishTime>
+      <publishTime>03/28/2017 16:50:05</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/23/2017 09:53:15</publishTime>
@@ -250,16 +250,16 @@
       <publishTime>03/23/2017 09:53:16</publishTime>
     </File>
     <File Include="bin/Xiuse.App.dll">
-      <publishTime>03/27/2017 11:03:35</publishTime>
+      <publishTime>03/28/2017 16:50:09</publishTime>
     </File>
     <File Include="bin/Xiuse.BLL.dll">
-      <publishTime>03/27/2017 10:55:23</publishTime>
+      <publishTime>03/28/2017 16:50:05</publishTime>
     </File>
     <File Include="bin/Xiuse.DAL.dll">
-      <publishTime>03/27/2017 10:55:23</publishTime>
+      <publishTime>03/28/2017 16:50:05</publishTime>
     </File>
     <File Include="bin/Xiuse.Model.dll">
-      <publishTime>03/27/2017 10:55:23</publishTime>
+      <publishTime>03/28/2017 15:42:28</publishTime>
     </File>
     <File Include="bin/zh-Hans/EntityFramework.resources.dll">
       <publishTime>03/23/2017 09:53:15</publishTime>

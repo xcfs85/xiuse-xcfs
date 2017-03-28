@@ -41,7 +41,7 @@ namespace Xiuse.App
             }
 
             //GetToken方法不需要进行签名验证
-            if (actionContext.ActionDescriptor.ActionName == "Authenticated")
+            if (actionContext.ActionDescriptor.ActionName == "Authenticated"|| actionContext.ActionDescriptor.ActionName == "Key")
             {
                 //if (string.IsNullOrEmpty(staffid) || (string.IsNullOrEmpty(timestamp) || string.IsNullOrEmpty(nonce)))
                 //{
