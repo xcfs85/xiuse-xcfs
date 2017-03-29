@@ -29,12 +29,13 @@ namespace Xiuse.App.Common
             var md5Val = hash.ComputeHash(bytes);
             //把二进制转化为大写的十六进制
             StringBuilder result = new StringBuilder(md5Val.ToString());
-            //foreach (var c in md5Val)
-            //{
-            //    result.Append(c.ToString("X2"));
-            //}
-
-            return result.ToString().ToUpper() == signature;
+            string falg = string.Empty;
+            foreach (var c in md5Val)
+            {
+                result.Append(c.ToString("X2"));
+                falg += c.ToString("X2");
+            }
+            return falg.ToUpper() == signature;
         }
     }
 }

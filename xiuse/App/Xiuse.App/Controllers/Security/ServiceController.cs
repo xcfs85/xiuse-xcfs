@@ -13,12 +13,12 @@ using DotNet.Utilities;
 namespace Xiuse.App.Controllers.Security
 {
     /// <summary>
-    /// 
+    /// 登录、秘钥
     /// </summary>
     public class ServiceController : ApiController
     {
         /// <summary>
-        /// 验证登录
+        /// 验证登录(参数：UserNameDS，PassWordDS)
         /// </summary>
         /// <param name="obj">参数：UserNameDS，PassWordDS</param>
         /// <returns></returns>
@@ -26,8 +26,8 @@ namespace Xiuse.App.Controllers.Security
         [HttpPost]
         public HttpResponseMessage Authenticated(dynamic obj)
         {
-           
-            string key = SessionHelper.GetSession("key").ToString();
+
+            string key = HttpRuntime.Cache.Get("key").ToString();
             string UserName = DESEncrypt.DecryptJS(Convert.ToString(obj.UserNameDS), key);
             string PassWord = DESEncrypt.DecryptJS(Convert.ToString(obj.PassWordDS), key);
             //string UserName = Convert.ToString(obj.UserNameDS);
@@ -75,19 +75,26 @@ namespace Xiuse.App.Controllers.Security
         /// <returns></returns>
         [Route("api/key")]
         [HttpGet]
-        public string Key()
+        public HttpResponseMessage Key()
         {
             string key = String.Empty;
-            if (SessionHelper.GetSession("key") == null)
+            if (HttpRuntime.Cache.Get("key") == null)
             {
                 key = RandomHelper.GetRandomString(8, true, true, true, false, "");
-                SessionHelper.SetSession("key", key);
+                HttpRuntime.Cache.Insert("key", key, null, DateTime.Now.AddHours(1), TimeSpan.Zero);
+                //SessionHelper.SetSession("key", key);
             }
             else
-                key = SessionHelper.GetSession("key").ToString();
+                key = HttpRuntime.Cache.Get("key").ToString();
 
+            ResultMsg resultMsg = new ResultMsg();
+            resultMsg.StatusCode = (int)StatusCodeEnum.Success;
+            //resultMsg.Info = StatusCodeEnum.ParameterError.GetEnumText();
+            resultMsg.Info = "1";
+            resultMsg.Data = key;
+            return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
 
-            return key;
+          
         }
     }
 }

@@ -80,7 +80,10 @@ namespace  Xiuse.DAL
         public string AffirmUser(string UserName, string Password)
         {
             string strSql = String.Format("Select UserId From xiuse_user Where Username='{0}' and Password='{1}'", UserName,Password);
-            return AosyMySql.ExecuteScalar(strSql).ToString();
+            if (AosyMySql.ExecuteScalar(strSql) == null)
+                return "";
+            else
+                return AosyMySql.ExecuteScalar(strSql).ToString();
         }
 
 

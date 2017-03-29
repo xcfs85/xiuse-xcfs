@@ -65,7 +65,7 @@ namespace DotNet.Utilities
         /// </summary>
         /// <param name="encypStr"></param>
         /// <returns></returns>
-        public static string Md5(string encypStr)
+        public static string Md5_base64(string encypStr)
         {
             string retStr;
             MD5CryptoServiceProvider m5 = new MD5CryptoServiceProvider();
@@ -76,5 +76,21 @@ namespace DotNet.Utilities
             retStr = Convert.ToBase64String(outputBye);
             return (retStr);
         }
-	}
+        /// <summary>
+        /// md5
+        /// </summary>
+        /// <param name="encypStr"></param>
+        /// <returns></returns>
+        public static string Md5(string encypStr)
+        {
+            string retStr;
+            MD5CryptoServiceProvider m5 = new MD5CryptoServiceProvider();
+            byte[] inputBye;
+            byte[] outputBye;
+            inputBye = System.Text.Encoding.ASCII.GetBytes(encypStr);
+            outputBye = m5.ComputeHash(inputBye);
+            retStr = Convert.ToString(outputBye);
+            return (retStr);
+        }
+    }
 }
