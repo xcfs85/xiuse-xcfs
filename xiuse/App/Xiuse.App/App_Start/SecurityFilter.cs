@@ -85,7 +85,7 @@ namespace Xiuse.App
             if (falg || (!timespanvalidate))
             {
                 resultMsg = new ResultMsg();
-                resultMsg.StatusCode = (int)StatusCodeEnum.URLExpireError;
+                resultMsg.StatusCode = (int)StatusCodeEnum.Unauthorized;
                 resultMsg.Info = StatusCodeEnum.URLExpireError.GetEnumText();
                 resultMsg.Data = "";
                 actionContext.Response = HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
@@ -100,7 +100,7 @@ namespace Xiuse.App
             if (HttpRuntime.Cache.Get(staffid) == null)
             {
                 resultMsg = new ResultMsg();
-                resultMsg.StatusCode = (int)StatusCodeEnum.TokenInvalid;
+                resultMsg.StatusCode = (int)StatusCodeEnum.Unauthorized;
                 resultMsg.Info = StatusCodeEnum.TokenInvalid.GetEnumText();
                 resultMsg.Data = "";
                 actionContext.Response = HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
@@ -163,7 +163,7 @@ namespace Xiuse.App
             if (!result)
             {
                 resultMsg = new ResultMsg();
-                resultMsg.StatusCode = (int)StatusCodeEnum.HttpRequestError;
+                resultMsg.StatusCode = (int)StatusCodeEnum.Unauthorized;
                 resultMsg.Info = StatusCodeEnum.HttpRequestError.GetEnumText();
                 resultMsg.Data = "";
                 actionContext.Response = HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));

@@ -19,6 +19,9 @@ using Xiuse;
 
 namespace Xiuse.App.Controllers
 {
+    /// <summary>
+    /// 用户接口类
+    /// </summary>
     [RoutePrefix("api/User")]
     public class UserController : ApiController
     {
