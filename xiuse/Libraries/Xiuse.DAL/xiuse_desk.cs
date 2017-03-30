@@ -87,20 +87,28 @@ namespace  Xiuse.DAL
             
             for (int i = 0; i < a.Tables[0].Rows.Count; i++)
             {
-                //取同一桌子待付款的订单
-                string strSql2 = String.Format(@"select * from order_ where DeskId='{0}'", a.Tables[0].Rows[i]["DeskId"]);
+                //取同一桌子未清台的订单
+                string strSql2 = String.Format(@"select * from order_ where DeskId='{0}' and ClearDeskState=0", a.Tables[0].Rows[i]["DeskId"]);
                 decimal accountPayable = 0;
+                decimal alreadyPayable = 0;
                 DataSet b = new DataSet();
+                bool isAllPaid = true;
                 b = AosyMySql.ExecuteforDataSet(strSql2);
                 for (int j = 0; j < b.Tables[0].Rows.Count; j++)
                 {
                     DataRow dr = b.Tables[0].Rows[j];
                     if ((short)dr["OrderState"] == 0)
                     {
-                        accountPayable += (decimal)dr["AccountsPayable"];                       
-                    }
-
+                        accountPayable += (decimal)dr["AccountsPayable"];
+                        isAllPaid = false;     
+                    }else
+                        alreadyPayable+= (decimal)dr["AccountsPayable"];
                 }
+                if (isAllPaid)
+                {
+                    a.Tables[0].Rows[i]["AccountPayable"] = alreadyPayable;
+                }
+                else
                 a.Tables[0].Rows[i]["AccountPayable"] = accountPayable;
             }
 
