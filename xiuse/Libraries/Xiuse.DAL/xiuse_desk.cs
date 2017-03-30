@@ -78,7 +78,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public DataSet GetAllDesksWithAccount(string RestaurantId)
         {
-            string strSql = String.Format(@"select * from xiuse_desk where RestaurantId='{0}' and DeskState=1", RestaurantId);
+            string strSql = String.Format(@"select * from xiuse_desk where RestaurantId='{0}' and DeskDel=1", RestaurantId);
             DataSet a = new DataSet();
             a = AosyMySql.ExecuteforDataSet(strSql);
             if (a == null)
