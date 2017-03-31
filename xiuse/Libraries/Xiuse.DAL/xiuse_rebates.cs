@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_rebates model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_rebates(MemberId,MemberCardNo,RebatesType,RebatesAmount,DateTime) 
-                                        values('{0}','{1}','{2}',{3},'{4}')",
-                                        model.MemberId,model.MemberCardNo,model.RebatesType,model.RebatesAmount,model.DateTime);
+            string strSql=String.Format(@"Insert Into xiuse_rebates(MemberId,MemberCardNo,RebatesType,RebatesAmount,DateTime,RebatesId) 
+                                        values('{0}','{1}','{2}',{3},'{4}','{5}')",
+                                        model.MemberId,model.MemberCardNo,model.RebatesType,model.RebatesAmount,model.DateTime,model.RebatesId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,7 +36,7 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_rebates model)
         {
             string strSql=String.Format(@"Update xiuse_rebates Set 
-            MemberId='{0}',MemberCardNo='{1}',RebatesType='{2}',RebatesAmount={3},DateTime='{4}' 
+            MemberId='{0}',MemberCardNo='{1}',RebatesType='{2}',RebatesAmount='{3}',DateTime='{4}' 
             Where RebatesId={5}",
             model.MemberId,model.MemberCardNo,model.RebatesType,model.RebatesAmount,model.DateTime,model.RebatesId);
             return AosyMySql.ExecuteforBool(strSql);

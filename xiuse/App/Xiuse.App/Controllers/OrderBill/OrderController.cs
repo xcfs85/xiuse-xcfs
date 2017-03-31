@@ -12,12 +12,15 @@
 *增加抹零折扣。
 ********************************************/
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Xiuse.App.Common;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.OrderBill
 {
@@ -27,6 +30,34 @@ namespace Xiuse.App.Controllers.OrderBill
     {
         BLL.order_ OrderBLL = new BLL.order_();
         BLL.ordermenu_ OrderMenuBLL = new BLL.ordermenu_();
+
+        /// <summary>
+        /// 添加订单，订单中有菜品信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("OrderwithMenu")]
+        public HttpResponseMessage OrderwithMenu(dynamic obj)
+        {
+            ResultMsg resultMsg = new ResultMsg();
+            resultMsg.StatusCode = (int)StatusCodeEnum.Success;
+            string flag = OrderBLL.NewOrder(obj);
+            if (flag == "0")
+            {
+                resultMsg.Info = "0";
+                resultMsg.Data = ""; 
+            }
+            else
+            {
+                resultMsg.Info = "1";
+                resultMsg.Data = "{'OrderId':'" +flag+"'}";
+            }
+            return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg)); ;
+
+
+          
+        }
+
         /// <summary>
         /// 添加订单
         /// </summary>

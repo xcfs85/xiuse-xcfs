@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_member model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_member(MemberClassifyId,MemberCardNo,MemberName,MemberAmount,MemberCell,MemberReference,MemberPassword,MemberState,MemberTime,RestaurantId) 
-                                        values({0},{1},'{2}',{3},'{4}','{5}','{6}',{7},'{8}',{9})",
-                                        model.MemberClassifyId,model.MemberCardNo,model.MemberName,model.MemberAmount,model.MemberCell,model.MemberReference,model.MemberPassword,model.MemberState,model.MemberTime,model.RestaurantId);
+            string strSql=String.Format(@"Insert Into xiuse_member(MemberClassifyId,MemberCardNo,MemberName,MemberAmount,MemberCell,MemberReference,MemberPassword,MemberState,MemberTime,RestaurantId,MemberId) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')",
+                                        model.MemberClassifyId,model.MemberCardNo,model.MemberName,model.MemberAmount,model.MemberCell,model.MemberReference,model.MemberPassword,model.MemberState,model.MemberTime,model.RestaurantId,model.MemberId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,8 +36,8 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_member model)
         {
             string strSql=String.Format(@"Update xiuse_member Set 
-            MemberClassifyId='{0}',MemberCardNo={1},MemberName='{2}',MemberAmount={3},MemberCell='{4}',MemberReference='{5}',MemberPassword='{6}',MemberState={7},MemberTime='{8}',RestaurantId={9} 
-            Where MemberId={10}",
+            MemberClassifyId='{0}',MemberCardNo='{1}',MemberName='{2}',MemberAmount='{3}',MemberCell='{4}',MemberReference='{5}',MemberPassword='{6}',MemberState='{7}',MemberTime='{8}',RestaurantId='{9}' 
+            Where MemberId='{10}'",
             model.MemberClassifyId,model.MemberCardNo,model.MemberName,model.MemberAmount,model.MemberCell,model.MemberReference,model.MemberPassword,model.MemberState,model.MemberTime,model.RestaurantId,model.MemberId);
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -74,7 +74,7 @@ namespace  Xiuse.DAL
         /// <parame name="MemberId">MemberId</param>
         public bool ExistsMember(Model.xiuse_member Member)
         {
-            string strSql = String.Format("Select Count(1) From xiuse_member Where MemberCardNo='{0}' or MemberCell={1}", Member.MemberCardNo,Member.MemberCell);
+            string strSql = String.Format("Select Count(1) From xiuse_member Where MemberCardNo='{0}' or MemberCell='{1}'", Member.MemberCardNo,Member.MemberCell);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
         }
 

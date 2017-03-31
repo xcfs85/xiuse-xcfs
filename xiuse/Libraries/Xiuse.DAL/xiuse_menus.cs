@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_menus model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_menus(RestaurantId,ClassifyId,MenuName,MenuQuantity,MenuPrice,MenuShortcut,MenuTag,MenuImage,MenuNo,MenuInstruction,SaleState,MenuState,MenuTime) 
-                                        values({0},{1},'{2}',{3},{4},'{5}','{6}','{7}',{8},'{9}',{10},{11},'{12}')",
-                                        model.RestaurantId,model.ClassifyId,model.MenuName,model.MenuQuantity,model.MenuPrice,model.MenuShortcut,model.MenuTag,model.MenuImage,model.MenuNo,model.MenuInstruction,model.SaleState,model.MenuState,model.MenuTime);
+            string strSql=String.Format(@"Insert Into xiuse_menus(RestaurantId,ClassifyId,MenuName,MenuQuantity,MenuPrice,MenuShortcut,MenuTag,MenuImage,MenuNo,MenuInstruction,SaleState,MenuState,MenuTime,MenuId) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',{8},'{9}','{10}','{11}','{12}','{13}')",
+                                        model.RestaurantId,model.ClassifyId,model.MenuName,model.MenuQuantity,model.MenuPrice,model.MenuShortcut,model.MenuTag,model.MenuImage,model.MenuNo,model.MenuInstruction,model.SaleState,model.MenuState,model.MenuTime,model.MenuId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,8 +36,8 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_menus model)
         {
             string strSql=String.Format(@"Update xiuse_menus Set 
-            RestaurantId='{0}',ClassifyId={1},MenuName='{2}',MenuQuantity={3},MenuPrice={4},MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuNo={8},MenuInstruction='{9}',SaleState={10},MenuState={11},MenuTime='{12}' 
-            Where MenuId={13}",
+            RestaurantId='{0}',ClassifyId='{1}',MenuName='{2}',MenuQuantity='{3}',MenuPrice='{4}',MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuNo='{8}',MenuInstruction='{9}',SaleState='{10}',MenuState='{11}',MenuTime='{12}' 
+            Where MenuId='{13}'",
             model.RestaurantId,model.ClassifyId,model.MenuName,model.MenuQuantity,model.MenuPrice,model.MenuShortcut,model.MenuTag,model.MenuImage,model.MenuNo,model.MenuInstruction,model.SaleState,model.MenuState,model.MenuTime,model.MenuId);
             return AosyMySql.ExecuteforBool(strSql);
         }

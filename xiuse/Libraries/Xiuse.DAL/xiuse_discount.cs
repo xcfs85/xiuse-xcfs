@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_discount model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_discount(RestaurantId,DiscountName,DiscountType,DiscountContent,DiscountMenus,DiscountSection,DiscountState,DiscountVerification,DiscountTime) 
-                                        values({0},'{1}',{2},{3},'{4}',{5},{6},{7},'{8}')",
-                                        model.RestaurantId,model.DiscountName,model.DiscountType,model.DiscountContent,model.DiscountMenus,model.DiscountSection,model.DiscountState,model.DiscountVerification,model.DiscountTime);
+            string strSql=String.Format(@"Insert Into xiuse_discount(RestaurantId,DiscountName,DiscountType,DiscountContent,DiscountMenus,DiscountSection,DiscountState,DiscountVerification,DiscountTime,DiscountId) 
+                                        values('{0}','{1}',{2},{3},'{4}','{5}','{6}','{7}','{8}','{9}')",
+                                        model.RestaurantId,model.DiscountName,model.DiscountType,model.DiscountContent,model.DiscountMenus,model.DiscountSection,model.DiscountState,model.DiscountVerification,model.DiscountTime,model.DiscountId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,8 +36,8 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_discount model)
         {
             string strSql=String.Format(@"Update xiuse_discount Set 
-            RestaurantId='{0}',DiscountName='{1}',DiscountType={2},DiscountContent={3},DiscountMenus='{4}',DiscountSection={5},DiscountState={6},DiscountVerification={7},DiscountTime='{8}' 
-            Where DiscountId={9}",
+            RestaurantId='{0}',DiscountName='{1}',DiscountType='{2}',DiscountContent='{3}',DiscountMenus='{4}',DiscountSection='{5}',DiscountState='{6}',DiscountVerification='{7}',DiscountTime='{8}' 
+            Where DiscountId='{9}'",
             model.RestaurantId,model.DiscountName,model.DiscountType,model.DiscountContent,model.DiscountMenus,model.DiscountSection,model.DiscountState,model.DiscountVerification,model.DiscountTime,model.DiscountId);
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -116,7 +116,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public bool SetDiscountState(string DiscountId,int State)
         {
-            string strSql = string.Format("update xiuse_discount set DiscountState='{0}' where DiscountId={1}", DiscountId,State);
+            string strSql = string.Format("update xiuse_discount set DiscountState='{0}' where DiscountId='{1}'", DiscountId,State);
             return AosyMySql.ExecuteforBool(strSql);
         }
         #endregion

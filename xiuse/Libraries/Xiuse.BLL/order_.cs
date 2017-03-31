@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using Xiuse.Model;
-using Xiuse.DAL;
 using DotNet.Utilities;
 
 namespace Xiuse.BLL
@@ -15,9 +13,48 @@ namespace Xiuse.BLL
     {
        
         private readonly Xiuse.DAL.order_ dal=new Xiuse.DAL.order_();
-
+        private readonly DAL.ordermenu_ dalOrderMenu = new DAL.ordermenu_();
         public order_(){}
-        
+
+
+        public string NewOrder(dynamic obj)
+        {
+            Model.order_ OrderModel = new Model.order_();
+            OrderModel.OrderId = Guid.NewGuid().ToString().Replace("-","");
+            OrderModel.DeskId = Convert.ToString(obj.DeskId);
+            OrderModel.BillAmount = Convert.ToDecimal(obj.BillAmount);
+            //OrderModel.Alipay = Convert.ToDecimal(obj.Alipay);
+            //OrderModel.BankCard = Convert.ToDecimal(obj.BankCard);
+            //OrderModel.Cash = Convert.ToDecimal(obj.Cash);
+            OrderModel.ClearDeskState = Convert.ToInt16(obj.ClearDeskState);
+            OrderModel.CustomerNum = Convert.ToInt32(obj.CustomerNum);
+            OrderModel.DishCount = Convert.ToInt32(obj.DishCount);
+            OrderModel.ServiceUserId = Convert.ToString(obj.ServiceUserId);
+            OrderModel.OrderbeginTime = DateTime.Now;
+            bool OrderFlag = dal.NewOrder(OrderModel);
+            bool OrderMenuFlag = true;
+           // List<Xiuse.Model.ordermenu_> menus = new List<Model.ordermenu_>();
+            Model.ordermenu_ TheMenu = new Model.ordermenu_();
+            
+            for (int i = 0; i < obj.Menus.Count; i++)
+            {
+                TheMenu = Newtonsoft.Json.JsonConvert.DeserializeObject<Model.ordermenu_>(Convert.ToString(obj.Menus[i]));
+                TheMenu.OrderId = OrderModel.OrderId;
+                TheMenu.OrderMenuId = Guid.NewGuid().ToString().Replace("-", "");
+                if (dalOrderMenu.Insert(TheMenu) == false)
+                     OrderMenuFlag=false;
+
+                //menus.Add(TheMenu);
+            }
+
+            if (OrderFlag== false||OrderMenuFlag==false)
+                return "0";
+            else return OrderModel.OrderId;
+           
+        }
+
+
+
         /// <summary>
         /// 增加一条数据
         /// </summary>
@@ -26,6 +63,9 @@ namespace Xiuse.BLL
         {
             return dal.Insert(model);
         }
+
+
+
 
 
         /// <summary>

@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_memberclassify model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_memberclassify(DiscountId,ClassifyName,ClassRemark,ClassifyMemberNum,ClassifyTime,DelTag,RestaurantId) 
-                                        values({0},'{1}','{2}',{3},'{4}',{5},{6})",
-                                        model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId);
+            string strSql=String.Format(@"Insert Into xiuse_memberclassify(DiscountId,ClassifyName,ClassRemark,ClassifyMemberNum,ClassifyTime,DelTag,RestaurantId,MemberClassifyId) 
+                                        values('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}')",
+                                        model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId,model.MemberClassifyId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,8 +36,8 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_memberclassify model)
         {
             string strSql=String.Format(@"Update xiuse_memberclassify Set 
-            DiscountId='{0}',ClassifyName='{1}',ClassRemark='{2}',ClassifyMemberNum={3},ClassifyTime='{4}',DelTag={5},RestaurantId={6} 
-            Where MemberClassifyId={7}",
+            DiscountId='{0}',ClassifyName='{1}',ClassRemark='{2}',ClassifyMemberNum='{3}',ClassifyTime='{4}',DelTag='{5}',RestaurantId='{6}' 
+            Where MemberClassifyId='{7}'",
             model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId,model.MemberClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -119,7 +119,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public bool SetMemberClassify(int State,string MemberClassifyId)
         {
-            string strSql = string.Format("update xiuse_memberclassify set DelTag='{0}' where MemberClassifyId={1}", State, MemberClassifyId);
+            string strSql = string.Format("update xiuse_memberclassify set DelTag='{0}' where MemberClassifyId='{1}'", State, MemberClassifyId);
             if (AosyMySql.ExecuteNonQuery(strSql) > 0)
                 return true;
             else

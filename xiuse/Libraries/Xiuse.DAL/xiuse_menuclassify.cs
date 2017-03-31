@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_menuclassify model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_menuclassify(ClassifyInstruction,ClassifyNo,ClassifyNet,ClassifyTag,ClassifyTime) 
-                                        values('{0}',{1},{2},'{3}','{4}')",
-                                        model.ClassifyInstruction,model.ClassifyNo,model.ClassifyNet,model.ClassifyTag,model.ClassifyTime);
+            string strSql=String.Format(@"Insert Into xiuse_menuclassify(ClassifyInstruction,ClassifyNo,ClassifyNet,ClassifyTag,ClassifyTime,ClassifyId) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}')",
+                                        model.ClassifyInstruction,model.ClassifyNo,model.ClassifyNet,model.ClassifyTag,model.ClassifyTime,model.ClassifyId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,8 +36,8 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_menuclassify model)
         {
             string strSql=String.Format(@"Update xiuse_menuclassify Set 
-            ClassifyInstruction='{0}',ClassifyNo={1},ClassifyNet={2},ClassifyTag='{3}',ClassifyTime='{4}' 
-            Where ClassifyId={5}",
+            ClassifyInstruction='{0}',ClassifyNo='{1}',ClassifyNet='{2}',ClassifyTag='{3}',ClassifyTime='{4}' 
+            Where ClassifyId='{5}'",
             model.ClassifyInstruction,model.ClassifyNo,model.ClassifyNet,model.ClassifyTag,model.ClassifyTime,model.ClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }

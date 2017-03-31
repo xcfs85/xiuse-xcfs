@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.ordermenu_ model)
         {
-            string strSql=String.Format(@"Insert Into ordermenu_(OrderId,MenuName,MenuPrice,MenuTag,MenuImage,MenuInstruction,DiscoutFlag,DiscountName,DiscountContent,DiscountType,MenuServing) 
-                                        values({0},'{1}',{2},'{3}','{4}','{5}',{6},'{7}',{8},{9},{10})",
-                                        model.OrderId,model.MenuName,model.MenuPrice,model.MenuTag,model.MenuImage,model.MenuInstruction,model.DiscoutFlag,model.DiscountName,model.DiscountContent,model.DiscountType,model.MenuServing);
+            string strSql=String.Format(@"Insert Into ordermenu_(OrderId,MenuName,MenuPrice,MenuTag,MenuImage,MenuInstruction,DiscoutFlag,DiscountName,DiscountContent,DiscountType,MenuServing,OrderMenuId) 
+                                        values('{0}','{1}',{2},'{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}','{11}')",
+                                        model.OrderId,model.MenuName,model.MenuPrice,model.MenuTag,model.MenuImage,model.MenuInstruction,model.DiscoutFlag,model.DiscountName,model.DiscountContent,model.DiscountType,model.MenuServing,model.OrderMenuId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }

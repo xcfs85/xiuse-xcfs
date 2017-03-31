@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_recharge model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_recharge(MemberId,RechargeType,RechargeAmount,Balance,MemberCardNo,RechargeTime) 
-                                        values({0},{1},{2},{3},'{4}','{5}')",
-                                        model.MemberId,model.RechargeType,model.RechargeAmount,model.Balance,model.MemberCardNo,model.RechargeTime);
+            string strSql=String.Format(@"Insert Into xiuse_recharge(MemberId,RechargeType,RechargeAmount,Balance,MemberCardNo,RechargeTime,RechargeId) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                                        model.MemberId,model.RechargeType,model.RechargeAmount,model.Balance,model.MemberCardNo,model.RechargeTime,model.RechargeId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -36,8 +36,8 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_recharge model)
         {
             string strSql=String.Format(@"Update xiuse_recharge Set 
-            MemberId='{0}',RechargeType={1},RechargeAmount={2},Balance={3},MemberCardNo='{4}',RechargeTime='{5}' 
-            Where RechargeId={6}",
+            MemberId='{0}',RechargeType='{1}',RechargeAmount='{2}',Balance='{3}',MemberCardNo='{4}',RechargeTime='{5}' 
+            Where RechargeId='{6}'",
             model.MemberId,model.RechargeType,model.RechargeAmount,model.Balance,model.MemberCardNo,model.RechargeTime,model.RechargeId);
             return AosyMySql.ExecuteforBool(strSql);
         }

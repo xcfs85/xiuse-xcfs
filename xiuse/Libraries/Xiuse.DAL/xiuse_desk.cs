@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_desk model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_desk(RestaurantId,DeskName,TakeOut,DeskDel,DeskState,DeskTime) 
-                                        values('{0}','{1}',{2},{3},{4},'{5}')",
-                                        model.RestaurantId,model.DeskName,model.TakeOut,model.DeskDel,model.DeskState,model.DeskTime);
+            string strSql=String.Format(@"Insert Into xiuse_desk(RestaurantId,DeskName,TakeOut,DeskDel,DeskState,DeskTime,DeskId) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}')",
+                                        model.RestaurantId,model.DeskName,model.TakeOut,model.DeskDel,model.DeskState,model.DeskTime,model.DeskId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
