@@ -50,7 +50,7 @@ namespace Xiuse.App.Controllers.OrderBill
             else
             {
                 resultMsg.Info = "1";
-                resultMsg.Data = "{'OrderId':'" +flag+"'}";
+                resultMsg.Data =flag;
             }
             return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg)); ;
 

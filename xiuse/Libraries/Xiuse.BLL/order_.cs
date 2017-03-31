@@ -23,7 +23,7 @@ namespace Xiuse.BLL
             OrderModel.OrderId = Guid.NewGuid().ToString().Replace("-","");
             OrderModel.DeskId = Convert.ToString(obj.DeskId);
             OrderModel.BillAmount = Convert.ToDecimal(obj.BillAmount);
-            //OrderModel.Alipay = Convert.ToDecimal(obj.Alipay);
+            OrderModel.AccountsPayable = Convert.ToDecimal(obj.AccountsPayable);
             //OrderModel.BankCard = Convert.ToDecimal(obj.BankCard);
             //OrderModel.Cash = Convert.ToDecimal(obj.Cash);
             OrderModel.ClearDeskState = Convert.ToInt16(obj.ClearDeskState);

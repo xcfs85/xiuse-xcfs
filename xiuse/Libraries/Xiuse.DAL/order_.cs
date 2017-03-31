@@ -22,9 +22,9 @@ namespace  Xiuse.DAL
         public bool NewOrder(Xiuse.Model.order_ model)
         {
            
-            string strSql = String.Format(@"Insert Into order_(DeskId,BillAmount,DishCount,CustomerNum,OrderbeginTime,ServiceUserId,OrderId) 
-                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
-                                      model.DeskId, model.BillAmount, model.DishCount, model.CustomerNum, model.OrderbeginTime, model.ServiceUserId, model.OrderId);
+            string strSql = String.Format(@"Insert Into order_(DeskId,BillAmount,DishCount,CustomerNum,OrderbeginTime,ServiceUserId,OrderId,AccountsPayable) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}',{7})",
+                                      model.DeskId, model.BillAmount, model.DishCount, model.CustomerNum, model.OrderbeginTime, model.ServiceUserId, model.OrderId,model.AccountsPayable);
     
             return AosyMySql.ExecuteforBool(strSql);
         }
