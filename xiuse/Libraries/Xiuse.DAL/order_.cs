@@ -189,10 +189,10 @@ namespace  Xiuse.DAL
                 modelBill.Order.Alipay = (decimal)dr.ItemArray[10];
                 modelBill.Order.MembersCard = (decimal)dr.ItemArray[11];
                 modelBill.Order.OrderbeginTime = (DateTime)dr.ItemArray[13];
-                if (dr.ItemArray[14])
-                {
-                modelBill.Order.OrderEndTime = (DateTime)dr.ItemArray[14];
-                }
+                //if (dr.ItemArray[14])
+                //{
+                //modelBill.Order.OrderEndTime = (DateTime)dr.ItemArray[14];
+                //}
 
                 string strSql2 = string.Format("select * from ordermenu_ where orderid='{0}'", modelBill.Order.OrderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
