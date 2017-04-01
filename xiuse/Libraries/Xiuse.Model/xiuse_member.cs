@@ -19,7 +19,7 @@ namespace Xiuse.Model
 	private string _MemberReference;
 	private string _MemberPassword;
 	private Int16 _MemberState;
-	private string _MemberTime;
+	private DateTime _MemberTime;
 	private string _RestaurantId;
         #endregion
 
@@ -127,7 +127,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 会员创建时间[MemberTime]
 	        /// </summary>
-	        public string MemberTime
+	        public DateTime MemberTime
 	        {
 	            get{ return _MemberTime; }
 	            set{ _MemberTime=value; }

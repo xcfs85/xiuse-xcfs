@@ -167,7 +167,7 @@ namespace  Xiuse.DAL
         /// <param name="DeskId">²Í×ÀId</param>
         public List<OrderBill> GetUncleanedDesksbyId(string DeskId)
         {
-            string strSql = string.Format("select * from order_  where deskid='{0}'and order_.ClearDeskState='0'and date(orderendtime)=date(curdate())", DeskId);
+            string strSql = string.Format("select * from order_  where DeskId='{0}'and ClearDeskState='0'and date(orderbegintime)=date(curdate())", DeskId);
             //string strSql2=string.Format("select * from ordermenu_ where orderid in (select orderid from order_  left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where xiuse_desk.RestaurantId='{0}'and order_.ClearDeskState='0'", RestauratId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             List<OrderBill> OB = new List<OrderBill>();
@@ -175,20 +175,25 @@ namespace  Xiuse.DAL
             {
                 DataRow dr = ds.Tables[0].Rows[i];
                 OrderBill modelBill = new OrderBill();
-                modelBill.Order.OrderId = dr["OrderId"].ToString();
-                modelBill.Order.DeskId = (string)dr["DeskId"];
-                modelBill.Order.BillAmount = (decimal)dr["BillAmount"];
-                modelBill.Order.AccountsPayable = (decimal)dr["AccountsPayable"];
-                modelBill.Order.Refunds = (decimal)dr["Refunds"];
-                modelBill.Order.DishCount = (int)dr["DishCount"];
-                modelBill.Order.OrderState = (short)dr["OrderState"];
-                modelBill.Order.Cash = (decimal)dr["Cash"];
-                modelBill.Order.BankCard = (decimal)dr["BankCard"];
-                modelBill.Order.WeiXin = (decimal)dr["WeiXin"];
-                modelBill.Order.Alipay = (decimal)dr["Alipay"];
-                modelBill.Order.MembersCard = (decimal)dr["MembersCard"];
-                modelBill.Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
-                modelBill.Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
+               
+                modelBill.Order.OrderId = dr.ItemArray[0].ToString();
+                modelBill.Order.DeskId = dr.ItemArray[1].ToString();
+                modelBill.Order.BillAmount = (decimal)dr.ItemArray[2];
+                modelBill.Order.AccountsPayable = (decimal)dr.ItemArray[3];
+                modelBill.Order.Refunds = (decimal)dr.ItemArray[4];
+                modelBill.Order.DishCount = (int)dr.ItemArray[5];
+                modelBill.Order.OrderState = (short)dr.ItemArray[6];
+                modelBill.Order.Cash = (decimal)dr.ItemArray[7];
+                modelBill.Order.BankCard = (decimal)dr.ItemArray[8];
+                modelBill.Order.WeiXin = (decimal)dr.ItemArray[9];
+                modelBill.Order.Alipay = (decimal)dr.ItemArray[10];
+                modelBill.Order.MembersCard = (decimal)dr.ItemArray[11];
+                modelBill.Order.OrderbeginTime = (DateTime)dr.ItemArray[13];
+                if (dr.ItemArray[14])
+                {
+                modelBill.Order.OrderEndTime = (DateTime)dr.ItemArray[14];
+                }
+
                 string strSql2 = string.Format("select * from ordermenu_ where orderid='{0}'", modelBill.Order.OrderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)

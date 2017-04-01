@@ -12,12 +12,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var success;
-            var data = [{ "UserId": "00000000000000000000000000000001", "RestaurantId": "00000000000000000000000000000000", "UserName": "admin", "Weixin": "weixin", "CellPhone": 15811111111.0, "Email": "admin@163.com", "Password": "flaskjdflj===", "UserRole": 0, "ParentUserId": "-1", "OwnRestaurant": 0, "Time": "2016/12/12 13:20:42" }];
+            var data = [{ "OrderId": "00000000000000000000000000000001", "DeskId": "00000000000000000000000000000001", "BillAmount": 132.00, "AccountsPayable": 100.00, "Refunds": 0.00, "DishCount": 32, "OrderState": 1, "Cash": 100.00, "BankCard": 0.00, "WeiXin": 0.00, "Alipay": 0.00, "MembersCard": 0.00, "OrderbeginTime": "2016-12-21T11:22:14", "OrderEndTime": "2016-12-04T14:20:15", "ClearDeskState": 0, "CustomerNum": 0, "ServiceUserId": null }];
             $("#test").click(function () {
                 alert("sdf1");
       $.ajax({
           type: 'POST',
-          url: "http://localhost:11919/api/User",
+          url: "http://localhost:11919/api/Order/addOrder",
           data: data,
           success: success,
           dataType:"json"

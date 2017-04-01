@@ -15,6 +15,11 @@ namespace Xiuse.Model
         private order_ _order;
         private List<ordermenu_> _ordermenu;
 
+        public OrderBill()
+        {
+            _order = new order_();
+            _ordermenu = new List<ordermenu_>();
+        }
         /// <summary>
         /// 订单
         /// </summary>

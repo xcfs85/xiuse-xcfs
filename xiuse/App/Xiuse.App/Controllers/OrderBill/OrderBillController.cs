@@ -32,6 +32,7 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("SameDayOrderDesk")]
         public List<Model.OrderBill> GetSameDayOrderDesk(string DeskId)
         {
+
             return Order.GetUncleanedDesksbyId(DeskId);
          
         }

@@ -269,7 +269,7 @@ namespace Xiuse.BLL
                     model.MemberReference = dr["MemberReference"].ToString();
                     model.MemberPassword = dr["MemberPassword"].ToString();
                     model.MemberState = (short)dr["MemberState"];
-                    model.MemberTime = dr["MemberTime"].ToString();
+                    model.MemberTime = (DateTime)dr["MemberTime"];
                     model.RestaurantId = (string)dr["RestaurantId"];
                     Tmp.Add(model);
                 }
