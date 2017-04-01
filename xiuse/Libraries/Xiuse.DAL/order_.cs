@@ -25,7 +25,8 @@ namespace  Xiuse.DAL
             string strSql = String.Format(@"Insert Into order_(DeskId,BillAmount,DishCount,CustomerNum,OrderbeginTime,ServiceUserId,OrderId,AccountsPayable) 
                                         values('{0}','{1}','{2}','{3}','{4}','{5}','{6}',{7})",
                                       model.DeskId, model.BillAmount, model.DishCount, model.CustomerNum, model.OrderbeginTime, model.ServiceUserId, model.OrderId,model.AccountsPayable);
-    
+            string DeskState = String.Format(@"update xiuse_desk set DeskState='1' where DeskId={0}", model.DeskId);
+            AosyMySql.ExecuteforBool(DeskState);
             return AosyMySql.ExecuteforBool(strSql);
         }
 
@@ -37,8 +38,8 @@ namespace  Xiuse.DAL
         public bool Insert(Xiuse.Model.order_ model)
         {
             string strSql=String.Format(@"Insert Into order_(DeskId,BillAmount,AccountsPayable,Refunds,DishCount,OrderState,Cash,BankCard,WeiXin,Alipay,MembersCard,OrderbeginTime,OrderEndTime) 
-                                        values({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},'{11}','{12}')",
-                                        model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime);
+                                        values('{0}',{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},'{11}','{12}','{13}')",
+                                        model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,model.OrderId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -53,7 +54,7 @@ namespace  Xiuse.DAL
         {
             string strSql=String.Format(@"Update order_ Set 
             DeskId='{0}',BillAmount={1},AccountsPayable={2},Refunds={3},DishCount={4},OrderState={5},Cash={6},BankCard={7},WeiXin={8},Alipay={9},MembersCard={10},OrderbeginTime='{11}',OrderEndTime='{12}' 
-            Where OrderId={13}",
+            Where OrderId='{13}'",
             model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,model.OrderId);
             return AosyMySql.ExecuteforBool(strSql);
         }
