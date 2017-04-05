@@ -189,10 +189,10 @@ namespace  Xiuse.DAL
                 modelBill.Order.Alipay = (decimal)dr.ItemArray[10];
                 modelBill.Order.MembersCard = (decimal)dr.ItemArray[11];
                 modelBill.Order.OrderbeginTime = (DateTime)dr.ItemArray[13];
-                //if (dr.ItemArray[14])
-                //{
-                //modelBill.Order.OrderEndTime = (DateTime)dr.ItemArray[14];
-                //}
+                if (!dr.IsNull(14))
+                {
+                    modelBill.Order.OrderEndTime = (DateTime)dr.ItemArray[14];
+                }
 
                 string strSql2 = string.Format("select * from ordermenu_ where orderid='{0}'", modelBill.Order.OrderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
@@ -201,18 +201,20 @@ namespace  Xiuse.DAL
                     DataRow dr2 = ds2.Tables[0].Rows[j];
                     Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
 
-                    modelMenu.OrderMenuId = (string)dr["OrderMenuId"];
-                    modelMenu.OrderId = (string)dr["OrderId"];
-                    modelMenu.MenuName = dr["MenuName"].ToString();
-                    modelMenu.MenuPrice = (decimal)dr["MenuPrice"];
-                    modelMenu.MenuTag = dr["MenuTag"].ToString();
-                    modelMenu.MenuImage = dr["MenuImage"].ToString();
-                    modelMenu.MenuInstruction = dr["MenuInstruction"].ToString();
-                    modelMenu.DiscoutFlag = (short)dr["DiscoutFlag"];
-                    modelMenu.DiscountName = dr["DiscountName"].ToString();
-                    modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
-                    modelMenu.DiscountType = (short)dr["DiscountType"];
-                    modelMenu.MenuServing = (short)dr["MenuServing"];
+                    modelMenu.OrderMenuId = (string)dr2.ItemArray[0];
+                    modelMenu.OrderId = (string)dr2.ItemArray[1];
+                    modelMenu.MenuName = dr2.ItemArray[2].ToString();
+                    modelMenu.MenuPrice = (decimal)dr2.ItemArray[3];
+                    modelMenu.MenuTag = dr2.ItemArray[4].ToString();
+                    modelMenu.MenuNum = (int)dr2.ItemArray[5];
+                    modelMenu.MenuImage = dr2.ItemArray[6].ToString();
+                    
+                    modelMenu.MenuInstruction = dr2.ItemArray[7].ToString();
+                    modelMenu.DiscoutFlag = (short)dr2.ItemArray[8];
+                    modelMenu.DiscountName = dr2.ItemArray[9].ToString();
+                    modelMenu.DiscountContent = (decimal)dr2.ItemArray[10];
+                    modelMenu.DiscountType = (short)dr2.ItemArray[11];
+                    modelMenu.MenuServing = (short)dr2.ItemArray[12];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
                 OB.Add(modelBill);

@@ -13,6 +13,7 @@ namespace Xiuse.Model
 	private string _OrderMenuId;
 	private string _OrderId;
 	private string _MenuName;
+        private int _MenuNum;
 	private decimal _MenuPrice;
 	private string _MenuTag;
 	private string _MenuImage;
@@ -25,7 +26,15 @@ namespace Xiuse.Model
         #endregion
 
         #region 成员属性...
-	
+        /// <summary>
+        ///菜品数量
+        /// </summary>
+        public int MenuNum
+        {
+            get { return _MenuNum; }
+            set { _MenuNum = value; }
+        }
+
 	        /// <summary>
 	        /// 订单ID[OrderMenuId]
 	        /// </summary>
