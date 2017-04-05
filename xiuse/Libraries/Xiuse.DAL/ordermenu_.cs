@@ -37,13 +37,21 @@ namespace  Xiuse.DAL
         {
             string strSql=String.Format(@"Update ordermenu_ Set 
             OrderId='{0}',MenuName='{1}',MenuPrice={2},MenuTag='{3}',MenuImage='{4}',MenuInstruction='{5}',DiscoutFlag={6},DiscountName='{7}',DiscountContent={8},DiscountType={9},MenuServing={10} 
-            Where OrderMenuId={11}",
+            Where OrderMenuId='{11}'",
             model.OrderId,model.MenuName,model.MenuPrice,model.MenuTag,model.MenuImage,model.MenuInstruction,model.DiscoutFlag,model.DiscountName,model.DiscountContent,model.DiscountType,model.MenuServing,model.OrderMenuId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
+        /// <summary>
+        ///更新菜品状态  是否上桌
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool UpdateMenuState(Xiuse.Model.ordermenu_ model)
+        {
+            string strSql = String.Format(@"UpDATE ordermenu_ set MenuServing='{0}' where OrderMenuId='{1}'", model.MenuServing, model.OrderMenuId);
+            return AosyMySql.ExecuteforBool(strSql);
+        }
 
-        
         /// <summary>
         ///  删除一条数据
         /// </summary>

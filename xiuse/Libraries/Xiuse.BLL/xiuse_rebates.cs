@@ -214,7 +214,7 @@ namespace Xiuse.BLL
                     model.MemberCardNo = dr["MemberCardNo"].ToString();
                     model.RebatesType = dr["RebatesType"].ToString();
                     model.RebatesAmount = (decimal)dr["RebatesAmount"];
-                    model.DateTime = dr["DateTime"].ToString();
+                    model.DateTime = (DateTime)dr["DateTime"];
                     Tmp.Add(model);
                 }
             }

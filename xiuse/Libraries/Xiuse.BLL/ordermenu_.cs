@@ -36,7 +36,13 @@ namespace Xiuse.BLL
         {
             return dal.Update(model);
         }
-        
+
+
+
+        public bool UpdateMenuState(Xiuse.Model.ordermenu_ model)
+        {
+            return dal.UpdateMenuState(model);
+        }
    
         /// <summary>
         ///  删除一条数据

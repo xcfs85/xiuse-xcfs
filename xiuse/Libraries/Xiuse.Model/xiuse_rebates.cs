@@ -15,7 +15,7 @@ namespace Xiuse.Model
 	private string _MemberCardNo;
 	private string _RebatesType;
 	private decimal _RebatesAmount;
-	private string _DateTime;
+	private DateTime _DateTime;
         #endregion
 
         #region 成员属性...
@@ -78,7 +78,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 日期[DateTime]
 	        /// </summary>
-	        public string DateTime
+	        public DateTime DateTime
 	        {
 	            get{ return _DateTime; }
 	            set{ _DateTime=value; }

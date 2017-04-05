@@ -16,7 +16,7 @@ namespace Xiuse.Model
 	private Int16 _CRecordsType;
 	private decimal _Amount;
 	private decimal _Balance;
-	private string _ConsumptionTime;
+	private DateTime _ConsumptionTime;
 	private string _OrderId;
         #endregion
 
@@ -91,7 +91,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 消费日期[ConsumptionTime]
 	        /// </summary>
-	        public string ConsumptionTime
+	        public DateTime ConsumptionTime
 	        {
 	            get{ return _ConsumptionTime; }
 	            set{ _ConsumptionTime=value; }

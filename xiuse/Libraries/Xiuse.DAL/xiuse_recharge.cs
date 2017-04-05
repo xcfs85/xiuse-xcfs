@@ -74,7 +74,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public DataSet GetModelsAtRestaurant(string RestaurantId)
         {
-            string strSql = String.Format(@" select* from xiuse_member left join xiuse_recharge on xiuse_member.MemberId = xiuse_recharge.MemberId where xiuse_member={ 0}", RestaurantId);
+            string strSql = String.Format(@" select* from xiuse_member left join xiuse_recharge on xiuse_member.MemberId = xiuse_recharge.MemberId where xiuse_member.RestaurantId='{0}'", RestaurantId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             return ds;
         }
@@ -116,7 +116,7 @@ namespace  Xiuse.DAL
 				model.RechargeAmount=(decimal)dr["RechargeAmount"];
 				model.Balance=(decimal)dr["Balance"];
 				model.MemberCardNo=dr["MemberCardNo"].ToString();
-				model.RechargeTime=dr["RechargeTime"].ToString();
+				model.RechargeTime= (DateTime)dr["RechargeTime"];
                 return model;
             }
             else

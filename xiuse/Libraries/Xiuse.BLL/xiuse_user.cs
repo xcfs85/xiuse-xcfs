@@ -244,7 +244,7 @@ namespace Xiuse.BLL
                     model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
                     model.OwnRestaurant = (short)dr["OwnRestaurant"];
-                    model.Time = dr["Time"].ToString();
+                    model.Time = (DateTime)dr["Time"];
                     Tmp.Add(model);
                 }
             }

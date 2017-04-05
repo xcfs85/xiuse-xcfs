@@ -16,7 +16,7 @@ namespace Xiuse.Model
 	private decimal _RechargeAmount;
 	private decimal _Balance;
 	private string _MemberCardNo;
-	private string _RechargeTime;
+	private DateTime _RechargeTime;
         #endregion
 
         #region ≥…‘± Ù–‘...
@@ -90,7 +90,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// [RechargeTime]
 	        /// </summary>
-	        public string RechargeTime
+	        public DateTime RechargeTime
 	        {
 	            get{ return _RechargeTime; }
 	            set{ _RechargeTime=value; }

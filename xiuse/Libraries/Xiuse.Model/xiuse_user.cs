@@ -20,7 +20,7 @@ namespace Xiuse.Model
 	private Int16 _UserRole;
 	private string _ParentUserId;
 	private Int16 _OwnRestaurant;
-	private string _Time;
+	private DateTime _Time;
         private Int16 _DelTag;
         #endregion
 
@@ -139,7 +139,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// ÐÞ¸ÄÊ±¼ä[Time]
 	        /// </summary>
-	        public string Time
+	        public DateTime Time
 	        {
 	            get{ return _Time; }
 	            set{ _Time=value; }

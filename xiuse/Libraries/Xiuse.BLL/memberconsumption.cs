@@ -218,7 +218,7 @@ namespace Xiuse.BLL
                     model.CRecordsType = (byte)dr["CRecordsType"];
                     model.Amount = (decimal)dr["Amount"];
                     model.Balance = (decimal)dr["Balance"];
-                    model.ConsumptionTime = dr["ConsumptionTime"].ToString();
+                    model.ConsumptionTime = (DateTime)dr["ConsumptionTime"];
                     model.OrderId = (string)dr["OrderId"];
                     Tmp.Add(model);
                 }

@@ -109,7 +109,7 @@ namespace  Xiuse.DAL
 				model.UserRole=(short)dr["UserRole"];
 				model.ParentUserId=dr["ParentUserId"].ToString();
 				model.OwnRestaurant=(short)dr["OwnRestaurant"];
-				model.Time=dr["Time"].ToString();
+				model.Time= (DateTime)dr["Time"];
                 return model;
             }
             else
@@ -155,7 +155,7 @@ namespace  Xiuse.DAL
                     model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
                     model.OwnRestaurant = (short)dr["OwnRestaurant"];
-                    model.Time = dr["Time"].ToString();
+                    model.Time = (DateTime)dr["Time"];
                     models.Add(model);
                 }
                 return models;
@@ -189,7 +189,7 @@ namespace  Xiuse.DAL
                     model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
                     model.OwnRestaurant = (short)dr["OwnRestaurant"];
-                    model.Time = dr["Time"].ToString();
+                    model.Time = (DateTime)dr["Time"];
                     models.Add(model);
                 }
                 return models;

@@ -218,7 +218,7 @@ namespace Xiuse.BLL
                     model.ClassifyName = dr["ClassifyName"].ToString();
                     model.ClassRemark = dr["ClassRemark"].ToString();
                     model.ClassifyMemberNum = (int)dr["ClassifyMemberNum"];
-                    model.ClassifyTime = dr["ClassifyTime"].ToString();
+                    model.ClassifyTime = (DateTime)dr["ClassifyTime"];
                     model.DelTag = (byte)dr["DelTag"];
                     Tmp.Add(model);
                 }

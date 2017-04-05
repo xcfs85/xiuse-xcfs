@@ -15,7 +15,7 @@ namespace Xiuse.Model
         private string _ClassifyName;
         private string _ClassRemark;
         private int _ClassifyMemberNum;
-        private string _ClassifyTime;
+        private DateTime _ClassifyTime;
         private Int16 _DelTag;
         private string _RestaurantId;
         #endregion
@@ -80,7 +80,7 @@ namespace Xiuse.Model
         /// <summary>
         /// ÐÞ¸ÄÊ±¼ä[ClassifyTime]
         /// </summary>
-        public string ClassifyTime
+        public DateTime ClassifyTime
         {
             get { return _ClassifyTime; }
             set { _ClassifyTime = value; }

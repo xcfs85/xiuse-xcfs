@@ -216,7 +216,7 @@ namespace Xiuse.BLL
                     model.RechargeAmount = (decimal)dr["RechargeAmount"];
                     model.Balance = (decimal)dr["Balance"];
                     model.MemberCardNo = dr["MemberCardNo"].ToString();
-                    model.RechargeTime = dr["RechargeTime"].ToString();
+                    model.RechargeTime = (DateTime)dr["RechargeTime"];
                     Tmp.Add(model);
                 }
             }

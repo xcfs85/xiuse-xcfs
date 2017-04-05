@@ -31,6 +31,10 @@ namespace Xiuse.App.Controllers.OrderBill
         BLL.order_ OrderBLL = new BLL.order_();
         BLL.ordermenu_ OrderMenuBLL = new BLL.ordermenu_();
 
+
+  
+
+
         /// <summary>
         /// 添加订单，订单中有菜品信息
         /// </summary>
@@ -159,19 +163,17 @@ namespace Xiuse.App.Controllers.OrderBill
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
         }
+
         ///<summary>
         /// 设定已上菜品
         /// 
         /// </summary>
+        [HttpPost]
         [Route("IsOnTable")]
-        public HttpResponseMessage PostSetOnTable([FromBody]Model.ordermenu_ orderMenu)
+
+        public HttpResponseMessage SetOnTable([FromBody]Xiuse.Model.ordermenu_ model)
         {
-            orderMenu.MenuServing = 1;
-            if (orderMenu == null || OrderMenuBLL.Exists(orderMenu.OrderId))
-            {
-                throw new HttpRequestException();
-            }
-            if (OrderMenuBLL.Update(orderMenu))
+            if(OrderMenuBLL.UpdateMenuState(model))
                 return new HttpResponseMessage(HttpStatusCode.OK);
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);
