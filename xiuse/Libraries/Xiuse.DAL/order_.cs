@@ -270,7 +270,8 @@ namespace  Xiuse.DAL
                     modelMenu.DiscoutFlag = (short)dr2["DiscoutFlag"];
                     modelMenu.DiscountName = dr2["DiscountName"].ToString();
                     modelMenu.DiscountContent = (decimal)dr2["DiscountContent"];
-                    modelMenu.DiscountType = (byte)dr2["DiscountType"];
+                    modelMenu.DiscountType = (short)dr2["DiscountType"];
+                    modelMenu.MenuNum = (int)dr2["MenuNum"];
                     modelMenu.MenuServing = (short)dr2["MenuServing"];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
