@@ -43,6 +43,21 @@ namespace Xiuse.App.Controllers.Member
         {
             return MemberBLL.Search(exp, exp, exp); ;
         }
+
+
+
+        /// <summary>
+        /// 随机生成一个会员编号
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetMemberId")]
+        public string GetMemberId()
+        {
+            string MemberId = Guid.NewGuid().ToString();
+            return MemberId;
+        }
+
+
         /// <summary>
         /// 添加餐厅的会员
         /// </summary>

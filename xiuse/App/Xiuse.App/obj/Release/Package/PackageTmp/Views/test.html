@@ -12,12 +12,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var success;
-            var data = [{ "OrderId": "00000000000000000000000000000001", "DeskId": "00000000000000000000000000000001", "BillAmount": 132.00, "AccountsPayable": 100.00, "Refunds": 0.00, "DishCount": 32, "OrderState": 1, "Cash": 100.00, "BankCard": 0.00, "WeiXin": 0.00, "Alipay": 0.00, "MembersCard": 0.00, "OrderbeginTime": "2016-12-21T11:22:14", "OrderEndTime": "2016-12-04T14:20:15", "ClearDeskState": 0, "CustomerNum": 0, "ServiceUserId": null }];
+            var data = [{ "OrderMenuId": "026696cac6bd400a9244c2ce3d04810f", "MenuServing": "1"}];
             $("#test").click(function () {
-                alert("sdf1");
+         
       $.ajax({
           type: 'POST',
-          url: "http://localhost:11919/api/Order/addOrder",
+          url: "http://localhost:11919/api/Order/IsOnTable",
           data: data,
           success: success,
           dataType:"json"

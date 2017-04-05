@@ -250,16 +250,16 @@
       <publishTime>01/16/2017 16:56:13</publishTime>
     </File>
     <File Include="bin/Xiuse.App.dll">
-      <publishTime>04/01/2017 11:31:26</publishTime>
+      <publishTime>04/05/2017 16:03:37</publishTime>
     </File>
     <File Include="bin/Xiuse.BLL.dll">
-      <publishTime>04/01/2017 11:31:23</publishTime>
+      <publishTime>04/05/2017 16:03:33</publishTime>
     </File>
     <File Include="bin/Xiuse.DAL.dll">
-      <publishTime>04/01/2017 11:31:23</publishTime>
+      <publishTime>04/05/2017 16:03:32</publishTime>
     </File>
     <File Include="bin/Xiuse.Model.dll">
-      <publishTime>04/01/2017 11:31:23</publishTime>
+      <publishTime>04/05/2017 14:52:50</publishTime>
     </File>
     <File Include="bin/zh-Hans/EntityFramework.resources.dll">
       <publishTime>03/02/2015 09:32:38</publishTime>
@@ -412,7 +412,7 @@
       <publishTime>01/16/2017 16:56:11</publishTime>
     </File>
     <File Include="Views/test.html">
-      <publishTime>03/31/2017 11:05:41</publishTime>
+      <publishTime>04/05/2017 14:45:05</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>01/16/2017 16:56:11</publishTime>
