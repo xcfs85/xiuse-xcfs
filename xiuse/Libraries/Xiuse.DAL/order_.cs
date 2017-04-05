@@ -250,7 +250,8 @@ namespace  Xiuse.DAL
                  Order.Alipay = (decimal)dr["Alipay"];
                 Order.MembersCard = (decimal)dr["MembersCard"];
                 Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
-                Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
+                if(!dr.IsNull("OrderEndTime"))
+                    Order.OrderEndTime = (DateTime)dr["OrderEndTime"];
                 modelBill.Order = Order;
                 string strSql2 = string.Format("select * from ordermenu_ where orderid='{0}'", orderId);
                 DataSet ds2 = AosyMySql.ExecuteforDataSet(strSql2);
@@ -269,7 +270,8 @@ namespace  Xiuse.DAL
                     modelMenu.DiscoutFlag = (short)dr2["DiscoutFlag"];
                     modelMenu.DiscountName = dr2["DiscountName"].ToString();
                     modelMenu.DiscountContent = (decimal)dr2["DiscountContent"];
-                    modelMenu.DiscountType = (byte)dr2["DiscountType"];
+                    modelMenu.DiscountType = (short)dr2["DiscountType"];
+                    modelMenu.MenuNum = (int)dr2["MenuNum"];
                     modelMenu.MenuServing = (short)dr2["MenuServing"];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
