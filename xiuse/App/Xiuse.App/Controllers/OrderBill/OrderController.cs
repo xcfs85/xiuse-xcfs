@@ -19,6 +19,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Xiuse.App.Base;
 using Xiuse.App.Common;
 using Xiuse.App.Models;
 
@@ -26,7 +27,7 @@ namespace Xiuse.App.Controllers.OrderBill
 {
 
     [RoutePrefix("api/Order")]
-    public class OrderController : ApiController
+    public class OrderController : BaseResultMsg
     {
         BLL.order_ OrderBLL = new BLL.order_();
         BLL.ordermenu_ OrderMenuBLL = new BLL.ordermenu_();
@@ -56,7 +57,7 @@ namespace Xiuse.App.Controllers.OrderBill
                 resultMsg.Info = "1";
                 resultMsg.Data = flag;
             }
-            return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg)); ;
+            return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg)); 
 
 
 
@@ -81,23 +82,23 @@ namespace Xiuse.App.Controllers.OrderBill
         }
 
 
-        /// <summary>
-        /// 添加订单
-        /// </summary>
-        /// <param name="member">订单信息</param>
-        /// <returns></returns>
-        [Route("AddOrder")]
-        public HttpResponseMessage PostAddOrder([FromBody]Model.order_ order)
-        {
-            if (order == null || OrderBLL.Exists(order.OrderId))
-            {
-                throw new HttpRequestException();
-            }
-            if (OrderBLL.Insert(order))
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
-        }
+        ///// <summary>
+        ///// 添加订单
+        ///// </summary>
+        ///// <param name="member">订单信息</param>
+        ///// <returns></returns>
+        //[Route("AddOrder")]
+        //public HttpResponseMessage PostAddOrder([FromBody]Model.order_ order)
+        //{
+        //    if (order == null || OrderBLL.Exists(order.OrderId))
+        //    {
+        //        throw new HttpRequestException();
+        //    }
+        //    if (OrderBLL.Insert(order))
+        //        return new HttpResponseMessage(HttpStatusCode.OK);
+        //    else
+        //        return new HttpResponseMessage(HttpStatusCode.Gone);
+        //}
 
 
 
@@ -114,11 +115,27 @@ namespace Xiuse.App.Controllers.OrderBill
             {
                 throw new HttpRequestException();
             }
+            orderMenu.OrderMenuId = Guid.NewGuid().ToString("N");
             if (OrderMenuBLL.Insert(orderMenu))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
+
+
+        [Route("AddOrderMenus")]
+        public HttpResponseMessage PostAddOrderMenus(dynamic obj)
+        {
+
+            int count = OrderMenuBLL.AddOrderMenus(obj);
+            if (count == 0)
+            return base.ReturnData("0", "", StatusCodeEnum.Error);
+        else
+          return base.ReturnData("1", count, StatusCodeEnum.Success);
+  
+        }
+
+
         /// <summary>
         /// 修改订单
         /// </summary>

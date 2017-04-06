@@ -20,7 +20,7 @@ namespace Xiuse.BLL
         public string NewOrder(dynamic obj)
         {
             Model.order_ OrderModel = new Model.order_();
-            OrderModel.OrderId = Guid.NewGuid().ToString().Replace("-","");
+            OrderModel.OrderId = Guid.NewGuid().ToString("N");
             OrderModel.DeskId = Convert.ToString(obj.DeskId);
             OrderModel.BillAmount = Convert.ToDecimal(obj.BillAmount);
             OrderModel.AccountsPayable = Convert.ToDecimal(obj.AccountsPayable);

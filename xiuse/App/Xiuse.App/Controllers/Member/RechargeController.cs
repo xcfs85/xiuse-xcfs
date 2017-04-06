@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Xiuse;
+using Xiuse.App.Base;
 
 namespace Xiuse.App.Controllers.Member
 {
@@ -12,7 +13,7 @@ namespace Xiuse.App.Controllers.Member
     /// <summary>
     /// 会员充值记录接口
     /// </summary>
-    public class RechargeController : ApiController
+    public class RechargeController : BaseResultMsg
     {
         Xiuse.BLL.xiuse_recharge BllRecharge = new BLL.xiuse_recharge();
 
@@ -47,6 +48,8 @@ namespace Xiuse.App.Controllers.Member
         {
             if (Recharge == null)
                 throw new HttpRequestException();
+            Recharge.RechargeId = Guid.NewGuid().ToString("N");
+            Recharge.RechargeTime = DateTime.Now;
             if (BllRecharge.Insert(Recharge))
                 return new HttpResponseMessage(HttpStatusCode.OK);
             else

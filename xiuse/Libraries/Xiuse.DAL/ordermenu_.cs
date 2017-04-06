@@ -26,9 +26,20 @@ namespace  Xiuse.DAL
 
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+        public int AddOrderMenus(dynamic obj)
+        {
+            List<string> strSqlList = new List<string>();
+            foreach (var model in obj.manus)
+            {
+                string strSql = String.Format(@"Insert Into ordermenu_(OrderId,MenuName,MenuPrice,MenuTag,MenuImage,MenuInstruction,DiscoutFlag,DiscountName,DiscountContent,DiscountType,MenuServing,OrderMenuId) 
+                                        values('{0}','{1}',{2},'{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}','{11}')",
+                                       model.OrderId, model.MenuName, model.MenuPrice, model.MenuTag, model.MenuImage, model.MenuInstruction, model.DiscoutFlag, model.DiscountName, model.DiscountContent, model.DiscountType, model.MenuServing, model.OrderMenuId);
+                strSqlList.Add(strSql);
+            }
+            return AosyMySql.ExecuteListSQL(strSqlList);
+        }
+
         /// <summary>
         /// 更新一条数据
         /// </summary>

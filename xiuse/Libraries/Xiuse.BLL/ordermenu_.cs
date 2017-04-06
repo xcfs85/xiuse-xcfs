@@ -29,6 +29,11 @@ namespace Xiuse.BLL
         }
 
 
+        public int AddOrderMenus(dynamic obj)
+        {
+            return dal.AddOrderMenus(obj);
+        }
+
         /// <summary>
         /// 更新一条数据
         /// </summary>

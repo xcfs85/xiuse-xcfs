@@ -246,6 +246,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Base\BaseResultMsg.cs" />
     <Compile Include="Common\EnumExtension.cs" />
     <Compile Include="Common\HttpResponseExtension.cs" />
     <Compile Include="Common\SignExtension.cs" />
