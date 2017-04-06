@@ -23,11 +23,11 @@ namespace Xiuse.App.Controllers.Revenue
         /// </summary>
         /// <returns></returns>
         [Route("DailyBills")]
-        public List<Model.order_> GetDailyBills()
+        public List<Model.order_> GetDailyBills(string resId)
         {
             BLL.order_ BLLOrder = new BLL.order_();
-            string str = "day(orderendtime)=day(curdate())";
-            return BLLOrder.GetDailyBills(str);
+           
+            return BLLOrder.GetDailyRes(resId);
         }
 
         /// <summary>
@@ -41,6 +41,21 @@ namespace Xiuse.App.Controllers.Revenue
             BLL.ordermenu_ BLLMenu = new BLL.ordermenu_();
             return BLLMenu.GetModel(str);
            
+        }
+
+
+
+        /// <summary>
+        /// 获取当天某餐桌 已完成的订单
+        /// </summary>
+        /// <param name="deskId"></param>
+        /// <returns></returns>
+        [Route("DeskPaid")]
+        public List<Model.order_> GetDeskPaid(string deskId)
+        {
+            BLL.order_ BLLMenu = new BLL.order_();
+            return BLLMenu.GetDailyBills(deskId);
+            
         }
     }
 }

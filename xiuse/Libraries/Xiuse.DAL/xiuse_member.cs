@@ -13,34 +13,39 @@ namespace  Xiuse.DAL
     public class xiuse_member
     {
         public xiuse_member(){}
-        
+
+
+
+
         /// <summary>
         /// 增加一条数据
         /// </summary>
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_member model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_member(MemberClassifyId,MemberCardNo,MemberName,MemberAmount,MemberCell,MemberReference,MemberPassword,MemberState,MemberTime,RestaurantId,MemberId) 
-                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')",
-                                        model.MemberClassifyId,model.MemberCardNo,model.MemberName,model.MemberAmount,model.MemberCell,model.MemberReference,model.MemberPassword,model.MemberState,model.MemberTime,model.RestaurantId,model.MemberId);
+            string strSql = String.Format(@"Insert Into xiuse_member(MemberId,MemberClassifyId,MemberCardNo,MemberName,MemberAmount,MemberCell,MemberReference,MemberPassword,MemberState,MemberTime,RestaurantId,MemberEmail,MemberEnabledPassWord) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}')",
+                                        model.MemberId, model.MemberClassifyId, model.MemberCardNo, model.MemberName, model.MemberAmount, model.MemberCell, model.MemberReference, model.MemberPassword, model.MemberState, model.MemberTime, model.RestaurantId, model.MemberEmail, model.MemberEnabledPassWord);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+
+
         /// <summary>
         /// 更新一条数据
         /// </summary>
         /// <param name="model">对象实体</param>
         public bool Update(Xiuse.Model.xiuse_member model)
         {
-            string strSql=String.Format(@"Update xiuse_member Set 
-            MemberClassifyId='{0}',MemberCardNo='{1}',MemberName='{2}',MemberAmount='{3}',MemberCell='{4}',MemberReference='{5}',MemberPassword='{6}',MemberState='{7}',MemberTime='{8}',RestaurantId='{9}' 
-            Where MemberId='{10}'",
-            model.MemberClassifyId,model.MemberCardNo,model.MemberName,model.MemberAmount,model.MemberCell,model.MemberReference,model.MemberPassword,model.MemberState,model.MemberTime,model.RestaurantId,model.MemberId);
+            string strSql = String.Format(@"Update xiuse_member Set 
+            MemberId='{0}',MemberClassifyId='{1}',MemberCardNo='{2}',MemberName='{3}',MemberAmount='{4}',MemberCell='{5}',MemberReference='{6}',MemberPassword='{7}',MemberState={8},MemberTime='{9}',RestaurantId='{10}',MemberEmail='{11}',MemberEnabledPassWord='{12}' 
+            Where MemberId='{13}'",
+            model.MemberId, model.MemberClassifyId, model.MemberCardNo, model.MemberName, model.MemberAmount, model.MemberCell, model.MemberReference, model.MemberPassword, model.MemberState, model.MemberTime, model.RestaurantId, model.MemberEmail, model.MemberEnabledPassWord, model.MemberId);
             return AosyMySql.ExecuteforBool(strSql);
         }
+
+        
         
 
         
@@ -84,23 +89,25 @@ namespace  Xiuse.DAL
         /// <parame name="MemberId">MemberId</param>
         public Xiuse.Model.xiuse_member GetModel(string MemberId)
         {
-             string strSql=String.Format(@"Select * From xiuse_member Where MemberId='{0}'",MemberId); 
-            DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
-            if(ds.Tables[0].Rows.Count>0)
+            string strSql = String.Format(@"Select * From xiuse_member Where MemberId='{0}'", MemberId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                Xiuse.Model.xiuse_member  model=new Xiuse.Model.xiuse_member();
-                DataRow dr=ds.Tables[0].Rows[0];
-				model.MemberId=(string)dr["MemberId"];
-				model.MemberClassifyId=(string)dr["MemberClassifyId"];
-				model.MemberCardNo=(string)dr["MemberCardNo"];
-				model.MemberName=dr["MemberName"].ToString();
-				model.MemberAmount=(decimal)dr["MemberAmount"];
-				model.MemberCell=dr["MemberCell"].ToString();
-				model.MemberReference=dr["MemberReference"].ToString();
-				model.MemberPassword=dr["MemberPassword"].ToString();
-				model.MemberState=(short)dr["MemberState"];
-				model.MemberTime= (DateTime)dr["MemberTime"];
-				model.RestaurantId=(string)dr["RestaurantId"];
+                Xiuse.Model.xiuse_member model = new Xiuse.Model.xiuse_member();
+                DataRow dr = ds.Tables[0].Rows[0];
+                model.MemberId = (string)dr["MemberId"];
+                model.MemberClassifyId = (string)dr["MemberClassifyId"];
+                model.MemberCardNo = (string)dr["MemberCardNo"];
+                model.MemberName = dr["MemberName"].ToString();
+                model.MemberAmount = (decimal)dr["MemberAmount"];
+                model.MemberCell = dr["MemberCell"].ToString();
+                model.MemberReference = dr["MemberReference"].ToString();
+                model.MemberPassword = dr["MemberPassword"].ToString();
+                model.MemberState = (int)dr["MemberState"];
+                model.MemberTime = (DateTime)dr["MemberTime"];
+                model.RestaurantId = (string)dr["RestaurantId"];
+                model.MemberEmail = dr["MemberEmail"].ToString();
+                model.MemberEnabledPassWord = (short)dr["MemberEnabledPassWord"];
                 return model;
             }
             else
@@ -108,7 +115,6 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-
 
         /// <summary>
         /// 搜索数据，搜索条件会员卡号、名称、手机

@@ -82,7 +82,8 @@ namespace Xiuse.BLL
         /// <returns></returns>
         public List<Xiuse.Model.xiuse_member> GetModels_RestaurantId(string RestaurantId)
         {
-            return DataSetTransModelListNoExpand(dal.GetData("*", String.Format("RestaurantId={0}", RestaurantId)));
+            
+            return DataSetTransModelListNoExpand(dal.GetData("*", String.Format("RestaurantId='{0}'", RestaurantId)));
         }
         /*
         * 根据会员的ID设定会员的启用状态
@@ -94,11 +95,11 @@ namespace Xiuse.BLL
         /// <param name="MemberId">会员的ID</param>
         /// <param name="flag">启用状态</param>
         /// <returns></returns>
-        public bool SetMemberState(string MemberId, bool flag)
+        public bool SetMemberState(string MemberId,int flag)
         {
             if (dal.Exists(MemberId))
             {
-                if (dal.ExecuteUpdate(String.Format("MemberState={0}", flag ? "1" : "0"), String.Format("MemberId={0}", MemberId)) > 0)
+                if (dal.ExecuteUpdate(String.Format("MemberState={0}", flag), String.Format("MemberId='{0}'", MemberId)) > 0)
                     return true;
                 else
                     return false;
@@ -117,7 +118,7 @@ namespace Xiuse.BLL
         /// <returns>true：有重复；false:无重复；</returns>
         public bool CheckCellExist(string Cell)
         {
-            if (dal.GetData("1", string.Format("MemberCell={0}", Cell)).Tables[0].Rows.Count > 0)
+            if (dal.GetData("1", string.Format("MemberCell='{0}'", Cell)).Tables[0].Rows.Count > 0)
                 return true;
             else
                 return false;

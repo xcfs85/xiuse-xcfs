@@ -18,9 +18,11 @@ namespace Xiuse.Model
 	private string _MemberCell;
 	private string _MemberReference;
 	private string _MemberPassword;
-	private Int16 _MemberState;
+	private int _MemberState;
 	private DateTime _MemberTime;
 	private string _RestaurantId;
+	private string _MemberEmail;
+	private int _MemberEnabledPassWord;
         #endregion
 
         #region 成员属性...
@@ -116,7 +118,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 会员状态（0，禁用；1，启用；）[MemberState]
 	        /// </summary>
-	        public Int16 MemberState
+	        public int MemberState
 	        {
 	            get{ return _MemberState; }
 	            set{ _MemberState=value; }
@@ -142,6 +144,28 @@ namespace Xiuse.Model
 	        {
 	            get{ return _RestaurantId; }
 	            set{ _RestaurantId=value; }
+	        }
+		
+	
+	
+	        /// <summary>
+	        /// 会员的Email[MemberEmail]
+	        /// </summary>
+	        public string MemberEmail
+	        {
+	            get{ return _MemberEmail; }
+	            set{ _MemberEmail=value; }
+	        }
+		
+	
+	
+	        /// <summary>
+	        /// 是否启用密码。（0，不启用；1，启用密码）[MemberEnabledPassWord]
+	        /// </summary>
+	        public int MemberEnabledPassWord
+	        {
+	            get{ return _MemberEnabledPassWord; }
+	            set{ _MemberEnabledPassWord=value; }
 	        }
 		
         #endregion

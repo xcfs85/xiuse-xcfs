@@ -76,8 +76,18 @@ namespace Xiuse.BLL
         {
             return dal.Update(model);
         }
-        
-   
+
+
+        /// <summary>
+        /// 订单换桌
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="TableId"></param>
+        /// <returns></returns>
+        public bool DeskChanged(string orderId, string tableId)
+        {
+            return dal.DeskChanged(orderId, tableId);
+        }
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -143,12 +153,21 @@ namespace Xiuse.BLL
         {
             return dal.GetData(Fields,Wheres);
         }
-        ///获取当天所有的账单
-        /// 
-        public List<Model.order_> GetDailyBills(string condition)
+      
+        public List<Model.order_> GetDailyBills(string deskId)
         {
-            return DataSetTransModelListNoExpand(GetData("*", condition));
+            string str = "day(OrderbeginTime)=day(curdate()) and OrderState<>0 and DeskId='" + deskId + "'";
+
+            return DataSetTransModelListNoExpand(GetData("*", str));
         }
+
+        public List<Model.order_> GetDailyRes(string resId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetDailyRes(resId));
+        }
+
+
+
 
         ///
         ///获取某一餐厅的所有未结账餐桌的金额

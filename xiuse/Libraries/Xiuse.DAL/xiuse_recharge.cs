@@ -13,37 +13,37 @@ namespace  Xiuse.DAL
     public class xiuse_recharge
     {
         public xiuse_recharge(){}
-        
+
         /// <summary>
         /// 增加一条数据
         /// </summary>
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_recharge model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_recharge(MemberId,RechargeType,RechargeAmount,Balance,MemberCardNo,RechargeTime,RechargeId) 
-                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
-                                        model.MemberId,model.RechargeType,model.RechargeAmount,model.Balance,model.MemberCardNo,model.RechargeTime,model.RechargeId);
+            string strSql = String.Format(@"Insert Into xiuse_recharge(RechargeId,MemberId,RechargeType,RechargeAmount,Balance,MemberCardNo,RechargeTime,BeforeBalance) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')",
+                                        model.RechargeId, model.MemberId, model.RechargeType, model.RechargeAmount, model.Balance, model.MemberCardNo, model.RechargeTime, model.BeforeBalance);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+
+
         /// <summary>
         /// 更新一条数据
         /// </summary>
         /// <param name="model">对象实体</param>
         public bool Update(Xiuse.Model.xiuse_recharge model)
         {
-            string strSql=String.Format(@"Update xiuse_recharge Set 
-            MemberId='{0}',RechargeType='{1}',RechargeAmount='{2}',Balance='{3}',MemberCardNo='{4}',RechargeTime='{5}' 
-            Where RechargeId='{6}'",
-            model.MemberId,model.RechargeType,model.RechargeAmount,model.Balance,model.MemberCardNo,model.RechargeTime,model.RechargeId);
+            string strSql = String.Format(@"Update xiuse_recharge Set 
+            RechargeId='{0}',MemberId='{1}',RechargeType={2},RechargeAmount={3},Balance={4},MemberCardNo='{5}',RechargeTime='{6}',BeforeBalance={7} 
+            Where RechargeId='{8}'",
+            model.RechargeId, model.MemberId, model.RechargeType, model.RechargeAmount, model.Balance, model.MemberCardNo, model.RechargeTime, model.BeforeBalance, model.RechargeId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+
+
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -104,19 +104,20 @@ namespace  Xiuse.DAL
         /// <parame name="RechargeId">RechargeId</param>
         public Xiuse.Model.xiuse_recharge GetModel(string RechargeId)
         {
-             string strSql=String.Format(@"Select * From xiuse_recharge Where RechargeId='{0}'",RechargeId); 
-            DataSet ds=AosyMySql.ExecuteforDataSet(strSql);
-            if(ds.Tables[0].Rows.Count>0)
+            string strSql = String.Format(@"Select * From xiuse_recharge Where RechargeId={0}", RechargeId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                Xiuse.Model.xiuse_recharge  model=new Xiuse.Model.xiuse_recharge();
-                DataRow dr=ds.Tables[0].Rows[0];
-				model.RechargeId=(string)dr["RechargeId"];
-				model.MemberId=(string)dr["MemberId"];
-				model.RechargeType=(byte)dr["RechargeType"];
-				model.RechargeAmount=(decimal)dr["RechargeAmount"];
-				model.Balance=(decimal)dr["Balance"];
-				model.MemberCardNo=dr["MemberCardNo"].ToString();
-				model.RechargeTime= (DateTime)dr["RechargeTime"];
+                Xiuse.Model.xiuse_recharge model = new Xiuse.Model.xiuse_recharge();
+                DataRow dr = ds.Tables[0].Rows[0];
+                model.RechargeId = (string)dr["RechargeId"];
+                model.MemberId = (string)dr["MemberId"];
+                model.RechargeType = (int)dr["RechargeType"];
+                model.RechargeAmount = (decimal)dr["RechargeAmount"];
+                model.Balance = (decimal)dr["Balance"];
+                model.MemberCardNo = dr["MemberCardNo"].ToString();
+                model.RechargeTime = (DateTime)dr["RechargeTime"];
+                model.BeforeBalance = (decimal)dr["BeforeBalance"];
                 return model;
             }
             else
@@ -124,7 +125,7 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-        
+
 
 
         /// <summary>

@@ -58,9 +58,18 @@ namespace  Xiuse.DAL
             model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,model.OrderId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
+        /// <summary>
+        /// 订单换桌
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="TableId"></param>
+        /// <returns></returns>
+        public bool DeskChanged(string orderId, string tableId)
+        {
+            string strSql = String.Format(@"Update order_ set DeskId='{0}'Where OrderId='{1}'", tableId, orderId);
+            return AosyMySql.ExecuteforBool(strSql);
+        }
 
-        
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -439,6 +448,16 @@ namespace  Xiuse.DAL
 	    if(Wheres.Length>0)strSql+=" Where "+ Wheres +"";
             return AosyMySql.ExecuteforDataSet(strSql);
         }
+
+
+        public DataSet GetDailyRes(string resId)
+        {
+            string strSql = String.Format(@"select * from order_ left join xiuse_desk on order_.DeskId=xiuse_desk.DeskId where day(OrderbeginTime)=day(curdate()) and xiuse_desk.RestaurantId='{0}'", resId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
+
+
+
 
 
         /// <summary>

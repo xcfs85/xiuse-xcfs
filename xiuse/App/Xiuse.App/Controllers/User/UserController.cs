@@ -83,7 +83,7 @@ namespace Xiuse.App.Controllers
             {
                 throw new HttpRequestException();
             }
-            if (new_user.Delete(id) == true)
+            if (new_user.Delete(id))
                 return new HttpResponseMessage(HttpStatusCode.OK);
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);

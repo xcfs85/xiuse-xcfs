@@ -32,7 +32,7 @@ namespace Xiuse.App.Controllers.OrderBill
         BLL.ordermenu_ OrderMenuBLL = new BLL.ordermenu_();
 
 
-  
+
 
 
         /// <summary>
@@ -49,18 +49,37 @@ namespace Xiuse.App.Controllers.OrderBill
             if (flag == "0")
             {
                 resultMsg.Info = "0";
-                resultMsg.Data = ""; 
+                resultMsg.Data = "";
             }
             else
             {
                 resultMsg.Info = "1";
-                resultMsg.Data =flag;
+                resultMsg.Data = flag;
             }
             return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg)); ;
 
 
-          
+
         }
+
+        /// <summary>
+        /// 订单换桌
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="tableId"></param>
+        /// <returns></returns>
+        [Route("ChangeDesk")]
+        public HttpResponseMessage PostDeskChanged(dynamic obj)
+        {
+            string orderId = Convert.ToString(obj.orderId);
+            string tableId= Convert.ToString(obj.tableId);
+
+            if (OrderBLL.DeskChanged(orderId,tableId))
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            else
+                return new HttpResponseMessage(HttpStatusCode.Gone);
+        }
+
 
         /// <summary>
         /// 添加订单

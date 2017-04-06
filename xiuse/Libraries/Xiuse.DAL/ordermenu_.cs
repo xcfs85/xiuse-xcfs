@@ -73,13 +73,13 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Select Count(1) From ordermenu_ Where OrderMenuId='{0}'",OrderMenuId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString())>0;
         }
-        
+
 
 
         /// <summary>
         /// 获取实体
         /// </summary>
-         /// <parame name="OrderMenuId">OrderMenuId</param>
+        /// <parame name="OrderMenuId">OrderMenuId</param>
         public Xiuse.Model.ordermenu_ GetModel(string OrderMenuId)
         {
              string strSql=String.Format(@"Select * From ordermenu_ Where OrderMenuId='{0}'",OrderMenuId); 

@@ -3,13 +3,19 @@
              本类主要实现对会员Member各种操作的接口              
              创建：xcf       2016/12/13                
  * *****************************************************************************/
+using DotNet.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Xiuse;
+using Xiuse.App.Common;
+using Xiuse.App.Models;
+
 namespace Xiuse.App.Controllers.Member
 {
     [RoutePrefix("api/Members")]
@@ -29,7 +35,7 @@ namespace Xiuse.App.Controllers.Member
         /// <param name="RestaurantId">餐厅ID</param>
         /// <returns></returns>
         [Route("GetMembers")]
-        public List<Model.xiuse_member> GetMembers(string RestaurantId)
+        public List<Xiuse.Model.xiuse_member> GetMembers(string RestaurantId)
         {
             return MemberBLL.GetModels_RestaurantId(RestaurantId);
         }
@@ -47,14 +53,18 @@ namespace Xiuse.App.Controllers.Member
 
 
         /// <summary>
-        /// 随机生成一个会员编号
+        /// 随机生成一个会员卡编号
         /// </summary>
         /// <returns></returns>
-        [Route("GetMemberId")]
-        public string GetMemberId()
+        [Route("GetMemberCardId")]
+        public HttpResponseMessage GetMemberCardId()
         {
-            string MemberId = Guid.NewGuid().ToString();
-            return MemberId;
+             
+            ResultMsg resultMsg = new ResultMsg();
+            resultMsg.StatusCode = (int)StatusCodeEnum.Success;
+            resultMsg.Info = "1";
+            resultMsg.Data = DateTime.Now.ToString("yyMMddhhmmss") + RandomHelper.GetRandomString(4, true, false, false, false, "");
+            return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg)); ;
         }
 
 
@@ -66,10 +76,13 @@ namespace Xiuse.App.Controllers.Member
         [Route("AddMembers")]
         public HttpResponseMessage PostAddMmeber([FromBody]Model.xiuse_member member)
         {
-            if (member == null || MemberBLL.ExistsMember(member)==false)
+            if (member == null)
             {
                 throw new HttpRequestException();
             }
+            member.MemberState = 1;
+            member.MemberId =Guid.NewGuid().ToString("N");
+            member.MemberTime = DateTime.Now;
             if (MemberBLL.Insert(member))
                 return new HttpResponseMessage(HttpStatusCode.OK);
             else
@@ -105,10 +118,10 @@ namespace Xiuse.App.Controllers.Member
         public HttpResponseMessage PostSetMemberState(dynamic obj)
         {
             string MemberId = Convert.ToString(obj.MemberId);
-            bool flag = Convert.ToBoolean(obj.flag);
+            int State = Convert.ToInt32(obj.MemberState);
             if (MemberId == null)
                 throw new HttpRequestException();
-            if(MemberBLL.SetMemberState(MemberId,flag))
+            if(MemberBLL.SetMemberState(MemberId,State))
                 return new HttpResponseMessage(HttpStatusCode.OK);
             else
                 return new HttpResponseMessage(HttpStatusCode.Gone);

@@ -12,11 +12,12 @@ namespace Xiuse.Model
         #region 成员变量...
 	private string _RechargeId;
 	private string _MemberId;
-	private Int16 _RechargeType;
+	private int _RechargeType;
 	private decimal _RechargeAmount;
 	private decimal _Balance;
 	private string _MemberCardNo;
 	private DateTime _RechargeTime;
+	private decimal _BeforeBalance;
         #endregion
 
         #region 成员属性...
@@ -46,7 +47,7 @@ namespace Xiuse.Model
 	        /// <summary>
 	        /// 充值类型[RechargeType]
 	        /// </summary>
-	        public Int16 RechargeType
+	        public int RechargeType
 	        {
 	            get{ return _RechargeType; }
 	            set{ _RechargeType=value; }
@@ -94,6 +95,17 @@ namespace Xiuse.Model
 	        {
 	            get{ return _RechargeTime; }
 	            set{ _RechargeTime=value; }
+	        }
+		
+	
+	
+	        /// <summary>
+	        /// 充值前的可用余额[BeforeBalance]
+	        /// </summary>
+	        public decimal BeforeBalance
+	        {
+	            get{ return _BeforeBalance; }
+	            set{ _BeforeBalance=value; }
 	        }
 		
         #endregion

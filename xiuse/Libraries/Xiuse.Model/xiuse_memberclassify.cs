@@ -16,7 +16,7 @@ namespace Xiuse.Model
         private string _ClassRemark;
         private int _ClassifyMemberNum;
         private DateTime _ClassifyTime;
-        private Int16 _DelTag;
+        private int _DelTag;
         private string _RestaurantId;
         #endregion
 
@@ -91,7 +91,7 @@ namespace Xiuse.Model
         /// <summary>
         /// 删除标志，(0,启用；1，停用；2，删除。)[DelTag]
         /// </summary>
-        public Int16 DelTag
+        public int DelTag
         {
             get { return _DelTag; }
             set { _DelTag = value; }
