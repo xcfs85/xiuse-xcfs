@@ -122,16 +122,20 @@ namespace Xiuse.App.Controllers.OrderBill
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
-
+        /// <summary>
+        /// 批量添加菜品信息
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         [Route("AddOrderMenus")]
         public HttpResponseMessage PostAddOrderMenus(dynamic obj)
         {
 
             int count = OrderMenuBLL.AddOrderMenus(obj);
             if (count == 0)
-            return base.ReturnData("0", "", StatusCodeEnum.Error);
-        else
-          return base.ReturnData("1", count, StatusCodeEnum.Success);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
+            else
+                return base.ReturnData("1", count, StatusCodeEnum.Success);
   
         }
 
