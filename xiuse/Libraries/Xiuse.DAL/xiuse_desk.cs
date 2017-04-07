@@ -128,8 +128,12 @@ namespace  Xiuse.DAL
                 return false;
             else
             {
-                string sql = string.Format("update order_ set CleanDeskState=1 where  DeskId='{0}'", DeskId);
-                string sql2=string.Format("update xiuse.desk set DeskState=0 where  DeskId='{0}'", DeskId);
+                //清理已经付款的订单。
+                string sql = string.Format("update order_ set ClearDeskState=1 where  DeskId='{0}'  and OrderState=1 ", DeskId);
+                string sql2=string.Format(@"update xiuse_desk set DeskState=(select  CASE count(1) WHEN 0 THEN 0 ELSE  if( sum(OrderState)=count(1),2,1)  END  as deskstate  
+                                            from  order_  
+                                            where  DeskId = '{0}'  and   ClearDeskState = 0 and OrderState <> 2 and  date(OrderbeginTime) = date(curdate()))
+                                             where DeskId = '{0}'", DeskId);
 
                 AosyMySql.ExecuteNonQuery(sql);
                 AosyMySql.ExecuteNonQuery(sql2);

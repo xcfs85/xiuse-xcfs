@@ -18,11 +18,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Xiuse.App.Base;
 
 namespace Xiuse.App.Controllers.Restaurant
 {
     [RoutePrefix("api/Restaurant")]
-    public class DeskController : ApiController
+    public class DeskController : BaseResultMsg
     {
         BLL.xiuse_desk DeskBLL = new BLL.xiuse_desk();
         BLL.order_ OrderBLL = new BLL.order_();
@@ -147,17 +148,19 @@ namespace Xiuse.App.Controllers.Restaurant
         /// </summary>
         /// <param name="DeskId"></param>
         /// <returns></returns>
+        [HttpPost]
         [Route("CleanDesk")]
-        public HttpResponseMessage PostClearDesk(string DeskId)
+        public HttpResponseMessage PostClearDesk([FromBody]dynamic DeskId)
         {
-            if (DeskId == null || DeskBLL.Exists(DeskId) == false)
+           
+            if (DeskId == null || DeskBLL.Exists(DeskId.DeskId.ToString()) == false)
             {
-                throw new HttpRequestException();
+                return base.ReturnData("0", "餐桌不存在或者参数有误！", Models.StatusCodeEnum.ParameterError);
             }
-            if (DeskBLL.ClearDesk(DeskId))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+            if (DeskBLL.ClearDesk(DeskId.DeskId.ToString()))
+                return base.ReturnData("1", "", Models.StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "清理失败！", Models.StatusCodeEnum.Error);
         }
     }
 }
