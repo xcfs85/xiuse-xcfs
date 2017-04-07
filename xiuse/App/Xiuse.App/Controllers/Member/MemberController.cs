@@ -13,7 +13,8 @@ using Xiuse.App.Models;
 using System.Net.Http;
 using System.Web.Http;
 using Xiuse.App.Base;
-
+using System.Web;
+using System.Data;
 namespace Xiuse.App.Controllers.Member
 {
     [RoutePrefix("api/Members")]
@@ -33,7 +34,7 @@ namespace Xiuse.App.Controllers.Member
         /// <param name="RestaurantId">餐厅ID</param>
         /// <returns></returns>
         [Route("GetMembers")]
-        public List<Xiuse.Model.xiuse_member> GetMembers(string RestaurantId)
+        public DataSet GetMembers(string RestaurantId)
         {
             return MemberBLL.GetModels_RestaurantId(RestaurantId);
         }
@@ -115,6 +116,8 @@ namespace Xiuse.App.Controllers.Member
         [Route("MberPassword")]
         public HttpResponseMessage MemberPassword([FromBody]Model.xiuse_member member)
         {
+            string key = HttpRuntime.Cache.Get("key").ToString();
+            member.MemberPassword= DESEncrypt.DecryptJS(member.MemberPassword, key);
             if (MemberBLL.UpdatePassword(member))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

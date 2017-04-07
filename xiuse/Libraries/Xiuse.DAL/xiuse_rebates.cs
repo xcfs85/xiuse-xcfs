@@ -36,9 +36,9 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_rebates model)
         {
             string strSql=String.Format(@"Update xiuse_rebates Set 
-            MemberId='{0}',MemberCardNo='{1}',RebatesType='{2}',RebatesAmount='{3}',DateTime='{4}' 
-            Where RebatesId={5}",
-            model.MemberId,model.MemberCardNo,model.RebatesType,model.RebatesAmount,model.DateTime,model.RebatesId);
+            MemberId='{0}',MemberCardNo='{1}',RebatesType='{2}',RebatesAmount='{3}',DateTime='{4}' £¬Balance='{5}'
+            Where RebatesId='{6}'",
+            model.MemberId,model.MemberCardNo,model.RebatesType,model.RebatesAmount,model.DateTime,model.Balance,model.RebatesId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -85,6 +85,7 @@ namespace  Xiuse.DAL
 				model.MemberCardNo=dr["MemberCardNo"].ToString();
 				model.RebatesType=dr["RebatesType"].ToString();
 				model.RebatesAmount=(decimal)dr["RebatesAmount"];
+                model.Balance = (decimal)dr["Balance"];
 				model.DateTime= (DateTime)dr["DateTime"];
                 return model;
             }

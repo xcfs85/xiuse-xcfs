@@ -89,11 +89,11 @@ namespace Xiuse.BLL
         /// 获取实体,根据餐厅ID查询实体
         /// </summary>
         /// <param name="RestaurantId">餐厅ID</param>
-        /// <returns></returns>
-        public List<Xiuse.Model.xiuse_member> GetModels_RestaurantId(string RestaurantId)
+        /// <returns></returns>List<Xiuse.Model.xiuse_member>
+        public DataSet GetModels_RestaurantId(string RestaurantId)
         {
-            
-            return DataSetTransModelListNoExpand(dal.GetData("*", String.Format("RestaurantId='{0}'", RestaurantId)));
+            return dal.GetModels_Rest(RestaurantId);
+            //return DataSetTransModelListNoExpand(dal.GetModels_Rest(RestaurantId));
         }
         /*
         * 根据会员的ID设定会员的启用状态

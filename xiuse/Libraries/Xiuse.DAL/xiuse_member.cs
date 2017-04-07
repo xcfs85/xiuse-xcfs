@@ -91,6 +91,16 @@ namespace  Xiuse.DAL
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
         }
 
+        public DataSet GetModels_Rest(string restId)
+        {
+            string strSql = String.Format(@"select a.*,b.ClassifyName from xiuse_member as a
+                left join xiuse_memberclassify as b on
+                a.MemberClassifyId = b.MemberClassifyId
+                where a.RestaurantId = '{0}' and MemberState <> 2", restId);
+            return AosyMySql.ExecuteforDataSet(strSql.ToString());
+                }
+
+
         /// <summary>
         /// 获取实体
         /// </summary>
@@ -136,7 +146,7 @@ namespace  Xiuse.DAL
             #region 条件语句...
             StringBuilder strSql = new StringBuilder();
             
-            strSql.Append(string.Format("Select * From xiuse_member Where MemberCell like '%{0}%' or MemberName like '{1}' or MemberCardNo like", MemberCell,MemberName,MemberCardNo));
+            strSql.Append(string.Format("Select * From xiuse_member Where MemberCell like '%{0}%' or MemberName like '{1}' or MemberCardNo like and MemberState<>2", MemberCell,MemberName,MemberCardNo));
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql.ToString());
             return ds;
         }

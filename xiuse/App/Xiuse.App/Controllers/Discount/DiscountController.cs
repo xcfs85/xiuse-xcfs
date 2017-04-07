@@ -36,6 +36,8 @@ namespace Xiuse.App.Controllers.Discount
         {
             if (Discount == null)
                throw new HttpResponseException(HttpStatusCode.BadGateway);
+            Discount.DiscountTime = DateTime.Now;
+            Discount.DiscountId = Guid.NewGuid().ToString("N");
             if (BllDiscount.Insert(Discount))
                 return new HttpResponseMessage(HttpStatusCode.OK);
             else

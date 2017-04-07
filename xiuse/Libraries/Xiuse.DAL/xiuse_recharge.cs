@@ -23,7 +23,6 @@ namespace  Xiuse.DAL
             string strSql = String.Format(@"Insert Into xiuse_recharge(RechargeId,MemberId,RechargeType,RechargeAmount,Balance,MemberCardNo,RechargeTime,BeforeBalance) 
                                         values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')",
                                         model.RechargeId, model.MemberId, model.RechargeType, model.RechargeAmount, model.Balance, model.MemberCardNo, model.RechargeTime, model.BeforeBalance);
-
             return AosyMySql.ExecuteforBool(strSql);
         }
 

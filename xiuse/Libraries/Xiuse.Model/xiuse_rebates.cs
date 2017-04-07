@@ -15,11 +15,19 @@ namespace Xiuse.Model
 	private string _MemberCardNo;
 	private string _RebatesType;
 	private decimal _RebatesAmount;
-	private DateTime _DateTime;
+        private decimal _Balance;
+    private DateTime _DateTime;
         #endregion
 
         #region 成员属性...
-	
+        /// <summary>
+        /// 返现后可用余额
+        /// </summary>
+        public decimal Balance
+        {
+            get { return _Balance; }
+            set { _Balance = value; }
+        }
 	        /// <summary>
 	        /// 返现记录Id[RebatesId]
 	        /// </summary>

@@ -114,25 +114,25 @@ namespace Xiuse.App.Controllers
             };
         }
 
-        // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //// POST api/Account/ChangePassword
+        //[Route("ChangePassword")]
+        //public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
+        //    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
+        //        model.NewPassword);
             
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         // POST api/Account/SetPassword
         [Route("SetPassword")]

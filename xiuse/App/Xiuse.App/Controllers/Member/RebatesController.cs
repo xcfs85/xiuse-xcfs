@@ -49,6 +49,8 @@ namespace Xiuse.App.Controllers.Member
         {
             if (Rebates == null)
                 throw new HttpRequestException();
+            Rebates.RebatesId = Guid.NewGuid().ToString("N");
+            Rebates.DateTime =  DateTime.Now;
             if (BllResbates.Insert(Rebates))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
