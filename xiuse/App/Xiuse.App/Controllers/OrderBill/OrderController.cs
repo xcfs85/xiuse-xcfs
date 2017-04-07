@@ -74,11 +74,11 @@ namespace Xiuse.App.Controllers.OrderBill
         {
             string orderId = Convert.ToString(obj.orderId);
             string tableId= Convert.ToString(obj.tableId);
-
-            if (OrderBLL.DeskChanged(orderId,tableId))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+            if (OrderBLL.DeskChanged(orderId, tableId))
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
+           
         }
 
 
@@ -153,10 +153,11 @@ namespace Xiuse.App.Controllers.OrderBill
             {
                 throw new HttpRequestException();
             }
+
             if (OrderBLL.Update(order))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success); 
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+               return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
 
@@ -174,9 +175,9 @@ namespace Xiuse.App.Controllers.OrderBill
                 throw new HttpRequestException();
             }
             if (OrderMenuBLL.Delete(orderMenu.OrderMenuId))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         ///<summary>
         /// 退单操作
@@ -197,11 +198,11 @@ namespace Xiuse.App.Controllers.OrderBill
                 Order.WeiXin = 0;
                 Order.BankCard = 0;
                 Order.OrderState = 2;
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             }
-
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+               return base.ReturnData("0", "", StatusCodeEnum.Error);
+           
         }
 
         ///<summary>
@@ -214,9 +215,9 @@ namespace Xiuse.App.Controllers.OrderBill
         public HttpResponseMessage SetOnTable([FromBody]Xiuse.Model.ordermenu_ model)
         {
             if(OrderMenuBLL.UpdateMenuState(model))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
 
@@ -232,9 +233,9 @@ namespace Xiuse.App.Controllers.OrderBill
                 throw new HttpRequestException();
             }
             if (OrderMenuBLL.Update(orderMenu))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
 
@@ -251,9 +252,9 @@ namespace Xiuse.App.Controllers.OrderBill
                 throw new HttpRequestException();
             }
             if (OrderMenuBLL.Update(orderMenu))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         ///<summary>
         /// 添加小费
@@ -276,9 +277,9 @@ namespace Xiuse.App.Controllers.OrderBill
             }
             Order.AccountsPayable -= Discount;
             if (OrderBLL.Update(Order))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
     }
 }

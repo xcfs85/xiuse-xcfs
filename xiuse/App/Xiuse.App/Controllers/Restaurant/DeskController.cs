@@ -19,6 +19,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Xiuse.App.Base;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.Restaurant
 {
@@ -40,9 +41,9 @@ namespace Xiuse.App.Controllers.Restaurant
                 throw new HttpRequestException();
             }
             if (DeskBLL.Insert(model))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         
        /// <summary>
@@ -58,9 +59,9 @@ namespace Xiuse.App.Controllers.Restaurant
                 throw new HttpRequestException();
             }
             if (DeskBLL.Update(model))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
         /// 删除餐桌
@@ -75,9 +76,9 @@ namespace Xiuse.App.Controllers.Restaurant
                 throw new HttpRequestException();
             }
             if (DeskBLL.Delete(id))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
         /// <summary>

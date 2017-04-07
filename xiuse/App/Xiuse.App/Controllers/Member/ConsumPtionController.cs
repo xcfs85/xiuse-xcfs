@@ -4,7 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Xiuse;
+using Xiuse.App.Base;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.Member
 {
@@ -12,7 +13,7 @@ namespace Xiuse.App.Controllers.Member
     /// 会员消费信息接口
     /// </summary>
     [RoutePrefix("api/Members")]
-    public class ConsumPtionController : ApiController
+    public class ConsumPtionController : BaseResultMsg
     {
 
         BLL.memberconsumption BllConsumption = new BLL.memberconsumption();
@@ -47,9 +48,9 @@ namespace Xiuse.App.Controllers.Member
             if (memberconsumption == null)
                 throw new HttpRequestException();
             if(BllConsumption.Insert(memberconsumption))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
     }
 }

@@ -15,12 +15,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Xiuse;
+using Xiuse.App.Base;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.Restaurant
 {
     [RoutePrefix("api/Restaurant")]
-    public class RestaurantController : ApiController
+    public class RestaurantController : BaseResultMsg
     {
         
         BLL.xiuse_restaurant RestBLL = new BLL.xiuse_restaurant();
@@ -39,9 +40,9 @@ namespace Xiuse.App.Controllers.Restaurant
                 throw new HttpRequestException();
             }
             if (RestBLL.Insert(model))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
 
@@ -58,9 +59,9 @@ namespace Xiuse.App.Controllers.Restaurant
                 throw new HttpRequestException();
             }
             if (RestBLL.Update(model))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
         /// <summary>
@@ -76,9 +77,9 @@ namespace Xiuse.App.Controllers.Restaurant
                 throw new HttpRequestException();
             }
             if (RestBLL.Delete(id))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
         /// 获取当前系统中的所有餐厅

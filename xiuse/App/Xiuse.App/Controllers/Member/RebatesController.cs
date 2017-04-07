@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Xiuse;
+using Xiuse.App.Base;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.Member
 {
@@ -12,7 +14,7 @@ namespace Xiuse.App.Controllers.Member
     /// <summary>
     /// 会员返现记录接口
     /// </summary>
-    public class RebatesController : ApiController
+    public class RebatesController : BaseResultMsg
     {
 
         BLL.xiuse_rebates BllResbates = new BLL.xiuse_rebates();
@@ -48,9 +50,9 @@ namespace Xiuse.App.Controllers.Member
             if (Rebates == null)
                 throw new HttpRequestException();
             if (BllResbates.Insert(Rebates))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
     }
 }

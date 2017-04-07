@@ -13,12 +13,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Xiuse;
+using Xiuse.App.Base;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.Menu
 {
     [RoutePrefix("api/Menu")]
-    public class MenuInfoController : ApiController
+    public class MenuInfoController : BaseResultMsg
     {
         BLL.xiuse_menus MenuBLL = new BLL.xiuse_menus();
 
@@ -51,9 +52,9 @@ namespace Xiuse.App.Controllers.Menu
                 throw new HttpRequestException();
             }
             if (MenuBLL.Insert(model))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
         /// <summary>
@@ -69,9 +70,9 @@ namespace Xiuse.App.Controllers.Menu
                 throw new HttpRequestException();
             }
             if (MenuBLL.Update(model))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
 
@@ -88,9 +89,9 @@ namespace Xiuse.App.Controllers.Menu
                 throw new HttpRequestException();
             }
             if (MenuBLL.Delete(id))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
     }

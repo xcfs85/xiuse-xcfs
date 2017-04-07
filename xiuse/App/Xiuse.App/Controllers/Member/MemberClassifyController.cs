@@ -4,7 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Xiuse;
+using Xiuse.App.Base;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.Member
 {
@@ -12,7 +13,7 @@ namespace Xiuse.App.Controllers.Member
     /// 会员类型接口
     /// </summary
    [RoutePrefix("api/Members")]
-    public class MemberClassifyController : ApiController
+    public class MemberClassifyController : BaseResultMsg
     {
         BLL.xiuse_memberclassify BllMemberClassify = new BLL.xiuse_memberclassify();
         /// <summary>
@@ -36,9 +37,9 @@ namespace Xiuse.App.Controllers.Member
             if (MemberClassify == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.Update(MemberClassify))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
         /// 添加会员类型
@@ -51,9 +52,9 @@ namespace Xiuse.App.Controllers.Member
             if (MemberClassify == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.Insert(MemberClassify))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
         /// 删除会员类型
@@ -66,9 +67,9 @@ namespace Xiuse.App.Controllers.Member
             if (MemberClassifyId == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.SetMemberClassify(2,MemberClassifyId))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
         /// 启用会员类型
@@ -81,9 +82,9 @@ namespace Xiuse.App.Controllers.Member
             if (MemberClassifyId == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.SetMemberClassify(0, MemberClassifyId))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
         /// 停用会员类型
@@ -96,9 +97,9 @@ namespace Xiuse.App.Controllers.Member
             if (MemberClassifyId == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.SetMemberClassify(1, MemberClassifyId))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
     }
 }

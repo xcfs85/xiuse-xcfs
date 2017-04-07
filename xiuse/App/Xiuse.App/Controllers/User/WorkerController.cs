@@ -14,12 +14,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Xiuse.App.Base;
 using Xiuse;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.User
 {
     [RoutePrefix("api/User")]
-    public class WorkerController : ApiController
+    public class WorkerController : BaseResultMsg
     {
         BLL.xiuse_user BLLWorker = new BLL.xiuse_user();
 
@@ -63,9 +65,9 @@ namespace Xiuse.App.Controllers.User
                 throw new HttpRequestException();
             }
             if (BLLWorker.Insert(user) == true)
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
 
         }
 
@@ -87,9 +89,9 @@ namespace Xiuse.App.Controllers.User
                 throw new HttpRequestException();
             }
             if (BLLWorker.FixWorker(WorkerId,tag) == true)
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
     }
 }

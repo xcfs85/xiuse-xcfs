@@ -14,16 +14,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;  
+using System.Web.Http;
 using Xiuse;
-
+using Xiuse.App.Models;
+using Xiuse.App.Base;
 namespace Xiuse.App.Controllers
 {
     /// <summary>
     /// 用户接口类
     /// </summary>
     [RoutePrefix("api/User")]
-    public class UserController : ApiController
+    public class UserController : BaseResultMsg
     {
         BLL.xiuse_user new_user = new BLL.xiuse_user();
         /// <summary>
@@ -65,9 +66,9 @@ namespace Xiuse.App.Controllers
                 throw new HttpRequestException();
             }
             if (new_user.Insert(user) == true)
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
 
         }
 
@@ -84,9 +85,9 @@ namespace Xiuse.App.Controllers
                 throw new HttpRequestException();
             }
             if (new_user.Delete(id))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
 
         /// <summary>

@@ -35,8 +35,18 @@ namespace Xiuse.BLL
         {
             return dal.Update(model);
         }
-        
-   
+
+
+        /// <summary>
+        /// 添加密码/更新密码
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool UpdatePassword(Model.xiuse_member model)
+        {
+            return dal.UpdatePassword(model);
+        }
+
         /// <summary>
         ///  删除一条数据
         /// </summary>

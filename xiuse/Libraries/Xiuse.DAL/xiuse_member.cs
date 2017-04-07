@@ -45,8 +45,16 @@ namespace  Xiuse.DAL
             return AosyMySql.ExecuteforBool(strSql);
         }
 
-        
-        
+        /// <summary>
+        /// Ìí¼ÓÃÜÂë/¸üĞÂÃÜÂë
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool UpdatePassword(Model.xiuse_member model)
+        {
+            string strSql = String.Format(@"Update xiuse_member set MemberPassword='{0}'where MemberId='{1}'", model.MemberPassword, model.MemberId);
+            return AosyMySql.ExecuteforBool(strSql);
+        }
 
         
         /// <summary>

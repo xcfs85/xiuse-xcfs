@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Xiuse;
 using Xiuse.App.Base;
+using Xiuse.App.Models;
 
 namespace Xiuse.App.Controllers.Member
 {
@@ -51,9 +52,9 @@ namespace Xiuse.App.Controllers.Member
             Recharge.RechargeId = Guid.NewGuid().ToString("N");
             Recharge.RechargeTime = DateTime.Now;
             if (BllRecharge.Insert(Recharge))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
     }
 }

@@ -7,14 +7,12 @@ using DotNet.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Xiuse;
 using Xiuse.App.Common;
 using Xiuse.App.Models;
+using System.Net.Http;
+using System.Web.Http;
+using Xiuse.App.Base;
 
 namespace Xiuse.App.Controllers.Member
 {
@@ -22,7 +20,7 @@ namespace Xiuse.App.Controllers.Member
     /// <summary>
     /// 会员信息接口
     /// </summary>
-    public class MemberController : ApiController
+    public class MemberController : BaseResultMsg
     {
         BLL.xiuse_member MemberBLL = new BLL.xiuse_member();
         #region 系统管理员
@@ -84,9 +82,9 @@ namespace Xiuse.App.Controllers.Member
             member.MemberId =Guid.NewGuid().ToString("N");
             member.MemberTime = DateTime.Now;
             if (MemberBLL.Insert(member))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
         /// 修改会员信息
@@ -103,10 +101,27 @@ namespace Xiuse.App.Controllers.Member
                 throw new HttpRequestException();
             }
             if (MemberBLL.Update(member))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="member"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MberPassword")]
+        public HttpResponseMessage MemberPassword([FromBody]Model.xiuse_member member)
+        {
+            if (MemberBLL.UpdatePassword(member))
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
+            else
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
+
+        }
+
         /// <summary>
         /// 设置会员的启用状态
         /// </summary>
@@ -122,9 +137,9 @@ namespace Xiuse.App.Controllers.Member
             if (MemberId == null)
                 throw new HttpRequestException();
             if(MemberBLL.SetMemberState(MemberId,State))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
 
         }
         /// <summary>
@@ -139,9 +154,9 @@ namespace Xiuse.App.Controllers.Member
                 throw new HttpRequestException();
            
             if (!MemberBLL.CheckCellExist(cell))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
        
         #endregion
