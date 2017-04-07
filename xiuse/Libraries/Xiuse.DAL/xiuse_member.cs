@@ -39,9 +39,9 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_member model)
         {
             string strSql = String.Format(@"Update xiuse_member Set 
-            MemberId='{0}',MemberClassifyId='{1}',MemberCardNo='{2}',MemberName='{3}',MemberAmount='{4}',MemberCell='{5}',MemberReference='{6}',MemberPassword='{7}',MemberState={8},MemberTime='{9}',RestaurantId='{10}',MemberEmail='{11}',MemberEnabledPassWord='{12}' 
-            Where MemberId='{13}'",
-            model.MemberId, model.MemberClassifyId, model.MemberCardNo, model.MemberName, model.MemberAmount, model.MemberCell, model.MemberReference, model.MemberPassword, model.MemberState, model.MemberTime, model.RestaurantId, model.MemberEmail, model.MemberEnabledPassWord, model.MemberId);
+            MemberClassifyId='{0}',MemberName='{1}',MemberCell='{2}',RestaurantId='{3}',MemberEmail='{4}'
+            Where MemberId='{5}'",
+            model.MemberClassifyId,  model.MemberName, model.MemberCell,   model.RestaurantId, model.MemberEmail, model.MemberId);
             return AosyMySql.ExecuteforBool(strSql);
         }
 

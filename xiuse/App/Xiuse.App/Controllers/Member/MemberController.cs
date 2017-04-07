@@ -95,10 +95,10 @@ namespace Xiuse.App.Controllers.Member
         /// <returns></returns>
         [HttpPost]
         [Route("UpdateMembers")]
-        public HttpResponseMessage PostUpdateMmeber([FromBody]Model.xiuse_member member)
+        public HttpResponseMessage PostUpdateMember([FromBody]Model.xiuse_member member)
         {
 
-            if (member == null || MemberBLL.ExistsMember(member)==false)
+            if (member == null)
             {
                 throw new HttpRequestException();
             }
