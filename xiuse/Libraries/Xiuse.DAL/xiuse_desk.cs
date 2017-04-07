@@ -97,7 +97,7 @@ namespace  Xiuse.DAL
                 for (int j = 0; j < b.Tables[0].Rows.Count; j++)
                 {
                     DataRow dr = b.Tables[0].Rows[j];
-                    if ((short)dr["OrderState"] == 0)
+                    if ((int)dr["OrderState"] == 0)
                     {
                         accountPayable += (decimal)dr["AccountsPayable"];
                         isAllPaid = false;     

@@ -191,7 +191,7 @@ namespace  Xiuse.DAL
                 modelBill.Order.AccountsPayable = (decimal)dr.ItemArray[3];
                 modelBill.Order.Refunds = (decimal)dr.ItemArray[4];
                 modelBill.Order.DishCount = (int)dr.ItemArray[5];
-                modelBill.Order.OrderState = (short)dr.ItemArray[6];
+                modelBill.Order.OrderState = (int)dr.ItemArray[6];
                 modelBill.Order.Cash = (decimal)dr.ItemArray[7];
                 modelBill.Order.BankCard = (decimal)dr.ItemArray[8];
                 modelBill.Order.WeiXin = (decimal)dr.ItemArray[9];
@@ -246,17 +246,17 @@ namespace  Xiuse.DAL
                 Xiuse.Model.OrderBill modelBill = new Xiuse.Model.OrderBill();
                 Xiuse.Model.order_ Order = new Xiuse.Model.order_();
                 DataRow dr = ds.Tables[0].Rows[0];
-                 Order.OrderId = dr["OrderId"].ToString();
+                Order.OrderId = dr["OrderId"].ToString();
                 Order.DeskId = (string)dr["DeskId"];
                 Order.BillAmount = (decimal)dr["BillAmount"];
                 Order.AccountsPayable = (decimal)dr["AccountsPayable"];
                 Order.Refunds = (decimal)dr["Refunds"];
-               Order.DishCount = (int)dr["DishCount"];
-                Order.OrderState = (short)dr["OrderState"];
+                Order.DishCount = (int)dr["DishCount"];
+                Order.OrderState = (int)dr["OrderState"];
                 Order.Cash = (decimal)dr["Cash"];
                 Order.BankCard = (decimal)dr["BankCard"];
                 Order.WeiXin = (decimal)dr["WeiXin"];
-                 Order.Alipay = (decimal)dr["Alipay"];
+                Order.Alipay = (decimal)dr["Alipay"];
                 Order.MembersCard = (decimal)dr["MembersCard"];
                 Order.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
                 if(!dr.IsNull("OrderEndTime"))

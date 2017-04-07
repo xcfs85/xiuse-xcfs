@@ -29,7 +29,7 @@ namespace Xiuse.Model
         private decimal _AccountsPayable;
         private decimal _Refunds;
         private int _DishCount;
-        private short _OrderState;
+        private int _OrderState;
         private decimal _Cash;
         private decimal _BankCard;
         private decimal _WeiXin;
@@ -37,7 +37,7 @@ namespace Xiuse.Model
         private decimal _MembersCard;
         private DateTime _OrderbeginTime;
         private DateTime _OrderEndTime;
-        private Int16 _ClearDeskState;
+        private int _ClearDeskState;
         private string _ServiceUserId;
         private int _CustomerNum;
         #endregion
@@ -111,7 +111,7 @@ namespace Xiuse.Model
         /// <summary>
         /// 订单状态（0，未支付；1，已支付）[OrderState]
         /// </summary>
-        public short OrderState
+        public int OrderState
         {
             get { return _OrderState; }
             set { _OrderState = value; }
@@ -196,7 +196,7 @@ namespace Xiuse.Model
         /// <summary>
         /// 0,没有清台；1，已经清台；
         /// </summary>
-        public Int16 ClearDeskState
+        public int ClearDeskState
         {
             get { return _ClearDeskState; }
             set { _ClearDeskState = value; }
