@@ -77,6 +77,7 @@ namespace  Xiuse.DAL
                                             where  DeskId = '{0}'  and   ClearDeskState = 0 and OrderState <> 2 and  date(OrderbeginTime) = date(curdate()))
                                              where DeskId = '{0}'", newTableId));
             return AosyMySql.ExecuteListSQL(strSql) == 3;
+           
         }
 
         /// <summary>

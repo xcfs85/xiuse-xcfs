@@ -28,6 +28,12 @@ namespace Xiuse.BLL
         }
 
 
+
+        public bool InsertProcedure(Model.xiuse_recharge model)
+        {
+            return dal.InsertProcedure(model);
+        }
+
         /// <summary>
         /// 更新一条数据
         /// </summary>

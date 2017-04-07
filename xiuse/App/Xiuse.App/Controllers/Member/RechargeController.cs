@@ -47,6 +47,7 @@ namespace Xiuse.App.Controllers.Member
         [Route("AddRecharge")]
         public HttpResponseMessage PostAddRecharge([FromBody] Model.xiuse_recharge Recharge)
         {
+            //todo
             if (Recharge == null)
                 throw new HttpRequestException();
             Recharge.RechargeId = Guid.NewGuid().ToString("N");

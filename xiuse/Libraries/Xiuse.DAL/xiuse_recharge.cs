@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using Xiuse.Model;
 using Xiuse.DbUtility;
+using MySql.Data.MySqlClient;
 
 namespace  Xiuse.DAL
 {
@@ -26,7 +27,25 @@ namespace  Xiuse.DAL
             return AosyMySql.ExecuteforBool(strSql);
         }
 
+        public bool InsertProcedure(Model.xiuse_recharge model)
+        {
 
+            MySqlParameter[] para ={
+                  new MySqlParameter ("rechargeId",MySqlDbType.VarChar,50),
+                  new MySqlParameter ("rechargeType",MySqlDbType.Int32,1 ),
+                  new  MySqlParameter ("rechargeAmount", MySqlDbType.Decimal ),
+                  new MySqlParameter ("memberId",MySqlDbType.VarChar,50),
+                  new MySqlParameter ("memberCardNo",MySqlDbType.VarChar,50 ),
+                  new  MySqlParameter ("rechargeTime", MySqlDbType.DateTime )
+                   };
+            para[0].Value = model.RechargeId;
+            para[1].Value = model.RechargeType;
+            para[2].Value = model.RechargeAmount;
+            para[3].Value = model.MemberId;
+            para[4].Value = model.MemberCardNo;
+            para[5].Value = model.RechargeTime;
+            return AosyMySql.ExecuteProcedure("updateRecharge", para)==4;
+        }
 
         /// <summary>
         /// 更新一条数据
