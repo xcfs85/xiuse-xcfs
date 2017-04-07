@@ -73,8 +73,9 @@ namespace Xiuse.App.Controllers.OrderBill
         public HttpResponseMessage PostDeskChanged(dynamic obj)
         {
             string orderId = Convert.ToString(obj.orderId);
-            string tableId= Convert.ToString(obj.tableId);
-            if (OrderBLL.DeskChanged(orderId, tableId))
+            string newTableId= Convert.ToString(obj.newTableId);
+            string oldTableId = Convert.ToString(obj.oldTableId);
+            if (OrderBLL.DeskChanged(orderId, newTableId,oldTableId))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);

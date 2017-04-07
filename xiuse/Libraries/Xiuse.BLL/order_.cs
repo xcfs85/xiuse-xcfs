@@ -84,9 +84,9 @@ namespace Xiuse.BLL
         /// <param name="orderId"></param>
         /// <param name="TableId"></param>
         /// <returns></returns>
-        public bool DeskChanged(string orderId, string tableId)
+        public bool DeskChanged(string orderId, string newTableId,string oldTableId)
         {
-            return dal.DeskChanged(orderId, tableId);
+            return dal.DeskChanged(orderId, newTableId,oldTableId);
         }
         /// <summary>
         ///  删除一条数据

@@ -64,10 +64,19 @@ namespace  Xiuse.DAL
         /// <param name="orderId"></param>
         /// <param name="TableId"></param>
         /// <returns></returns>
-        public bool DeskChanged(string orderId, string tableId)
+        public bool DeskChanged(string orderId, string newTableId,string oldTableId)
         {
-            string strSql = String.Format(@"Update order_ set DeskId='{0}'Where OrderId='{1}'", tableId, orderId);
-            return AosyMySql.ExecuteforBool(strSql);
+            List<string> strSql = new List<string>();
+            strSql.Add(String.Format(@"Update order_ set DeskId='{0}'Where OrderId='{1}'", newTableId, orderId));
+            strSql.Add(String.Format(@"update xiuse_desk set DeskState=(select  CASE count(1) WHEN 0 THEN 0 ELSE  if( sum(OrderState)=count(1),2,1)  END  as deskstate  
+                                            from  order_  
+                                            where  DeskId = '{0}'  and   ClearDeskState = 0 and OrderState <> 2 and  date(OrderbeginTime) = date(curdate()))
+                                             where DeskId = '{0}'", oldTableId));
+            strSql.Add(String.Format(@"update xiuse_desk set DeskState=(select  CASE count(1) WHEN 0 THEN 0 ELSE  if( sum(OrderState)=count(1),2,1)  END  as deskstate  
+                                            from  order_  
+                                            where  DeskId = '{0}'  and   ClearDeskState = 0 and OrderState <> 2 and  date(OrderbeginTime) = date(curdate()))
+                                             where DeskId = '{0}'", newTableId));
+            return AosyMySql.ExecuteListSQL(strSql) == 3;
         }
 
         /// <summary>
