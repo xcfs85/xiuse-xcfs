@@ -52,7 +52,7 @@ namespace Xiuse.App.Controllers.Member
                 throw new HttpRequestException();
             Recharge.RechargeId = Guid.NewGuid().ToString("N");
             Recharge.RechargeTime = DateTime.Now;
-            if (BllRecharge.Insert(Recharge))
+            if (BllRecharge.InsertProcedure(Recharge))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
