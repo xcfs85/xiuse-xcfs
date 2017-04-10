@@ -11,7 +11,7 @@ namespace Xiuse.App.Controllers.Member
 {
     /// <summary>
     /// 会员类型接口
-    /// </summary
+    /// </summary>
    [RoutePrefix("api/Members")]
     public class MemberClassifyController : BaseResultMsg
     {
@@ -51,6 +51,9 @@ namespace Xiuse.App.Controllers.Member
         {
             if (MemberClassify == null)
                 throw new HttpRequestException();
+            MemberClassify.MemberClassifyId = Guid.NewGuid().ToString("N");
+            MemberClassify.ClassifyTime = DateTime.Now;
+            MemberClassify.DelTag = 0;
             if (BllMemberClassify.Insert(MemberClassify))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

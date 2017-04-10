@@ -26,7 +26,11 @@ namespace  Xiuse.DAL
                                         model.RechargeId, model.MemberId, model.RechargeType, model.RechargeAmount, model.Balance, model.MemberCardNo, model.RechargeTime, model.BeforeBalance);
             return AosyMySql.ExecuteforBool(strSql);
         }
-
+        /// <summary>
+        /// 增加充钱的存储过程
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public bool InsertProcedure(Model.xiuse_recharge model)
         {
 
