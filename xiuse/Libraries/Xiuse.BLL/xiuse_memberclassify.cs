@@ -75,7 +75,7 @@ namespace Xiuse.BLL
         /// <returns></returns>
         public List<Model.xiuse_memberclassify> GetModels(string RestaurantId)
         {
-            return DataSetTransModelListNoExpand(dal.GetDatas(RestaurantId));
+            return DataSetTransModelListNoExpand(dal.GetData(RestaurantId, "DelTag=0"));
         }
 
         /// <summary>
