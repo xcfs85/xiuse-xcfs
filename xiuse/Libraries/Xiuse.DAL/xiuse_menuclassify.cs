@@ -96,6 +96,7 @@ namespace  Xiuse.DAL
 				model.ClassifyNet=(short)dr["ClassifyNet"];
 				model.ClassifyTag=dr["ClassifyTag"].ToString();
 				model.ClassifyTime=(DateTime)dr["ClassifyTime"];
+                model.RestaurantId = dr["RestaurantId"].ToString();
                 return model;
             }
             else

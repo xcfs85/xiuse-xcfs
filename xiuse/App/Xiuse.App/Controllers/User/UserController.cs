@@ -70,7 +70,7 @@ namespace Xiuse.App.Controllers
             user.Time = DateTime.Now;
             user.UserRole = 0;
             user.DelTag = 0;
-            if (new_user.Insert(user) == true)
+            if (new_user.Insert(user))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
