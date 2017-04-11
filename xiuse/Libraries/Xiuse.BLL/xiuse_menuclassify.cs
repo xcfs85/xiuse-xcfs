@@ -35,8 +35,11 @@ namespace Xiuse.BLL
         {
             return dal.Update(model);
         }
-        
-   
+
+        public bool UpdateList(List<Xiuse.Model.xiuse_menuclassify> lst)
+        {
+            return dal.UpdateList(lst);
+        }
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -108,7 +111,7 @@ namespace Xiuse.BLL
         /// 
         public List<Xiuse.Model.xiuse_menuclassify> GetClassifies(string RestaurantId)
         {
-            return DataSetTransModelListNoExpand(GetData("*", "RestaurantId='" + RestaurantId+"'"));
+            return DataSetTransModelListNoExpand(dal.GetClassifies(RestaurantId));
         }
 
         ///获取当前餐厅的所有菜品分类，条件餐厅ID

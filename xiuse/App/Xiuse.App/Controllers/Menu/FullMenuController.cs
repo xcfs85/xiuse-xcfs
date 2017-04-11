@@ -42,11 +42,7 @@ namespace Xiuse.App.Controllers.Menu
                 mAll.LstMenuItems.AddRange(mic.GetAllMenus(RestaurantId, mAll.MenuClassifies.ClassifyId));
                 mAllList.Add(mAll);
             }
-
-
             return mAllList;
-
-
         }
     }
 }
