@@ -36,10 +36,12 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("AddDesk")]
         public HttpResponseMessage PostAddDesk([FromBody]Model.xiuse_desk model)
         {
-            if (model == null || DeskBLL.Exists(model.DeskId) == false)
+            if (model == null )
             {
                 throw new HttpRequestException();
             }
+            model.DeskId = Guid.NewGuid().ToString("N");
+            model.DeskTime = DateTime.Now;
             if (DeskBLL.Insert(model))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

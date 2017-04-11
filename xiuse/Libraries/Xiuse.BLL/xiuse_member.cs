@@ -122,13 +122,13 @@ namespace Xiuse.BLL
        * 创建人xcf  2016/12/15
        */
         /// <summary>
-        /// 检测会员手机是否重复
+        /// 检测某饭店会员手机是否重复
         /// </summary>
         /// <param name="Cell">手机号码</param>
         /// <returns>true：有重复；false:无重复；</returns>
-        public bool CheckCellExist(string Cell)
+        public bool CheckCellExist(string cell,string rest)
         {
-            if (dal.GetData("1", string.Format("MemberCell='{0}'", Cell)).Tables[0].Rows.Count > 0)
+            if (dal.GetData("1", string.Format("MemberCell='{0}' and RestaurantId='{1}'", cell,rest)).Tables[0].Rows.Count > 0)
                 return true;
             else
                 return false;

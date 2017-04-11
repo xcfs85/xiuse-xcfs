@@ -35,10 +35,13 @@ namespace Xiuse.App.Controllers.Restaurant
         [Route("AddRest")]
         public HttpResponseMessage PostAddRest([FromBody]Model.xiuse_restaurant model)
         {
-            if (model == null||RestBLL.Exists(model.RestaurantId)==false)
+            if (model == null)
             {
                 throw new HttpRequestException();
             }
+            model.RestaurantId = Guid.NewGuid().ToString("N");
+            model.Time = DateTime.Now;
+
             if (RestBLL.Insert(model))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

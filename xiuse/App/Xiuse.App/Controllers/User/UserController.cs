@@ -55,16 +55,21 @@ namespace Xiuse.App.Controllers
 
         /// <summary>
         /// 添加一个用户
+        /// UserRole=0,为管理员
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
         [Route("AddUser")]
         public HttpResponseMessage PostSetXiuse_users([FromBody] Model.xiuse_user user)
         {
-           if(user==null||new_user.Exists(user.UserId))
+           if(user==null)
             {
                 throw new HttpRequestException();
             }
+            user.UserId = Guid.NewGuid().ToString("N");
+            user.Time = DateTime.Now;
+            user.UserRole = 0;
+            user.DelTag = 0;
             if (new_user.Insert(user) == true)
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

@@ -36,9 +36,9 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_user model)
         {
             string strSql=String.Format(@"Update xiuse_user Set 
-            RestaurantId='{0}',UserName='{1}',Weixin='{2}',CellPhone='{3}',Email='{4}',Password='{5}',UserRole='{6}',ParentUserId='{7}',OwnRestaurant='{8}',Time='{9}' 
-            Where UserId='{10}'",
-            model.RestaurantId,model.UserName,model.Weixin,model.CellPhone,model.Email,model.Password,model.UserRole,model.ParentUserId,model.OwnRestaurant,model.Time,model.UserId);
+            RestaurantId='{0}',UserName='{1}',Weixin='{2}',CellPhone='{3}',Email='{4}',Password='{5}',UserRole='{6}',ParentUserId='{7}',OwnRestaurant='{8}'
+            Where UserId='{9}'",
+            model.RestaurantId,model.UserName,model.Weixin,model.CellPhone,model.Email,model.Password,model.UserRole,model.ParentUserId,model.OwnRestaurant,model.UserId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -124,7 +124,7 @@ namespace  Xiuse.DAL
 
         public bool FixWorker(string WorkerId, int DelTag)
         {
-            string strSql = String.Format(@"Update xiuse_user set DelTag='{0}' where Userid='{1}'",DelTag,WorkerId);
+            string strSql = String.Format(@"Update xiuse_user set DelTag='{0}' where UserId='{1}'",DelTag,WorkerId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }

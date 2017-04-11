@@ -25,7 +25,7 @@ namespace Xiuse.App.Controllers.Menu
     public class MenuClassifyController : BaseResultMsg
     {
         BLL.xiuse_menuclassify MenuBLL = new BLL.xiuse_menuclassify();
-
+        Model.xiuse_menuclassify MenuModel = new Model.xiuse_menuclassify();
         /// <summary>
         ///   
         ///获取当前餐厅的所有菜品分类，条件餐厅ID
@@ -48,17 +48,22 @@ namespace Xiuse.App.Controllers.Menu
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [HttpPost]
         [Route("AddMenuClassify")]
-        public HttpResponseMessage PostAddMenuClassify([FromBody]Model.xiuse_menuclassify model)
+        public HttpResponseMessage PostAddMenuClassify(dynamic obj)
         {
-            if (model == null|| MenuBLL.Exists(model.ClassifyId)==false)
+            if (obj== null)
             {
                 throw new HttpRequestException();
             }
-            model.ClassifyId = Guid.NewGuid().ToString("N");
-
-            model.ClassifyTime = DateTime.Now;
-            if(MenuBLL.Insert(model))
+            MenuModel.ClassifyId=Guid.NewGuid().ToString("N");
+            MenuModel.ClassifyTime= DateTime.Now;
+            MenuModel.ClassifyInstruction = Convert.ToString(obj.ClassifyInstruction);
+            MenuModel.ClassifyNet = Convert.ToInt32(obj.ClassifyNet);
+            MenuModel.ClassifyNo = Convert.ToInt32(obj.ClassifyNo);
+            MenuModel.ClassifyTag = Convert.ToString(obj.ClassifyTag);
+            MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);        
+            if(MenuBLL.Insert(MenuModel))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);

@@ -54,16 +54,21 @@ namespace Xiuse.App.Controllers.User
 
         /// <summary>
         /// 新建一个worker
+        /// UserRole=1,为员工
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
         [Route("AddWorker")]
         public HttpResponseMessage PostAddWorker([FromBody] Model.xiuse_user user)
         {
-            if (user == null|| BLLWorker.WorkerExists(user.UserId)==false)
+            if (user == null)
             {
                 throw new HttpRequestException();
             }
+            user.UserId = Guid.NewGuid().ToString("N");
+            user.Time = DateTime.Now;
+            user.UserRole = 1;
+            user.DelTag = 0;
             if (BLLWorker.Insert(user) == true)
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

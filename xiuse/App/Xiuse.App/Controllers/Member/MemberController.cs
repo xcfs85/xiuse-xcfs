@@ -89,6 +89,7 @@ namespace Xiuse.App.Controllers.Member
         }
         /// <summary>
         /// 修改会员信息
+        /// 判断会员信息是否存在(卡号和手机号都必不可少)
         /// </summary>
         /// <param name="member">会员信息</param>
         /// <returns></returns>
@@ -97,7 +98,7 @@ namespace Xiuse.App.Controllers.Member
         public HttpResponseMessage PostUpdateMember([FromBody]Model.xiuse_member member)
         {
 
-            if (member == null)
+            if (member == null||MemberBLL.ExistsMember(member)==false)
             {
                 throw new HttpRequestException();
             }
@@ -146,17 +147,20 @@ namespace Xiuse.App.Controllers.Member
 
         }
         /// <summary>
-        /// 检测会员手机号是否重复
+        /// 检测某饭店会员手机是否重复
+        /// 参数：string MemberCell;string RestaurantId
         /// </summary>
         /// <param name="cell">会员手机号</param>
         /// <returns></returns>
         [Route("CheckCell")]
-        public HttpResponseMessage PostCheckCell([FromBody] string cell)
+        public HttpResponseMessage PostCheckCell(dynamic obj)
         {
-            if (cell == null)
+            string cell = Convert.ToString(obj.MemberCell);
+            string rest = Convert.ToString(obj.RestaurantId);
+            if (cell == null||rest==null)
                 throw new HttpRequestException();
            
-            if (!MemberBLL.CheckCellExist(cell))
+            if (!MemberBLL.CheckCellExist(cell,rest))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
