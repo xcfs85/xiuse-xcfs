@@ -23,6 +23,7 @@ namespace Xiuse.Model
 	private decimal _DiscountContent;
 	private Int16 _DiscountType;
 	private short _MenuServing;
+    private string _MenuId;
         #endregion
 
         #region 成员属性...
@@ -164,7 +165,14 @@ namespace Xiuse.Model
 	            get{ return _MenuServing; }
 	            set{ _MenuServing=value; }
 	        }
-		
+		/// <summary>
+        /// 菜品的Id
+        /// </summary>
+        public string MenuId
+        {
+            get { return _MenuId; }
+            set { _MenuId = value; }
+        }
         #endregion
     }
 }

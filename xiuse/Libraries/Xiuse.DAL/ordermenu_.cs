@@ -20,21 +20,41 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.ordermenu_ model)
         {
-            string strSql=String.Format(@"Insert Into ordermenu_(OrderId,MenuName,MenuPrice,MenuTag,MenuImage,MenuInstruction,DiscoutFlag,DiscountName,DiscountContent,DiscountType,MenuServing,OrderMenuId) 
-                                        values('{0}','{1}',{2},'{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}','{11}')",
-                                        model.OrderId,model.MenuName,model.MenuPrice,model.MenuTag,model.MenuImage,model.MenuInstruction,model.DiscoutFlag,model.DiscountName,model.DiscountContent,model.DiscountType,model.MenuServing,model.OrderMenuId);
+            string strSql=String.Format(@"Insert Into ordermenu_(OrderId,MenuName,MenuPrice,MenuTag,MenuImage,MenuInstruction,DiscoutFlag,DiscountName,DiscountContent,DiscountType,MenuServing,OrderMenuId,MenuId,MenuNum) 
+                                        values('{0}','{1}',{2},'{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}','{11}','{12}',{13})",
+                                        model.OrderId,model.MenuName,model.MenuPrice,model.MenuTag,model.MenuImage,model.MenuInstruction,model.DiscoutFlag,model.DiscountName,model.DiscountContent,
+                                        model.DiscountType,model.MenuServing,model.OrderMenuId,model.MenuId,model.MenuNum);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
 
+        /// <summary>
+        /// 添加订单中的菜品
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public int AddOrderMenus(dynamic obj)
         {
             List<string> strSqlList = new List<string>();
-            foreach (var model in obj.manus)
+            foreach (var model in obj)
             {
-                string strSql = String.Format(@"Insert Into ordermenu_(OrderId,MenuName,MenuPrice,MenuTag,MenuImage,MenuInstruction,DiscoutFlag,DiscountName,DiscountContent,DiscountType,MenuServing,OrderMenuId) 
-                                        values('{0}','{1}',{2},'{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}','{11}')",
-                                       model.OrderId, model.MenuName, model.MenuPrice, model.MenuTag, model.MenuImage, model.MenuInstruction, model.DiscoutFlag, model.DiscountName, model.DiscountContent, model.DiscountType, model.MenuServing, model.OrderMenuId);
+                string tmp = String.Format(@"select OrderMenuId from ordermenu_ where OrderId='{0}' and MenuId='{1}'",model.OrderId, model.MenuId);
+                string strSql = String.Empty ;
+                DataSet tmpDs = AosyMySql.ExecuteforDataSet(tmp);
+                //判断订单中是否已有菜品
+                if (tmpDs.Tables[0].Rows.Count == 0)
+                {
+                    //订单没有这个菜品，添加菜品
+                    model.OrderMenuId = Guid.NewGuid().ToString("N");
+                    strSql = String.Format(@"Insert Into ordermenu_(OrderId,MenuName,MenuPrice,MenuTag,MenuImage,MenuInstruction,DiscoutFlag,DiscountName,DiscountContent,DiscountType,MenuServing,OrderMenuId,MenuId,MenuNum) 
+                                        values('{0}','{1}',{2},'{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}','{11}','{12}','{13}')",
+                                           model.OrderId, model.MenuName, model.MenuPrice, model.MenuTag, model.MenuImage, model.MenuInstruction, 0, "",0,0,
+                                           model.MenuServing, model.OrderMenuId, model.MenuId,model.MenuNum);
+                }
+                else
+                    //菜单已有此菜品，更新菜品数量。
+                    strSql = String.Format(@"update ordermenu_ set MenuNum=MenuNum+{0}  where OrderMenuId='{1}'", model.MenuNum, tmpDs.Tables[0].Rows[0][0].ToString());
+               
                 strSqlList.Add(strSql);
             }
             return AosyMySql.ExecuteListSQL(strSqlList);
