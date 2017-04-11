@@ -26,9 +26,9 @@ namespace  Xiuse.DAL
 
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+
+
         /// <summary>
         /// 更新一条数据
         /// </summary>

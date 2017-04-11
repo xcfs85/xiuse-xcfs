@@ -32,7 +32,7 @@ namespace Xiuse.App.Controllers.Member
         /// <param name="RestaurantId">餐厅Id</param>
         /// <returns></returns>
         [Route("UpdateMemberClassify")]
-        public HttpResponseMessage PostUpdateMemberClassify(Model.xiuse_memberclassify MemberClassify)
+        public HttpResponseMessage PostUpdateMemberClassify([FromBody]Model.xiuse_memberclassify MemberClassify)
         {
             if (MemberClassify == null)
                 throw new HttpRequestException();
@@ -42,12 +42,12 @@ namespace Xiuse.App.Controllers.Member
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
-        /// 添加会员类型
+        /// 添加会员类型，并更新数目
         /// </summary>
         /// <param name="memberconsumption">会员类型对象</param>
         /// <returns></returns>
         [Route("AddMemberClassify")]
-        public HttpResponseMessage PostAddMemberClassify(Model.xiuse_memberclassify MemberClassify)
+        public HttpResponseMessage PostAddMemberClassify([FromBody]Model.xiuse_memberclassify MemberClassify)
         {
             if (MemberClassify == null)
                 throw new HttpRequestException();
@@ -60,13 +60,14 @@ namespace Xiuse.App.Controllers.Member
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
         /// <summary>
-        /// 删除会员类型
+        /// 删除会员类型(MemberClassifyId)
         /// </summary>
         /// <param name="memberconsumption">会员类型对象</param>
         /// <returns></returns>
         [Route("DeleteMemberClassify")]
-        public HttpResponseMessage GetDeleteMemberClassify(string MemberClassifyId)
+        public HttpResponseMessage PostDeleteMemberClassify(dynamic obj)
         {
+            string MemberClassifyId = Convert.ToString(obj.MemberClassifyId);
             if (MemberClassifyId == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.SetMemberClassify(2,MemberClassifyId))
@@ -80,8 +81,9 @@ namespace Xiuse.App.Controllers.Member
         /// <param name="memberconsumption">会员类型对象</param>
         /// <returns></returns>
         [Route("StartUpMemberClassify")]
-        public HttpResponseMessage GetStartUpMemberClassify(string MemberClassifyId)
+        public HttpResponseMessage PostStartUpMemberClassify(dynamic obj)
         {
+            string MemberClassifyId = Convert.ToString(obj.MemberClassifyId);
             if (MemberClassifyId == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.SetMemberClassify(0, MemberClassifyId))
@@ -95,8 +97,9 @@ namespace Xiuse.App.Controllers.Member
         /// <param name="memberconsumption">会员类型对象</param>
         /// <returns></returns>
         [Route("StopMemberClassify")]
-        public HttpResponseMessage GetStopMemberClassify(string MemberClassifyId)
+        public HttpResponseMessage PostStopMemberClassify(dynamic obj)
         {
+            string MemberClassifyId = Convert.ToString(obj.MemberClassifyId);
             if (MemberClassifyId == null)
                 throw new HttpRequestException();
             if (BllMemberClassify.SetMemberClassify(1, MemberClassifyId))

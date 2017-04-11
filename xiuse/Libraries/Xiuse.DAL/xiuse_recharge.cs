@@ -51,6 +51,23 @@ namespace  Xiuse.DAL
             return AosyMySql.ExecuteProcedure("updateRecharge", para)==4;
         }
 
+
+
+        public int InsertWords(Model.xiuse_recharge model)
+        {
+            List<string> listModel = new List<string>();
+            string strSql = String.Format(@"Insert Into xiuse_recharge(RechargeId,RechargeType,RechargeAmount,MemberId,MemberCardNo,RechargeTime)
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}')", model.RechargeId, model.RechargeType, model.RechargeAmount, model.MemberId, model.MemberCardNo, model.RechargeTime);
+            listModel.Add(strSql);
+            strSql = String.Format(@"update xiuse_recharge set BeforeBalance=(select MemberAmount from xiuse_member where  MemberId='{0}')where RechargeId='{1}'", model.MemberId, model.RechargeId);
+            listModel.Add(strSql);
+            strSql = String.Format(@"update xiuse_member set MemberAmount=(MemberAmount+'{0}') where MemberId='{1}'", model.RechargeAmount, model.MemberId);
+            listModel.Add(strSql);
+            strSql = String.Format(@"update xiuse_recharge set Balance=(select MemberAmount from xiuse_member where MemberId='{0}' ) where RechargeId='{1}'", model.MemberId, model.RechargeId);
+            listModel.Add(strSql);
+            return AosyMySql.ExecuteListSQL(listModel);
+            
+        }
         /// <summary>
         /// 更新一条数据
         /// </summary>

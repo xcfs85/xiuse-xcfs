@@ -51,6 +51,8 @@ namespace Xiuse.App.Controllers.Menu
             {
                 throw new HttpRequestException();
             }
+            model.MenuId = Guid.NewGuid().ToString("N");
+            model.MenuTime = DateTime.Now;
             if (MenuBLL.Insert(model))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
@@ -69,6 +71,7 @@ namespace Xiuse.App.Controllers.Menu
             {
                 throw new HttpRequestException();
             }
+            model.MenuTime = DateTime.Now;
             if (MenuBLL.Update(model))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

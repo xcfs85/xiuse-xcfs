@@ -29,15 +29,14 @@ namespace Xiuse.BLL
 
 
         /// <summary>
-        /// 增加一条存储过程
+        /// 增加一条存储过程 分语句
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool InsertProcedure(Model.xiuse_recharge model)
+        public int InsertWords(Model.xiuse_recharge model)
         {
-            return dal.InsertProcedure(model);
+            return dal.InsertWords(model);
         }
-
         /// <summary>
         /// 更新一条数据
         /// </summary>

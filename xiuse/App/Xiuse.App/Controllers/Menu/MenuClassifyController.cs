@@ -37,7 +37,7 @@ namespace Xiuse.App.Controllers.Menu
       
         public DataSet GetMenuClassifies(string RestaurantId)
         {
-            if (RestaurantId == null||MenuBLL.ExistsRestaurant(RestaurantId)==false)
+            if (RestaurantId == null)
             {
                 throw new HttpRequestException();
             }
@@ -55,6 +55,9 @@ namespace Xiuse.App.Controllers.Menu
             {
                 throw new HttpRequestException();
             }
+            model.ClassifyId = Guid.NewGuid().ToString("N");
+
+            model.ClassifyTime = DateTime.Now;
             if(MenuBLL.Insert(model))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
@@ -72,6 +75,7 @@ namespace Xiuse.App.Controllers.Menu
             {
                 throw new HttpRequestException();
             }
+            model.ClassifyTime = DateTime.Now;
             if (MenuBLL.Update(model))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else

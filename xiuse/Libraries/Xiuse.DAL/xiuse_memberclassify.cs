@@ -15,7 +15,7 @@ namespace  Xiuse.DAL
         public xiuse_memberclassify(){}
         
         /// <summary>
-        /// 增加一条数据
+        /// 增加一条数据并更新数目
         /// </summary>
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_memberclassify model)
@@ -23,8 +23,10 @@ namespace  Xiuse.DAL
             string strSql=String.Format(@"Insert Into xiuse_memberclassify(DiscountId,ClassifyName,ClassRemark,ClassifyMemberNum,ClassifyTime,DelTag,RestaurantId,MemberClassifyId) 
                                         values('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}')",
                                         model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId,model.MemberClassifyId);
-
-            return AosyMySql.ExecuteforBool(strSql);
+            string strSql2 = String.Format(@"update xiuse_memberclassify set ClassifyMemberNum =(select count(*) as num From xiuse_member 
+                                            Where MemberClassifyId='{0}' and MemeberState=1) where MemberClassifyId='{0}' ", model.MemberClassifyId);
+            AosyMySql.ExecuteforBool(strSql);
+            return AosyMySql.ExecuteforBool(strSql2);
         }
         
 
@@ -36,9 +38,9 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_memberclassify model)
         {
             string strSql=String.Format(@"Update xiuse_memberclassify Set 
-            DiscountId='{0}',ClassifyName='{1}',ClassRemark='{2}',ClassifyMemberNum='{3}',ClassifyTime='{4}',DelTag='{5}',RestaurantId='{6}' 
-            Where MemberClassifyId='{7}'",
-            model.DiscountId,model.ClassifyName,model.ClassRemark,model.ClassifyMemberNum,model.ClassifyTime,model.DelTag,model.RestaurantId,model.MemberClassifyId);
+            DiscountId='{0}',ClassifyName='{1}',ClassRemark='{2}',RestaurantId='{3}' 
+            Where MemberClassifyId='{4}'",
+            model.DiscountId,model.ClassifyName,model.ClassRemark,model.RestaurantId,model.MemberClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         
@@ -51,7 +53,10 @@ namespace  Xiuse.DAL
         public bool Delete(string MemberClassifyId)
         {
             string strSql=String.Format("Delete From xiuse_memberclassify Where MemberClassifyId='{0}'",MemberClassifyId);
-            return AosyMySql.ExecuteforBool(strSql);
+            string strSql2 = String.Format(@"update xiuse_memberclassify set ClassifyMemberNum =(select count(*) as num From xiuse_member 
+                                            Where MemberClassifyId='{0}' and MemeberState=1) where MemberClassifyId='{0}' ", MemberClassifyId);
+            AosyMySql.ExecuteforBool(strSql);
+            return AosyMySql.ExecuteforBool(strSql2);
         }
         
 

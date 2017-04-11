@@ -27,7 +27,6 @@ namespace Xiuse.BLL
             return dal.Insert(model);
         }
 
-
         /// <summary>
         /// 更新一条数据
         /// </summary>
@@ -109,13 +108,13 @@ namespace Xiuse.BLL
         /// 
         public List<Xiuse.Model.xiuse_menuclassify> GetClassifies(string RestaurantId)
         {
-            return DataSetTransModelListNoExpand(GetData("*", "RestaurantId=" + RestaurantId));
+            return DataSetTransModelListNoExpand(GetData("*", "RestaurantId='" + RestaurantId+"'"));
         }
 
         ///获取当前餐厅的所有菜品分类，条件餐厅ID
         public DataSet GetMenuClassifies(string RestaurantId)
         {
-            return GetData("*", "RestaurantId=" + RestaurantId);
+            return GetData("*", "RestaurantId='" + RestaurantId+"'");
         }
         /// <summary>
         /// 获取数据[用于分页]

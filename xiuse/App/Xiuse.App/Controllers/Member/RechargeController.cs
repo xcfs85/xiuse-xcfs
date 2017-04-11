@@ -40,19 +40,19 @@ namespace Xiuse.App.Controllers.Member
             return BllRecharge.Search(RestaurantId, condition);
         }
         /// <summary>
-        /// 会员卡充值
+        /// 会员卡充值 生成充值记录，并更新会员可用余额
         /// </summary>
         /// <param name="Recharge">充值记录</param>
         /// <returns></returns>
         [Route("AddRecharge")]
         public HttpResponseMessage PostAddRecharge([FromBody] Model.xiuse_recharge Recharge)
         {
-            //todo
+            
             if (Recharge == null)
                 throw new HttpRequestException();
             Recharge.RechargeId = Guid.NewGuid().ToString("N");
             Recharge.RechargeTime = DateTime.Now;
-            if (BllRecharge.InsertProcedure(Recharge))
+            if (BllRecharge.InsertWords(Recharge)==4)
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
