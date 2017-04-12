@@ -77,18 +77,20 @@ namespace Xiuse.App.Controllers.Menu
         [Route("UpdateMenuClassify")]
         public HttpResponseMessage PostUpdateMenuClassify(dynamic obj)
         {
-            MenuModel.ClassifyId = Guid.NewGuid().ToString("N");
             MenuModel.ClassifyTime = DateTime.Now;
             MenuModel.ClassifyInstruction = Convert.ToString(obj.ClassifyInstruction);
             MenuModel.ClassifyNet = Convert.ToInt32(obj.ClassifyNet);
             MenuModel.ClassifyNo = Convert.ToInt32(obj.ClassifyNo);
             MenuModel.ClassifyTag = Convert.ToString(obj.ClassifyTag);
+            MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
             MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
             if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
                 throw new HttpRequestException();
             }
-            List<Xiuse.Model.xiuse_menuclassify> GetClassifies = MenuBLL.GetClassifies(MenuModel.RestaurantId);
+            
+            List<Xiuse.Model.xiuse_menuclassify> GetClassifies = MenuBLL.GetClassifies(MenuModel.RestaurantId,MenuModel.ClassifyId);
+     
             GetClassifies.Insert(MenuModel.ClassifyNo-1, MenuModel);
             for (int i = 0; i < GetClassifies.Count; i++)
             {

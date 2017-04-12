@@ -109,10 +109,19 @@ namespace Xiuse.BLL
         ///获取当前餐厅的所有菜品分类，条件餐厅ID
         ///以list形式返回
         /// 
-        public List<Xiuse.Model.xiuse_menuclassify> GetClassifies(string RestaurantId)
+        public List<Xiuse.Model.xiuse_menuclassify> GetClassifies(string RestaurantId,string menuClassifyId)
         {
-            return DataSetTransModelListNoExpand(dal.GetClassifies(RestaurantId));
+            return DataSetTransModelListNoExpand(dal.GetClassifies(RestaurantId,menuClassifyId));
         }
+
+
+
+        ///获取当前餐厅的所有菜品分类，条件餐厅ID
+        public List<Xiuse.Model.xiuse_menuclassify> GetFullMenuClassifies(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(GetData("*", "RestaurantId='" + RestaurantId + "'"));
+        }
+
 
         ///获取当前餐厅的所有菜品分类，条件餐厅ID
         public DataSet GetMenuClassifies(string RestaurantId)

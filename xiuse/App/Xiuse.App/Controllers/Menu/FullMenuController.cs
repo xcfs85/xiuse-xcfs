@@ -34,7 +34,7 @@ namespace Xiuse.App.Controllers.Menu
             BLL.xiuse_menuclassify MenuBLL = new BLL.xiuse_menuclassify();
             MenuInfoController mic = new MenuInfoController();
             List<Xiuse.Model.xiuse_menuclassify> mClassifyLst = new List<Model.xiuse_menuclassify>();
-            mClassifyLst = MenuBLL.GetClassifies(RestaurantId);
+            mClassifyLst = MenuBLL.GetFullMenuClassifies(RestaurantId);
             for (int i = 0; i < mClassifyLst.Count; i++)
             {
                 Xiuse.Model.MenuAll mAll = new Xiuse.Model.MenuAll();

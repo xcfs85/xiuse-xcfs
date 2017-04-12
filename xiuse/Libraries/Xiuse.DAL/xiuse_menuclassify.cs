@@ -48,9 +48,7 @@ namespace  Xiuse.DAL
             List<string> newList = new List<string>();
             foreach (Model.xiuse_menuclassify model in lst)
             {
-                string strSql = String.Format(@"Insert Into xiuse_menuclassify(ClassifyInstruction,ClassifyNo,ClassifyNet,ClassifyTag,ClassifyTime,ClassifyId,RestaurantId) 
-                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
-                                       model.ClassifyInstruction, model.ClassifyNo, model.ClassifyNet, model.ClassifyTag, model.ClassifyTime, model.ClassifyId, model.RestaurantId);
+                string strSql = String.Format(@"update xiuse_menuclassify set ClassifyNo='{0}' where ClassifyId='{1}'",model.ClassifyNo,model.ClassifyId);
                 newList.Add(strSql);
             }
             return AosyMySql.ExecuteListSQL(newList)==lst.Count;
@@ -190,9 +188,9 @@ namespace  Xiuse.DAL
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public DataSet GetClassifies(string RestaurantId)
+        public DataSet GetClassifies(string RestaurantId,string ClassifyId)
         {
-            string strSql = String.Format(@"select * from xiuse_menuclassify where RestaurantId='{0}' order by ClassifyNo asc ",RestaurantId);
+            string strSql = String.Format(@"select * from xiuse_menuclassify where RestaurantId='{0}'and ClassifyId<>'{1}' order by ClassifyNo asc ",RestaurantId, ClassifyId);
             return AosyMySql.ExecuteforDataSet(strSql);
         }
 
