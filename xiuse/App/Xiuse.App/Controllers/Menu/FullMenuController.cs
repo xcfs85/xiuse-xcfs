@@ -39,7 +39,9 @@ namespace Xiuse.App.Controllers.Menu
             {
                 Xiuse.Model.MenuAll mAll = new Xiuse.Model.MenuAll();
                 mAll.MenuClassifies = mClassifyLst[i];
-                mAll.LstMenuItems.AddRange(mic.GetAllMenus(RestaurantId, mAll.MenuClassifies.ClassifyId));
+                IList<Model.xiuse_menus> tmp = mic.GetAllMenus(RestaurantId, mAll.MenuClassifies.ClassifyId);
+                    if(tmp != null)
+                    mAll.LstMenuItems.AddRange(tmp);
                 mAllList.Add(mAll);
             }
 

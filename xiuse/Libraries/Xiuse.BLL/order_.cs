@@ -39,12 +39,11 @@ namespace Xiuse.BLL
             for (int i = 0; i < obj.Menus.Count; i++)
             {
                 TheMenu = Newtonsoft.Json.JsonConvert.DeserializeObject<Model.ordermenu_>(Convert.ToString(obj.Menus[i]));
+                TheMenu.MenuNum = (int)obj.Menus[i].MenuNo;
                 TheMenu.OrderId = OrderModel.OrderId;
-                TheMenu.OrderMenuId = Guid.NewGuid().ToString().Replace("-", "");
+                TheMenu.OrderMenuId = Guid.NewGuid().ToString("N");
                 if (dalOrderMenu.Insert(TheMenu) == false)
                      OrderMenuFlag=false;
-
-                //menus.Add(TheMenu);
             }
 
             if (OrderFlag== false||OrderMenuFlag==false)
