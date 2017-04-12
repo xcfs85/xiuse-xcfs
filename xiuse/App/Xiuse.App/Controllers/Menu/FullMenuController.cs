@@ -44,11 +44,7 @@ namespace Xiuse.App.Controllers.Menu
                     mAll.LstMenuItems.AddRange(tmp);
                 mAllList.Add(mAll);
             }
-
-
             return mAllList;
-
-
         }
     }
 }

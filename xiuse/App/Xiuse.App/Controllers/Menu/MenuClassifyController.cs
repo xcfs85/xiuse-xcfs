@@ -70,19 +70,35 @@ namespace Xiuse.App.Controllers.Menu
         }
         /// <summary>
         /// 更新菜品分类
+        /// todo
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [Route("UpdateMenuClassify")]
-        public HttpResponseMessage PostUpdateMenuClassify([FromBody]Model.xiuse_menuclassify model)
+        public HttpResponseMessage PostUpdateMenuClassify(dynamic obj)
         {
-            if (model == null || MenuBLL.Exists(model.ClassifyId)==false)
+            MenuModel.ClassifyId = Guid.NewGuid().ToString("N");
+            MenuModel.ClassifyTime = DateTime.Now;
+            MenuModel.ClassifyInstruction = Convert.ToString(obj.ClassifyInstruction);
+            MenuModel.ClassifyNet = Convert.ToInt32(obj.ClassifyNet);
+            MenuModel.ClassifyNo = Convert.ToInt32(obj.ClassifyNo);
+            MenuModel.ClassifyTag = Convert.ToString(obj.ClassifyTag);
+            MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
+            if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
                 throw new HttpRequestException();
             }
-            model.ClassifyTime = DateTime.Now;
-            if (MenuBLL.Update(model))
+            List<Xiuse.Model.xiuse_menuclassify> GetClassifies = MenuBLL.GetClassifies(MenuModel.RestaurantId);
+            GetClassifies.Insert(MenuModel.ClassifyNo-1, MenuModel);
+            for (int i = 0; i < GetClassifies.Count; i++)
+            {
+                GetClassifies[i].ClassifyNo = i + 1;
+            } 
+            if (MenuBLL.UpdateList(GetClassifies))
+            {         
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
+            }
+             
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
         }

@@ -41,9 +41,22 @@ namespace  Xiuse.DAL
             model.ClassifyInstruction,model.ClassifyNo,model.ClassifyNet,model.ClassifyTag,model.ClassifyTime,model.ClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+
+        public bool UpdateList(List<Xiuse.Model.xiuse_menuclassify> lst)
+        {
+            List<string> newList = new List<string>();
+            foreach (Model.xiuse_menuclassify model in lst)
+            {
+                string strSql = String.Format(@"Insert Into xiuse_menuclassify(ClassifyInstruction,ClassifyNo,ClassifyNet,ClassifyTag,ClassifyTime,ClassifyId,RestaurantId) 
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                                       model.ClassifyInstruction, model.ClassifyNo, model.ClassifyNet, model.ClassifyTag, model.ClassifyTime, model.ClassifyId, model.RestaurantId);
+                newList.Add(strSql);
+            }
+            return AosyMySql.ExecuteListSQL(newList)==lst.Count;
+        }
+
+
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -172,7 +185,16 @@ namespace  Xiuse.DAL
 	    if(Wheres.Length>0)strSql+=" Where "+ Wheres +"";
             return AosyMySql.ExecuteforDataSet(strSql);
         }
-
+        /// <summary>
+        /// 更新菜品分类
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public DataSet GetClassifies(string RestaurantId)
+        {
+            string strSql = String.Format(@"select * from xiuse_menuclassify where RestaurantId='{0}' order by ClassifyNo asc ",RestaurantId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
 
         /// <summary>
         /// 获取数据[用于分页]
