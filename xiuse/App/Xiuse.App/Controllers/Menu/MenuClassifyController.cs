@@ -77,18 +77,13 @@ namespace Xiuse.App.Controllers.Menu
         [Route("UpdateMenuClassify")]
         public HttpResponseMessage PostUpdateMenuClassify(dynamic obj)
         {
-            MenuModel.ClassifyTime = DateTime.Now;
-            MenuModel.ClassifyInstruction = Convert.ToString(obj.ClassifyInstruction);
-            MenuModel.ClassifyNet = Convert.ToInt32(obj.ClassifyNet);
             MenuModel.ClassifyNo = Convert.ToInt32(obj.ClassifyNo);
-            MenuModel.ClassifyTag = Convert.ToString(obj.ClassifyTag);
             MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
             MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
             if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
                 throw new HttpRequestException();
-            }
-            
+            }     
             List<Xiuse.Model.xiuse_menuclassify> GetClassifies = MenuBLL.GetClassifies(MenuModel.RestaurantId,MenuModel.ClassifyId);
      
             GetClassifies.Insert(MenuModel.ClassifyNo-1, MenuModel);
@@ -99,8 +94,7 @@ namespace Xiuse.App.Controllers.Menu
             if (MenuBLL.UpdateList(GetClassifies))
             {         
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
-            }
-             
+            } 
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
@@ -109,14 +103,22 @@ namespace Xiuse.App.Controllers.Menu
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HttpPost]
         [Route("DeleteMenuClassify")]
-        public HttpResponseMessage DeleteDelMenuClassify([FromBody]String id)
+        public HttpResponseMessage PostDelMenuClassify(dynamic obj)
         {
-            if (id == null || MenuBLL.Exists(id)==false)
+            MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
+            MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
+            if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
                 throw new HttpRequestException();
             }
-            if(MenuBLL.Delete(id))
+            List<Xiuse.Model.xiuse_menuclassify> GetClassifies = MenuBLL.GetClassifies(MenuModel.RestaurantId, MenuModel.ClassifyId);
+            for (int i = 0; i < GetClassifies.Count; i++)
+            {
+                GetClassifies[i].ClassifyNo = i + 1;
+            }
+            if (MenuBLL.DeleteList(MenuModel.ClassifyId, GetClassifies))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);

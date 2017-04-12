@@ -64,8 +64,24 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Delete From xiuse_menuclassify Where ClassifyId='{0}'",ClassifyId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
-
+        /// <summary>
+        /// 删除，并更新多条记录
+        /// </summary>
+        /// <param name="ClassifyId"></param>
+        /// <param name="lst"></param>
+        /// <returns></returns>
+        public bool DeleteList(string ClassifyId, List<Xiuse.Model.xiuse_menuclassify> lst)
+        {
+            List<string> newList = new List<string>();
+            string strSql= String.Format("Delete From xiuse_menuclassify Where ClassifyId='{0}'", ClassifyId);
+            newList.Add(strSql);
+            foreach (Model.xiuse_menuclassify model in lst)
+            {
+                strSql = String.Format(@"update xiuse_menuclassify set ClassifyNo='{0}' where ClassifyId='{1}'", model.ClassifyNo, model.ClassifyId);
+                newList.Add(strSql);
+            }
+            return AosyMySql.ExecuteListSQL(newList) == (lst.Count+1);
+        }
 
         /// <summary>
         ///  判断是否存在

@@ -22,7 +22,7 @@ namespace Xiuse.App.Controllers.Menu
     public class MenuInfoController : BaseResultMsg
     {
         BLL.xiuse_menus MenuBLL = new BLL.xiuse_menus();
-
+        Model.xiuse_menus MenuModel = new Model.xiuse_menus();
         /// <summary>
         /// 获取当前餐厅当前分类下的所有菜品信息（条件菜品分类ID）
         /// </summary>
@@ -47,7 +47,7 @@ namespace Xiuse.App.Controllers.Menu
         [Route("AddMenu")]
         public HttpResponseMessage PostAddMenu([FromBody]Model.xiuse_menus model)
         {
-            if (model == null|| MenuBLL.Exists(model.MenuId)==false)
+            if (model == null)
             {
                 throw new HttpRequestException();
             }
@@ -65,15 +65,27 @@ namespace Xiuse.App.Controllers.Menu
         /// <param name="model"></param>
         /// <returns></returns>
         [Route("UpdateMenu")]
-        public HttpResponseMessage PostUpdateMenu([FromBody]Model.xiuse_menus model)
+        public HttpResponseMessage PostUpdateMenu(dynamic obj)
         {
-            if (model == null ||MenuBLL.Exists(model.MenuId)==false)
+            MenuModel.MenuId = Convert.ToString(obj.MenuId);
+            MenuModel.MenuNo = Convert.ToInt32(obj.MenuNo);
+            MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
+            MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
+            if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
                 throw new HttpRequestException();
             }
-            model.MenuTime = DateTime.Now;
-            if (MenuBLL.Update(model))
+            List<Model.xiuse_menus> GetMenuLst = MenuBLL.GetAllMenusWithoutUpdate(MenuModel.RestaurantId, MenuModel.ClassifyId, MenuModel.MenuId);
+
+            GetMenuLst.Insert(MenuModel.MenuNo - 1, MenuModel);
+            for (int i = 0; i < GetMenuLst.Count; i++)
+            {
+                GetMenuLst[i].MenuNo = i + 1;
+            }
+            if (MenuBLL.UpdateList(GetMenuLst))
+            {
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
+            }
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
         }
@@ -85,13 +97,22 @@ namespace Xiuse.App.Controllers.Menu
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("DeleteMenu")]
-        public HttpResponseMessage DeleteDelMenuClassify([FromBody]String id)
+        public HttpResponseMessage PostDelMenu(dynamic obj)
         {
-            if (id == null|| MenuBLL.Exists(id)==false)
+            MenuModel.MenuId = Convert.ToString(obj.MenuId);
+            MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
+            MenuModel.MenuNo = Convert.ToInt32(obj.MenuNo);
+            MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
+            if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
                 throw new HttpRequestException();
             }
-            if (MenuBLL.Delete(id))
+            List<Xiuse.Model.xiuse_menus> GetMenuLst = MenuBLL.GetAllMenusWithoutUpdate(MenuModel.RestaurantId, MenuModel.ClassifyId, MenuModel.MenuId);
+            for (int i = 0; i < GetMenuLst.Count; i++)
+            {
+                GetMenuLst[i].MenuNo = i + 1;
+            }
+            if (MenuBLL.DeleteList(MenuModel.MenuId, GetMenuLst))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);

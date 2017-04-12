@@ -35,7 +35,11 @@ namespace Xiuse.BLL
         {
             return dal.Update(model);
         }
-
+        /// <summary>
+        /// 更新多条记录
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <returns></returns>
         public bool UpdateList(List<Xiuse.Model.xiuse_menuclassify> lst)
         {
             return dal.UpdateList(lst);
@@ -48,7 +52,18 @@ namespace Xiuse.BLL
         {
             return dal.Delete(ClassifyId);
         }
-        
+        /// <summary>
+        /// 删除，并更新多条序号
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <returns></returns>
+        public bool DeleteList(string ClassifyId,List<Xiuse.Model.xiuse_menuclassify> lst)
+        {
+            return dal.DeleteList(ClassifyId,lst);
+        }
+
+
+
         /// <summary>
         ///  判断是否存在
         /// </summary>

@@ -26,9 +26,13 @@ namespace  Xiuse.DAL
 
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+
+        public DataSet GetAllMenusWithoutUpdate(string rest, string classifyId,string menuId)
+        {
+            string strSql = String.Format(@"select * from xiuse_menus where RestaurantId='{0}' and ClassifyId='{1}' and menuId<>'{2}'", rest, classifyId, menuId);
+            return AosyMySql.ExecuteforDataSet(strSql);
+        }
         /// <summary>
         /// 更新一条数据
         /// </summary>
@@ -36,14 +40,23 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.xiuse_menus model)
         {
             string strSql=String.Format(@"Update xiuse_menus Set 
-            RestaurantId='{0}',ClassifyId='{1}',MenuName='{2}',MenuQuantity='{3}',MenuPrice='{4}',MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuNo='{8}',MenuInstruction='{9}',SaleState='{10}',MenuState='{11}',MenuTime='{12}' 
-            Where MenuId='{13}'",
-            model.RestaurantId,model.ClassifyId,model.MenuName,model.MenuQuantity,model.MenuPrice,model.MenuShortcut,model.MenuTag,model.MenuImage,model.MenuNo,model.MenuInstruction,model.SaleState,model.MenuState,model.MenuTime,model.MenuId);
+            RestaurantId='{0}',ClassifyId='{1}',MenuName='{2}',MenuQuantity='{3}',MenuPrice='{4}',MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuNo='{8}',MenuInstruction='{9}',SaleState='{10}',MenuState='{11}'
+            Where MenuId='{12}'",
+            model.RestaurantId,model.ClassifyId,model.MenuName,model.MenuQuantity,model.MenuPrice,model.MenuShortcut,model.MenuTag,model.MenuImage,model.MenuNo,model.MenuInstruction,model.SaleState,model.MenuState,model.MenuId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
-        
+        public bool UpdateList(List<Model.xiuse_menus> lst)
+        {
+            List<string> newList = new List<string>();
+            foreach (Model.xiuse_menus model in lst)
+            {
+                string strSql = String.Format(@"update xiuse_menu set MenuNo='{0}' where MenuId='{1}'", model.MenuNo, model.MenuId);
+                newList.Add(strSql);
+            }
+            return AosyMySql.ExecuteListSQL(newList) == lst.Count;
+        }
+
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -53,8 +66,25 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Delete From xiuse_menus Where MenuId='{0}'",MenuId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
 
+
+        /// <summary>
+        /// 删除，并更新多条序号
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <returns></returns>
+        public bool DeleteList(string MenuId, List<Xiuse.Model.xiuse_menus> lst)
+        {
+            List<string> newList = new List<string>();
+            string strSql = String.Format("Delete From xiuse_menus Where MenuId='{0}'", MenuId);
+            newList.Add(strSql);
+            foreach (Model.xiuse_menus model in lst)
+            {
+                strSql = String.Format(@"update xiuse_menus set MenuNo='{0}' where MenuId='{1}'", model.MenuNo, model.MenuId);
+                newList.Add(strSql);
+            }
+            return AosyMySql.ExecuteListSQL(newList) == (lst.Count + 1);
+        }
 
         /// <summary>
         ///  判断是否存在

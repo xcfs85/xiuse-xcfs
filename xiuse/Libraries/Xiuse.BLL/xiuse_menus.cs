@@ -26,8 +26,16 @@ namespace Xiuse.BLL
         {
             return dal.Insert(model);
         }
-
-
+        /// <summary>
+        /// 更新除本menu的顺序
+        /// </summary>
+        /// <param name="rest"></param>
+        /// <param name="ClassifyId"></param>
+        /// <returns></returns>
+        public List<Model.xiuse_menus> GetAllMenusWithoutUpdate(string rest, string classifyId,string menuId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetAllMenusWithoutUpdate(rest, classifyId,menuId));
+        }
         /// <summary>
         /// 更新一条数据
         /// </summary>
@@ -36,8 +44,11 @@ namespace Xiuse.BLL
         {
             return dal.Update(model);
         }
-        
-   
+
+        public bool UpdateList(List<Model.xiuse_menus> lst)
+        {
+            return dal.UpdateList(lst);
+        }
         /// <summary>
         ///  删除一条数据
         /// </summary>
@@ -46,7 +57,17 @@ namespace Xiuse.BLL
         {
             return dal.Delete(MenuId);
         }
-        
+        /// <summary>
+        /// 删除，并更新多条序号
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <returns></returns>
+        public bool DeleteList(string MenuId, List<Xiuse.Model.xiuse_menus> lst)
+        {
+            return dal.DeleteList(MenuId, lst);
+        }
+
+
         /// <summary>
         ///  判断是否存在
         /// </summary>
