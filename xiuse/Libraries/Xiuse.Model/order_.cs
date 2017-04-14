@@ -40,6 +40,7 @@ namespace Xiuse.Model
         private int _ClearDeskState;
         private string _ServiceUserId;
         private int _CustomerNum;
+        private string _OrderReMark;
         #endregion
         #region 成员属性...
         /// <summary>
@@ -216,6 +217,14 @@ namespace Xiuse.Model
         {
             get { return _ServiceUserId; }
             set { _ServiceUserId = value; }
+        }
+        /// <summary>
+        /// 订单的备注
+        /// </summary>
+        public string OrderReMark
+        {
+            get { return _OrderReMark; }
+            set { _OrderReMark = value; }
         }
         #endregion
     }

@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: xiuse
 Target Host: localhost
 Target Database: xiuse
-Date: 2017/4/5 17:09:21
+Date: 2017/4/14 17:34:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,17 +49,22 @@ CREATE TABLE `order_` (
   `AccountsPayable` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '应付款',
   `Refunds` decimal(12,2) unsigned zerofill NOT NULL DEFAULT '0000000000.00' COMMENT '退款',
   `DishCount` int(11) NOT NULL COMMENT '菜品数量',
-  `OrderState` smallint(1) NOT NULL DEFAULT '0' COMMENT '订单状态（0，未支付；1，已支付;2,退单）',
+  `OrderState` int(1) NOT NULL DEFAULT '0' COMMENT '订单状态（0，未支付；1，已支付;2,退单）',
   `Cash` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '现金付款',
   `BankCard` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '银行卡付款',
   `WeiXin` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '微信付款',
   `Alipay` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '支付宝付款',
   `MembersCard` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '会员卡付款',
-  `ClearDeskState` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0,没有清台；1，已经清台；',
+  `ClearDeskState` int(1) NOT NULL DEFAULT '0' COMMENT '0,没有清台；1，已经清台；',
   `OrderbeginTime` datetime NOT NULL COMMENT '下单时间',
   `OrderEndTime` datetime DEFAULT NULL COMMENT '用餐结束时间',
   `ServiceUserId` char(32) NOT NULL COMMENT '服务员的Id',
   `CustomerNum` int(11) DEFAULT NULL COMMENT '顾客数量',
+  `OrderReMark` varchar(5000) DEFAULT NULL COMMENT '结账的备注',
+  `Payment` decimal(12,0) DEFAULT '0' COMMENT '付款金额',
+  `ChangePay` decimal(12,0) DEFAULT '0' COMMENT '找零',
+  `Tip` decimal(12,0) DEFAULT '0' COMMENT '小费',
+  `SameChange` decimal(12,0) DEFAULT '0' COMMENT '抹零',
   PRIMARY KEY (`OrderId`),
   KEY `DeskId` (`DeskId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -78,9 +83,10 @@ CREATE TABLE `ordermenu_` (
   `MenuInstruction` varchar(5000) DEFAULT NULL COMMENT '菜品介绍',
   `DiscoutFlag` smallint(1) DEFAULT '0' COMMENT '是否有折扣（0,1）',
   `DiscountName` varchar(500) DEFAULT NULL COMMENT '折扣名称',
-  `DiscountContent` decimal(12,2) DEFAULT NULL COMMENT '折扣金额',
+  `DiscountContent` decimal(12,2) DEFAULT '0.00' COMMENT '折扣金额',
   `DiscountType` smallint(1) DEFAULT NULL COMMENT '折扣类型(0:百分比 1：固定金额)',
   `MenuServing` smallint(1) DEFAULT '0' COMMENT '是否上菜（0：没上；1：上菜）',
+  `MenuId` char(32) DEFAULT NULL COMMENT '菜品ID',
   PRIMARY KEY (`OrderMenuId`),
   KEY `key-006` (`OrderId`),
   CONSTRAINT `key-006` FOREIGN KEY (`OrderId`) REFERENCES `order_` (`OrderId`)
@@ -112,7 +118,7 @@ CREATE TABLE `xiuse_discount` (
   `DiscountContent` decimal(12,2) NOT NULL COMMENT '折扣金额',
   `DiscountMenus` varchar(1000) DEFAULT '' COMMENT '折扣菜品(-1，全部餐品；（菜品ID,菜品ID,菜品ID,菜品ID,菜品ID）,部门折扣)',
   `DiscountSection` smallint(1) NOT NULL DEFAULT '0' COMMENT '0,整单折扣；1，单品折扣',
-  `DiscountState` smallint(1) DEFAULT '0' COMMENT '1,启用；0，禁用;2,删除；',
+  `DiscountState` smallint(1) DEFAULT '0' COMMENT '0,启用；1，禁用;2,删除；',
   `DiscountVerification` smallint(1) DEFAULT '0' COMMENT '0,启用管理员验证；1,禁用管理员验证；',
   `RestaurantId` char(32) NOT NULL,
   `DiscountTime` datetime DEFAULT NULL COMMENT '更新时间',
@@ -132,10 +138,12 @@ CREATE TABLE `xiuse_member` (
   `MemberClassifyId` char(32) NOT NULL COMMENT '会员类型ID',
   `MemberCell` varchar(15) DEFAULT NULL COMMENT '手机号',
   `MemberReference` varchar(15) DEFAULT NULL COMMENT '推荐人',
-  `MemberPassword` varchar(16) NOT NULL,
-  `MemberState` smallint(1) NOT NULL DEFAULT '1' COMMENT '会员状态（0，禁用；1，启用；）',
+  `MemberPassword` varchar(16) NOT NULL COMMENT '会员卡密码',
+  `MemberState` int(1) NOT NULL DEFAULT '1' COMMENT '会员状态（0，禁用；1，启用；2,删除）',
   `MemberTime` datetime NOT NULL COMMENT '会员创建时间',
-  `RestaurantId` char(32) NOT NULL,
+  `RestaurantId` char(32) NOT NULL COMMENT '餐厅Id',
+  `MemberEmail` varchar(200) DEFAULT NULL COMMENT '会员的Email',
+  `MemberEnabledPassWord` int(1) NOT NULL DEFAULT '0' COMMENT '是否启用密码。（0，不启用；1，启用密码）',
   PRIMARY KEY (`MemberId`),
   KEY `MemberType_foreign_key` (`MemberClassifyId`),
   CONSTRAINT `MemberType_foreign_key` FOREIGN KEY (`MemberClassifyId`) REFERENCES `xiuse_memberclassify` (`MemberClassifyId`)
@@ -151,7 +159,7 @@ CREATE TABLE `xiuse_memberclassify` (
   `ClassRemark` varchar(500) DEFAULT NULL COMMENT '说明',
   `ClassifyMemberNum` int(11) NOT NULL DEFAULT '0' COMMENT '会员数量',
   `ClassifyTime` datetime NOT NULL COMMENT '修改时间',
-  `DelTag` smallint(4) NOT NULL DEFAULT '0' COMMENT '删除标志，(0,启用；1，停用；2，删除。)',
+  `DelTag` int(2) NOT NULL DEFAULT '0' COMMENT '删除标志，(0,启用；1，停用；2，删除。)',
   `RestaurantId` char(32) NOT NULL COMMENT '餐厅Id',
   PRIMARY KEY (`MemberClassifyId`),
   KEY `MemberClassify_Key` (`RestaurantId`),
@@ -185,7 +193,7 @@ CREATE TABLE `xiuse_menus` (
   `MenuImage` varchar(200) DEFAULT NULL COMMENT '餐品图片的路径',
   `MenuNo` int(11) DEFAULT NULL COMMENT '菜品排序',
   `MenuInstruction` varchar(5000) DEFAULT NULL COMMENT '餐品介绍',
-  `SaleState` smallint(1) DEFAULT '0' COMMENT '菜品销售状态（1限量销售，0不限量销售）',
+  `SaleState` smallint(1) DEFAULT '0' COMMENT '菜品销售状态（1售完，0未售完）',
   `MenuState` smallint(1) DEFAULT '0' COMMENT '餐品状态（0，正常。1，停用。2，已删除。）',
   `RestaurantId` char(32) NOT NULL,
   `ClassifyId` char(32) DEFAULT NULL COMMENT '菜品种类',
@@ -218,9 +226,9 @@ CREATE TABLE `xiuse_rebates` (
 -- ----------------------------
 CREATE TABLE `xiuse_recharge` (
   `RechargeId` char(32) NOT NULL COMMENT '充值记录Id',
-  `RechargeType` smallint(4) NOT NULL COMMENT '充值类型',
+  `RechargeType` int(1) NOT NULL COMMENT '充值类型(1,现金；2，银行卡；3，微信；4，支付宝；)',
   `RechargeAmount` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '充值金额',
-  `Balance` decimal(12,2) NOT NULL COMMENT '可用余额',
+  `Balance` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '可用余额',
   `MemberId` char(32) NOT NULL COMMENT '会员的Id',
   `MemberCardNo` varchar(16) NOT NULL COMMENT '会员的卡号',
   `RechargeTime` datetime NOT NULL,
@@ -265,240 +273,199 @@ CREATE TABLE `xiuse_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Procedure structure for updateRecharge
+-- ----------------------------
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `updateRecharge`(in rechargeId varchar(50),
+in rechargeType int,
+in rechargeAmount decimal(8,2),
+in memberId varchar(50),
+in memberCardNo varchar(50),
+in rechargeTime datetime)
+begin
+Insert Into xiuse_recharge(RechargeId,RechargeType,RechargeAmount,MemberId,MemberCardNo,RechargeTime)
+                                        values(rechargeId,rechargeType,rechargeAmount,memberId,memberCardNo,rechargeTime);
+
+update xiuse_recharge set BeforeBalance=(select MemberAmount from xiuse_member where  MemberId=memberId  )where RechargeId=rechargeId;
+update xiuse_member set MemberAmount=(MemberAmount+rechargeAmount) where MemberId=memberId;
+update xiuse_recharge set Balance=(select MemberAmount from xiuse_member where MemberId=memberId ) where RechargeId=rechargeId;
+
+end;;
+DELIMITER ;
+
+-- ----------------------------
 -- Records 
 -- ----------------------------
 INSERT INTO `memberconsumption` VALUES ('0000000000000000000001', '00003', '000000000000000000000000003', '1', '28.00', '17.00', '2017-04-04 10:26:01', '114ba6d863de46f8b389c5f8266d07fa');
 INSERT INTO `memberconsumption` VALUES ('0000000000000000000002', '00004', '000000000000000000000000004', '1', '91.00', '9.00', '2017-04-05 10:28:56', '1e8bf48635b64ac9a7c9ae2668c4b7a0');
-INSERT INTO `order_` VALUES ('0016b467769148f6913389b2ebed36d5', '00000000000000000000000000000006', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-01 13:03:51', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('03d7a090e83e492c9fd931ebffddd606', '00000000000000000000000000000003', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 17:08:01', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('08718270f187475781a43c0c832ab7c7', '00000000000000000000000000000004', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:45:07', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('08bf855165714fd4a0d864a1beb6ff4d', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:40:18', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('09fe0f4e02da4bfeb957b9c43e98ee43', '00000000000000000000000000000001', '35.00', '35.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:45:50', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('0e292c451a5445e9a549b9dcfc806556', '00000000000000000000000000000006', '238.00', '238.00', '0000000000.00', '17', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:36:30', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('114ba6d863de46f8b389c5f8266d07fa', '00000000000000000000000000000004', '28.00', '0.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 17:06:13', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('11d1f5456e034fc6a7e77d0dd6d49768', '00000000000000000000000000000002', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:35:05', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('12d1f4327ef449a7b5f3b82c8bfaff89', '00000000000000000000000000000002', '85.00', '85.00', '0000000000.00', '6', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 16:53:26', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('1ba08e1e4543443d8e646f7ec2e53b0b', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:47:10', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('1e8bf48635b64ac9a7c9ae2668c4b7a0', '00000000000000000000000000000005', '91.00', '91.00', '0000000000.00', '4', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 17:08:16', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('1fc1f50f22334279962458145df7b7eb', '00000000000000000000000000000006', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-01 13:04:55', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('246969aa6a414c08918625617b41f194', '00000000000000000000000000000002', '47.00', '47.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:48:09', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('28dbd50ecf5340279367bbbca2445bc1', '00000000000000000000000000000002', '33.00', '33.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:42:13', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('29c5e392e7a849cfbed2c5b99191e9fd', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 16:24:30', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('2f02d686b954483d9bd9a71db3046038', '00000000000000000000000000000002', '53.00', '53.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:31:48', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('2f2dccf0acf3420ab107414dbaf9e768', '00000000000000000000000000000005', '40.00', '40.00', '0000000000.00', '4', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 17:08:26', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('35e64af9567949d98d665891e39f0b99', '00000000000000000000000000000005', '38.00', '38.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:15:20', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('404ef615914d4570a9b2cea4c49aad71', '00000000000000000000000000000004', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 16:34:59', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('4a6080f588e34233b86042b3d270dd33', '00000000000000000000000000000001', '61.00', '61.00', '0000000000.00', '5', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 09:20:15', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('4b5b8e8205a243fe911f4aed53d459ea', '00000000000000000000000000000001', '22.00', '22.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:30:28', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('51d58602dbac4615a4bc4664c5ba6118', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:06:45', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('532588b50caa42c88620b1097260d4c0', '00000000000000000000000000000005', '12.00', '12.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:12:02', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('5369bdc61e50459eb33ddee09f25eb75', '00000000000000000000000000000002', '22.00', '22.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:38:20', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('5567de5f774b41c19bb0ac9ad71b4d55', '00000000000000000000000000000002', '41.00', '41.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 09:21:37', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('56572e67f5a9406285ebdc1a6459b56d', '00000000000000000000000000000001', '25.00', '25.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:17:24', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('5a49ce04af144717a6f1af6133dce7e8', '00000000000000000000000000000004', '28.00', '0.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 17:06:22', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('659487387a5846d3ac7cf10076c4bdb4', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 11:05:56', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('6e9dcc57e20b4851b2d11362a827fc43', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:35:48', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('6ff3f9809349435aa0de1b05ca063554', '00000000000000000000000000000005', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:11:44', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('760648013471441591c38cc5f53c8507', '00000000000000000000000000000004', '25.00', '25.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:20:24', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('7a1ca92acb2c4a58a51b37a78aefe413', '00000000000000000000000000000004', '31.00', '31.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:35:23', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('8012e7ab471f435c9613adbc100ac15b', '00000000000000000000000000000006', '53.00', '53.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-01 13:13:48', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('80612557c3dd461e9cbd68c756d2b44f', '00000000000000000000000000000003', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:34:12', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('8ee2c48a2751453d853fbf64378e12dd', '00000000000000000000000000000001', '31.00', '31.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:25:51', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('980f96063aca4d129f818c57f0e999e8', '00000000000000000000000000000001', '63.00', '63.00', '0000000000.00', '4', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 16:52:45', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('99b79530080343c085b14788e88c49cc', '00000000000000000000000000000003', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 16:01:07', null, '00000000000000000000000000000000', '5');
-INSERT INTO `order_` VALUES ('9ed953d876634a0cb3302a4d60e29684', '00000000000000000000000000000001', '40.00', '40.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:13:38', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('9f9aa27c25464907b4c8803b0c96b678', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:50:50', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('a43bdad50e9743a8a5385cb517c21a93', '00000000000000000000000000000001', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:29:25', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('a5e8d8e0c32146e9a4d68fcae7738175', '00000000000000000000000000000002', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:46:41', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('a6c0a86108da487c90b1de01e5aed5d8', '00000000000000000000000000000001', '31.00', '31.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 09:21:53', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('a710ac4f974d4cbb92edf1ebc867ffb3', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 09:31:07', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('abb2b45cfbe44566a1275c7225a4a1a4', '00000000000000000000000000000001', '31.00', '31.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:38:51', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('b23351381aaa412ba43521a6eac33a7a', '00000000000000000000000000000004', '28.00', '0.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 17:06:24', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('b2c5672ac938434aa76f5563c97df0c8', '00000000000000000000000000000001', '43.00', '43.00', '0000000000.00', '4', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 10:58:20', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('b92cc1518a774449a1fa749b7f98a44a', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 11:04:31', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('b96a4479f93240c6b49c82f714757900', '00000000000000000000000000000004', '28.00', '0.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-03-31 17:05:59', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('bab58ba7ae064e45aa0143dc595c41a7', '00000000000000000000000000000006', '68.00', '68.00', '0000000000.00', '4', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-01 13:02:53', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('c8fd2b12bee545ab9007809a758b9112', '00000000000000000000000000000004', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-01 13:04:10', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('d220be1ba22549d7a295e5b6ea07df95', '00000000000000000000000000000002', '31.00', '31.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 14:36:05', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('e46937d76d5349ada2785434df953fce', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:22:33', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('e678a16fe34e4850a22eada0e0234e39', '00000000000000000000000000000004', '64.00', '64.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:37:00', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('f0cd4a7cd0e4420687089ec03de415be', '00000000000000000000000000000004', '66.00', '66.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 13:32:22', null, '00000000000000000000000000000000', '1');
-INSERT INTO `order_` VALUES ('fd3c278044cc41f2a89b296f685d312f', '00000000000000000000000000000001', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-05 09:25:06', null, '00000000000000000000000000000000', '1');
-INSERT INTO `ordermenu_` VALUES ('00641f88493d482588fe3652ea6ebc4c', '5369bdc61e50459eb33ddee09f25eb75', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('026696cac6bd400a9244c2ce3d04810f', '246969aa6a414c08918625617b41f194', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('027ae078beac43aca8bbac59f3cc9973', '12d1f4327ef449a7b5f3b82c8bfaff89', '雪碧', '8.00', '微辣', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('043579e72d8c4376b90c02f8e27df0ff', '03d7a090e83e492c9fd931ebffddd606', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('04f6035da3354cc4babb9a5c41d70b9c', 'bab58ba7ae064e45aa0143dc595c41a7', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('0739f8eef0334689b417d673b5899cdd', '08718270f187475781a43c0c832ab7c7', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('08cdde8a26a64438afbd74b393fccc5b', '0e292c451a5445e9a549b9dcfc806556', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('09761605f8af47a499482a491f9a504e', 'e46937d76d5349ada2785434df953fce', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('09d14a162bcb447c91bd68e25170ae9d', '2f02d686b954483d9bd9a71db3046038', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('0ad3ecf59ca34f9ea4c09bf0051718d0', '0e292c451a5445e9a549b9dcfc806556', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('0b5806b31d9a4909842c8965f9524049', '1fc1f50f22334279962458145df7b7eb', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('0d0599783f03420d8947b94cb4e96e82', '404ef615914d4570a9b2cea4c49aad71', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('0dd4ddf96abb4401a2b0157e27366a1a', '7a1ca92acb2c4a58a51b37a78aefe413', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('10c446ca01a9468c8d02a70eb564fb56', '51d58602dbac4615a4bc4664c5ba6118', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('10cdebb8e8004f9a8c5b4da621056d39', 'd220be1ba22549d7a295e5b6ea07df95', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('11eb68b2c97445188e9391c0c66381f5', '760648013471441591c38cc5f53c8507', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('12cf7ac0a8c1485192d42ebe3d59e91a', 'a5e8d8e0c32146e9a4d68fcae7738175', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('15ea47b25ef343e7a0a0d4a105939403', 'b23351381aaa412ba43521a6eac33a7a', '西红柿炒鸡蛋', '16.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('171f658c5fb1471791316bd96e5e2b94', '0e292c451a5445e9a549b9dcfc806556', '玉米排骨汤', '28.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('174aa4d5be1149afacf9c9a9df38996e', 'b2c5672ac938434aa76f5563c97df0c8', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('1adc4884228e49f3bc7b82fe8935e90f', '6ff3f9809349435aa0de1b05ca063554', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('1ca6b82fe07a4031a413f4630a82c248', '08718270f187475781a43c0c832ab7c7', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('1d75bdd8c8af438bbcbfddab1dbf169b', '1e8bf48635b64ac9a7c9ae2668c4b7a0', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('1f9bfdfca9eb4a688cacab3dc3303177', '2f2dccf0acf3420ab107414dbaf9e768', '雪碧', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('200436ac71944306bc09e756f0f71609', 'b2c5672ac938434aa76f5563c97df0c8', '米饭', '2.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('20647366570646e39b3c4d26aa8f2904', 'c8fd2b12bee545ab9007809a758b9112', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('21137f91f3f64a83b08b95ea14c27847', 'a6c0a86108da487c90b1de01e5aed5d8', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('257546e6ff42495db1728037e594298d', '8012e7ab471f435c9613adbc100ac15b', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('28b83272c5ae404daa73fb02f3a3cf93', '11d1f5456e034fc6a7e77d0dd6d49768', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('2cb95b1ee4c6412fa53818673ead8dfe', 'e678a16fe34e4850a22eada0e0234e39', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('2cc29c945a024cb49127a6ab0fc5b111', 'e678a16fe34e4850a22eada0e0234e39', '筒子骨海带汤', '38.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('2e618f336b3e4b72925e99c807144e90', 'a710ac4f974d4cbb92edf1ebc867ffb3', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('2fc4b93a38e54e2da128ac5beac9f551', '4a6080f588e34233b86042b3d270dd33', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('3521344fc52e4f4ea8965636652cad87', '1ba08e1e4543443d8e646f7ec2e53b0b', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('369ecdef3b9e4451a1ea6a2cc8ccf4d1', '9f9aa27c25464907b4c8803b0c96b678', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('370f053d128a44cc8fe9081aeb82a092', '56572e67f5a9406285ebdc1a6459b56d', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('37c10101f0934b71aada0499fc13b1e3', '80612557c3dd461e9cbd68c756d2b44f', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('38567d66647e4fe38082648daf0a34a1', 'f0cd4a7cd0e4420687089ec03de415be', '玉米排骨汤', '28.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('38b9efd11b874894a92c064dca88bfd2', '4b5b8e8205a243fe911f4aed53d459ea', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('396914f763bb474898c999e7e7ef51b9', '6ff3f9809349435aa0de1b05ca063554', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('3e543959747644819bdb69b28eeb9f89', '35e64af9567949d98d665891e39f0b99', '烙饼子', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('3ea16343c17b4c01a044a654dd491812', '980f96063aca4d129f818c57f0e999e8', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('3ed5a6cc1918409aba815694f8f6fd41', '6e9dcc57e20b4851b2d11362a827fc43', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('41ef494fc33144779aaa58e2d1c6dea6', '659487387a5846d3ac7cf10076c4bdb4', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('432946c8d2c94277a33b8b33897a31b3', '0e292c451a5445e9a549b9dcfc806556', '米饭', '2.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('433c552c1bc14993a4119085dc996f6f', 'b96a4479f93240c6b49c82f714757900', '西红柿炒鸡蛋', '16.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('4bf835be8f2145e4beba237dda319e3d', '980f96063aca4d129f818c57f0e999e8', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('4dec41f5395b465d8f74514c40692676', '532588b50caa42c88620b1097260d4c0', '扬州炒饭', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('4e179572441441d6921ebac581bbed53', 'a43bdad50e9743a8a5385cb517c21a93', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('5051a5d3356e48968bc40ecae2a71c09', '0e292c451a5445e9a549b9dcfc806556', '扬州炒饭', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('5630d606a4ac4faa9301c7413e929c62', '0e292c451a5445e9a549b9dcfc806556', '雪碧', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('56dcaea71e1346fbb259c4585ca482a2', '08bf855165714fd4a0d864a1beb6ff4d', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('5a779e66cb774395884c2576ffffa7b1', '1ba08e1e4543443d8e646f7ec2e53b0b', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('5a97f0de5d5c4790a60e59ce4c09098d', '659487387a5846d3ac7cf10076c4bdb4', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('5bbf207aa0834da09aa93b689bc2b1cb', '0e292c451a5445e9a549b9dcfc806556', '糖醋萝卜', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('5d057242f37f471d9dad9b015f9d761d', '4a6080f588e34233b86042b3d270dd33', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('5e36ba9d3af14cce9ca75a2f4eaa935a', 'b92cc1518a774449a1fa749b7f98a44a', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('63105144f3b04ef297069e08739f541c', '09fe0f4e02da4bfeb957b9c43e98ee43', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('6496b7f7087540e6a2285c9ab679224e', 'd220be1ba22549d7a295e5b6ea07df95', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('67b4181f9896499cacf4b19d9eb68148', '5a49ce04af144717a6f1af6133dce7e8', '西红柿炒鸡蛋', '16.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('6b789bfb6aa64fe68a8282d4bd6483ef', '28dbd50ecf5340279367bbbca2445bc1', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('6e27f1896b354265bf31541021d22c9d', '5369bdc61e50459eb33ddee09f25eb75', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('7170c53a78614d1aae26944e1b9160d4', '6ff3f9809349435aa0de1b05ca063554', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('764c72037fb447fe8ab6a2c83aa92446', '7a1ca92acb2c4a58a51b37a78aefe413', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('7760cf961bf249eda382c3cbc1f37ad0', '8ee2c48a2751453d853fbf64378e12dd', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('78e1030bc20e448bb00622f96da5f7a6', '0e292c451a5445e9a549b9dcfc806556', '烙饼子', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('7b50c12f7c0441e5a2fcea685d8afac9', '80612557c3dd461e9cbd68c756d2b44f', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('7c687b756f6a447381cbe30904b17c6c', '0e292c451a5445e9a549b9dcfc806556', '油炸花生米', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('82dc3e83f852450cad62071dbe8b03fb', '114ba6d863de46f8b389c5f8266d07fa', '西红柿炒鸡蛋', '16.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('8436f623c938484f9cd250041e0a68ff', '12d1f4327ef449a7b5f3b82c8bfaff89', '红油金针菇', '12.00', '超辣', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('873f693149f64b088fe279d47210cb41', 'fd3c278044cc41f2a89b296f685d312f', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('8e5eff57998b4ad49e63b938d0005cae', 'bab58ba7ae064e45aa0143dc595c41a7', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('8ef2fc41d1634e17a55732df82912d08', 'a5e8d8e0c32146e9a4d68fcae7738175', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('918bb6ceaf00439991c10a371ff39764', 'e678a16fe34e4850a22eada0e0234e39', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('939be2ac2abe46dcba3a9709ac649948', '29c5e392e7a849cfbed2c5b99191e9fd', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('94eddbdd3e2f42fda09e284b6aec071c', '0e292c451a5445e9a549b9dcfc806556', '可乐', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('959cc3716da148c1868a4c5c7c53d98c', '114ba6d863de46f8b389c5f8266d07fa', '红油金针菇', '12.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('97c887ca1de141e1bef153c8b3c07880', '0e292c451a5445e9a549b9dcfc806556', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('981816841a554e02b9d738a8324a09bc', '51d58602dbac4615a4bc4664c5ba6118', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('98580b70ef484198b3b9155b0b7227c3', '03d7a090e83e492c9fd931ebffddd606', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('9b52147c2b8f48f085acc7ff6f644e3c', '2f02d686b954483d9bd9a71db3046038', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('9be55e6c19294caf89b861be1229d209', '0016b467769148f6913389b2ebed36d5', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('9db7f6e09bcb4f0f9a3dc9a97eaf4259', 'a710ac4f974d4cbb92edf1ebc867ffb3', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('9dc5a8ee2a0c406dad43a600f733d80b', '2f2dccf0acf3420ab107414dbaf9e768', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('9eee235f17fb443692e393abba04246d', '12d1f4327ef449a7b5f3b82c8bfaff89', '鱼香肉丝', '25.00', '较咸', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('9ffdaeaaa365473387624786ff3ac3da', '4a6080f588e34233b86042b3d270dd33', '油焖茄子', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('a0c92e1f4db34662a0fde6a48a20ed53', 'b23351381aaa412ba43521a6eac33a7a', '红油金针菇', '12.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('a0fd13a2066e49f7bc7d0b2e4e46d34e', 'bab58ba7ae064e45aa0143dc595c41a7', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('a374de47cb7141e89e461949e158070f', '1e8bf48635b64ac9a7c9ae2668c4b7a0', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('a44beb4028b14164bcb57b948d6301e0', '29c5e392e7a849cfbed2c5b99191e9fd', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('a4e7ceeccca641b39881b10734daa778', '12d1f4327ef449a7b5f3b82c8bfaff89', '玉米排骨汤', '28.00', '较咸', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('a5f77306f55b45bebe9984a4146c737a', '0016b467769148f6913389b2ebed36d5', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('a946e812286c4762a3d8a389d8d8c490', 'e46937d76d5349ada2785434df953fce', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('aa71725d92ed415f90b94c15373a989b', '99b79530080343c085b14788e88c49cc', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('ab83728bdd814ca385c2fd12556163e6', '1fc1f50f22334279962458145df7b7eb', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('ac7c3302c72f4a3d9315e97adaa359f2', '9f9aa27c25464907b4c8803b0c96b678', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('ae3c770255bb40b7bcfae1adee2ddc6f', '08bf855165714fd4a0d864a1beb6ff4d', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('b1ad4500b94c478988c1b9d326fb3261', '0e292c451a5445e9a549b9dcfc806556', '油焖茄子', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('b762693ce7ad430fb918f8769131ab82', '4a6080f588e34233b86042b3d270dd33', '雪碧', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('b884a20c968042018db8e7758b083d19', '0016b467769148f6913389b2ebed36d5', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('b8dff4ef1fb347edb20abda41c68835a', '9ed953d876634a0cb3302a4d60e29684', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('badb6bb2df7f4baea273416636391bba', '35e64af9567949d98d665891e39f0b99', '玉米排骨汤', '28.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('bd2f06470d8a4a6297e20306dc44ba86', '80612557c3dd461e9cbd68c756d2b44f', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('bd81e19b06744ec9a512320202b22fe2', 'bab58ba7ae064e45aa0143dc595c41a7', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('bf8263b44cac489ba4c78ad4aa5a3995', 'a43bdad50e9743a8a5385cb517c21a93', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('bfca59e646f04278b3116020cc323c97', '404ef615914d4570a9b2cea4c49aad71', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('c0b94b75de0c4b058ed3aa3911a5fcdf', '0e292c451a5445e9a549b9dcfc806556', '筒子骨海带汤', '38.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('c2fa5dc02b30430d976480b72274bd5f', '99b79530080343c085b14788e88c49cc', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('c38fe9f982cd41829f3b252f1024004d', '9ed953d876634a0cb3302a4d60e29684', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('c3cb1fe9f73942e68b30228424c5d9ca', '12d1f4327ef449a7b5f3b82c8bfaff89', '烙饼子', '10.00', '超辣', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('c5e6f31cc3ef49f1b821b6a35531b11e', '980f96063aca4d129f818c57f0e999e8', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('c75baa1bdb9e485eab23500509a3e982', 'f0cd4a7cd0e4420687089ec03de415be', '筒子骨海带汤', '38.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('c92eec02755e4188afacab9e44fe62c1', '12d1f4327ef449a7b5f3b82c8bfaff89', '米饭', '2.00', '中辣', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('ccea768722364f1a907f6dbe176d9c29', 'a6c0a86108da487c90b1de01e5aed5d8', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('cdf846131a4f4060a8ef134530fdd0dc', '0e292c451a5445e9a549b9dcfc806556', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('ce5d573da63a4b039132906835ad882c', 'a43bdad50e9743a8a5385cb517c21a93', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('cfcca197ffcb485cb060f123eb576754', '246969aa6a414c08918625617b41f194', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d120103f658f4ae495c768d28c76f05a', '8ee2c48a2751453d853fbf64378e12dd', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d131ccd7aad64811a89916173b6f60ed', '760648013471441591c38cc5f53c8507', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d1463c4e3e264519892f16f40b5939cd', '0e292c451a5445e9a549b9dcfc806556', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d2649c82b7c44bb484f629cb06f812fa', '5a49ce04af144717a6f1af6133dce7e8', '红油金针菇', '12.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d2b6f7bcc48b4f9b8cfc442feb1b5562', 'b2c5672ac938434aa76f5563c97df0c8', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d3a2415db50945e581011fd5ecb089ea', '246969aa6a414c08918625617b41f194', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d559ed3ec3054d6c88454d52de4b4471', '404ef615914d4570a9b2cea4c49aad71', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d6ccc92edaf446a8a97595e9b4a792c5', '09fe0f4e02da4bfeb957b9c43e98ee43', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '1');
-INSERT INTO `ordermenu_` VALUES ('d796162a908c4ae9946a27e563743e47', 'abb2b45cfbe44566a1275c7225a4a1a4', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d86a611a8b5f4eb6a5fd6213f5c36953', '0e292c451a5445e9a549b9dcfc806556', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d8a41c80910d43a194963f31e262cd31', 'abb2b45cfbe44566a1275c7225a4a1a4', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('d98c90d02dcc426bbcfd66e2c34aaa42', '8012e7ab471f435c9613adbc100ac15b', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('dac34d7d36284bcfa0aff3a3eca3ec45', '4b5b8e8205a243fe911f4aed53d459ea', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('dc2801b065e84582aa7984c73b3b098c', '56572e67f5a9406285ebdc1a6459b56d', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('dcff7ae4549a4415b6c114e41f415c67', 'fd3c278044cc41f2a89b296f685d312f', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('dd054cf45c214530a646288950a8a1d3', 'b92cc1518a774449a1fa749b7f98a44a', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('de03911c59a840cc88e7914328e3e57b', '0e292c451a5445e9a549b9dcfc806556', '尖椒土豆丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('de7de114868642e7a026f51c59ef9bc1', '4a6080f588e34233b86042b3d270dd33', '尖椒土豆丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('df2a24f80cb147ea98a336b660071583', '28dbd50ecf5340279367bbbca2445bc1', '雪碧', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('e33d7e74042e410094f0a50603b898e2', '5567de5f774b41c19bb0ac9ad71b4d55', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('e5eccc87fdc74286a34c98c21a277723', 'c8fd2b12bee545ab9007809a758b9112', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('e5fdab671f9e40608f3288e9b01634fb', '2f02d686b954483d9bd9a71db3046038', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('e8cb8987010141839cfaead63c24b59a', 'b96a4479f93240c6b49c82f714757900', '红油金针菇', '12.00', '', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('ebf16094ed65457dbf7c4efc2ca8a6d7', '532588b50caa42c88620b1097260d4c0', '米饭', '2.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('f0c8709951424f9fab2eb1d61cd277a4', '11d1f5456e034fc6a7e77d0dd6d49768', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('f76da4fa878944118849334b18b39711', '5567de5f774b41c19bb0ac9ad71b4d55', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('f7c46ee45c37496a96a170ebb2de2389', 'fd3c278044cc41f2a89b296f685d312f', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('f82fb68ce30a4b7f8e7e5ef765ba77ee', '980f96063aca4d129f818c57f0e999e8', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('f997e8996dbc46fd906cfd76ff0223a3', '03d7a090e83e492c9fd931ebffddd606', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('fb22eb9aab444d59927fb9b8f9232e1a', '6e9dcc57e20b4851b2d11362a827fc43', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('fb641153d580483b975390944e98e0b0', '1fc1f50f22334279962458145df7b7eb', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('fc3b25ac82904059b2db8d81d1c13139', '8012e7ab471f435c9613adbc100ac15b', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `ordermenu_` VALUES ('fd85dfa6586846d08081eabe5ab7dd0d', 'b2c5672ac938434aa76f5563c97df0c8', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0');
-INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000001', '第一桌', '0', '1', '1', '00000000000000000000000000000001', '2016-12-20 13:58:41');
+INSERT INTO `order_` VALUES ('15e601c228ba4cb4a71035d8fb6f4c0c', '00000000000000000000000000000007', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-11 15:20:07', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('2357aad0158d403ab83eef73c586f15b', '00000000000000000000000000000002', '16.00', '16.00', '0000000000.00', '1', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-14 08:59:20', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('2b9e765d47714ba5955e463798d2dcbf', '00000000000000000000000000000002', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:41:10', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('2bdcda192e56469ba4595bcd2fecac99', '00000000000000000000000000000004', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-12 10:21:19', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('34775b3b6f5e4a379cbff8258d27d6ff', '00000000000000000000000000000002', '120.00', '120.00', '0000000000.00', '10', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:15:34', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('37909b82a414427dbfada60f301d2f47', '00000000000000000000000000000005', '212.00', '212.00', '0000000000.00', '15', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-11 16:08:36', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('3c258eee738f4b26943bfa23527e6c8e', '00000000000000000000000000000002', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-11 15:19:06', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('3df4ea4042d04c8bb0279a572e313b11', '00000000000000000000000000000005', '20.00', '20.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-12 10:22:30', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('483b7f817642455c95ee102fb368afa0', '00000000000000000000000000000002', '56.00', '56.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 13:01:21', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('52e51af155b74de3bc1626c042546a0e', '00000000000000000000000000000006', '12.00', '12.00', '0000000000.00', '1', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:36:47', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('5a1abe1670d04b88afd1d1db7aa0b054', '00000000000000000000000000000002', '31.00', '31.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 09:16:29', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('633f2db9d13d4e81a6f2d3bc54b0f014', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:37:11', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('63df8ddb4a7c4fe193ab4458a11e6b70', '00000000000000000000000000000002', '192.00', '192.00', '0000000000.00', '16', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:21:34', null, '00000000000000000000000000000000', '8', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('720462769e8d450a8aef7b538027d6a6', '00000000000000000000000000000001', '22.00', '22.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-11 16:33:14', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('757cd506fe9a470795e9e8549f624234', '00000000000000000000000000000002', '120.00', '120.00', '0000000000.00', '10', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:12:28', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('7a0da426141e453fb7411f801b60ac76', '00000000000000000000000000000002', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:43:00', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('7fc82ba264f141b188d154904656d931', '00000000000000000000000000000002', '54.00', '54.00', '0000000000.00', '5', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-11 16:23:22', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('83e6f45be89d444ea8fb10084a5dfcee', '00000000000000000000000000000001', '58.00', '58.00', '0000000000.00', '5', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-12 09:39:10', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('8753574fc7a54efaa470533b666d9ab9', '00000000000000000000000000000001', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 16:17:46', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('91965c33ae6a49a5bf8119e22fcbfb70', '00000000000000000000000000000006', '26.00', '26.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-12 10:23:49', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('a7bfd275c0364cffa702b6497d1b410d', '00000000000000000000000000000001', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 13:03:43', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('c38e598c7f83499a87a56fd87ef67f19', '00000000000000000000000000000002', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:45:38', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('cda5b2db4c2140bc836629193ce337da', '00000000000000000000000000000001', '22.00', '22.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 08:59:47', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('cf1d5569fa014a398210ee65c3543cfe', '00000000000000000000000000000002', '132.00', '132.00', '0000000000.00', '11', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:24:20', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('d26be4e6188b47f29bc37f56d1253a65', '00000000000000000000000000000007', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-14 08:58:01', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('dec2289a8e0d43ac983556e3abedb5bb', '00000000000000000000000000000003', '28.00', '28.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-12 10:04:17', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('e0e78ec04c9e4c8d97ea20ce705d20a0', '00000000000000000000000000000002', '28.00', '28.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-12 09:33:00', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('e6feee5e8087409b882cd27c6f72f038', '00000000000000000000000000000007', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-07 16:58:54', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('ed710fefa923417086b3b932bcbb34de', '00000000000000000000000000000005', '35.00', '35.00', '0000000000.00', '2', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-07 17:12:46', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('f3dd7b525f3b491fb5582d0d08a23b74', '00000000000000000000000000000002', '12.00', '12.00', '0000000000.00', '1', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-11 17:00:34', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `order_` VALUES ('f42ed1832ef94992ac84e749b1194df8', '00000000000000000000000000000002', '43.00', '43.00', '0000000000.00', '3', '0', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '2017-04-10 15:11:33', null, '00000000000000000000000000000000', '1', null, '0', '0', '0', '0');
+INSERT INTO `ordermenu_` VALUES ('016a322b6a05473394de8d9b681f1529', '483b7f817642455c95ee102fb368afa0', '可乐', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '1', '3002');
+INSERT INTO `ordermenu_` VALUES ('0220ef33feed4a719038ca4dd48b9434', 'e6feee5e8087409b882cd27c6f72f038', '饺子', '15.00', '正常', '2', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('03b434df4b154353ab2b522368720698', 'dec2289a8e0d43ac983556e3abedb5bb', '米饭', '2.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4004');
+INSERT INTO `ordermenu_` VALUES ('07cd4fdc0afa42d19b03835029faa727', '720462769e8d450a8aef7b538027d6a6', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('07cfd996dd374e40b0fa824886d97108', 'cf1d5569fa014a398210ee65c3543cfe', '红油金针菇', '12.00', '正常', '12', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('09f6f5275aff4150bb11f4ef89742479', '37909b82a414427dbfada60f301d2f47', '尖椒土豆丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2001');
+INSERT INTO `ordermenu_` VALUES ('0d6e57dc9c00491fbb07e1b8567c63fd', 'e0e78ec04c9e4c8d97ea20ce705d20a0', '红油金针菇', '12.00', '正常', '10', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('13b9f1139c29488c8bb4d9fdcfa52aab', '483b7f817642455c95ee102fb368afa0', '玉米排骨汤', '28.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '3003');
+INSERT INTO `ordermenu_` VALUES ('176e123f32214c28a211f1a83f04352c', '7a0da426141e453fb7411f801b60ac76', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('18c076136704471b93cf54ecf73b3377', '37909b82a414427dbfada60f301d2f47', '可乐', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '3002');
+INSERT INTO `ordermenu_` VALUES ('1bf64ecf7ac04b399a5292538bab43b2', '483b7f817642455c95ee102fb368afa0', '油炸花生米', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1003');
+INSERT INTO `ordermenu_` VALUES ('1d401728b7dd41d281a759648948b5fa', '7fc82ba264f141b188d154904656d931', '龙须面', '10.00', '微辣', '1', '', '', '0', '', '0.00', '0', '0', '4002');
+INSERT INTO `ordermenu_` VALUES ('20f2054ed7104119a122683891da3041', 'ed710fefa923417086b3b932bcbb34de', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('2cc905beeef4495d86c9949d60329c4d', '83e6f45be89d444ea8fb10084a5dfcee', '烙饼子', '10.00', '正常', '3', '', '', '0', '', '0.00', '0', '0', '4005');
+INSERT INTO `ordermenu_` VALUES ('302f620ce29b413ca3d9ce1a32c13b1f', '37909b82a414427dbfada60f301d2f47', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1002');
+INSERT INTO `ordermenu_` VALUES ('35541e135ae643b386ab7c8e07879372', 'c38e598c7f83499a87a56fd87ef67f19', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('35f788cd8ae34ac5b0c2cb04e75afa19', 'dec2289a8e0d43ac983556e3abedb5bb', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('369bce373e6c4cb8ba3dcc1916d21526', '3c258eee738f4b26943bfa23527e6c8e', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('36ca217c0f3449cf8cc00f8805735d73', 'f3dd7b525f3b491fb5582d0d08a23b74', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('38577bb6e5f74af2a793daa6266a3ddc', 'd26be4e6188b47f29bc37f56d1253a65', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('3a5936150a6540a2916ff8f557c70add', 'f42ed1832ef94992ac84e749b1194df8', '饺子', '15.00', '正常', '0', '', '', '0', '', '0.00', '0', '0', '4001');
+INSERT INTO `ordermenu_` VALUES ('408c2716c35540228e557e34440f327f', '7a0da426141e453fb7411f801b60ac76', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('4930284ca6744c9e97ddb23be6246b50', '633f2db9d13d4e81a6f2d3bc54b0f014', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('4b69104aa7cf450580827c64fac2224e', '483b7f817642455c95ee102fb368afa0', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '1', '4001');
+INSERT INTO `ordermenu_` VALUES ('4c0b366c90df409ab1ef137ee798032f', '720462769e8d450a8aef7b538027d6a6', '尖椒土豆丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2001');
+INSERT INTO `ordermenu_` VALUES ('5081ad6fe55f461c81a3d9384cd47d30', '7fc82ba264f141b188d154904656d931', '尖椒土豆丝', '10.00', '较咸', '1', '', '', '0', '', '0.00', '0', '0', '2001');
+INSERT INTO `ordermenu_` VALUES ('550036873ddf4bc195d3c7ef796e0bcf', '483b7f817642455c95ee102fb368afa0', '油焖茄子', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2002');
+INSERT INTO `ordermenu_` VALUES ('5988ca1eca8645b9b654d01764838133', '37909b82a414427dbfada60f301d2f47', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2004');
+INSERT INTO `ordermenu_` VALUES ('5cbffd615962447797f364290c6d5966', 'e0e78ec04c9e4c8d97ea20ce705d20a0', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('5d5a5d67f009474bb3add2c49529c06d', '483b7f817642455c95ee102fb368afa0', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('5dc27e275885457b86d165b7882ab65e', 'ed710fefa923417086b3b932bcbb34de', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('6550b2616b03407287dd7d4e4edfb263', '15e601c228ba4cb4a71035d8fb6f4c0c', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('66c5caa2cc1743d8b349f938aa4c2402', 'd26be4e6188b47f29bc37f56d1253a65', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('6f8cf7d180934e4599f3baf12f52e561', '37909b82a414427dbfada60f301d2f47', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4001');
+INSERT INTO `ordermenu_` VALUES ('70faf2443364405ca993b2a1b8e6bb4f', '2b9e765d47714ba5955e463798d2dcbf', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('7850973c88d44baa86943f031271a815', '8753574fc7a54efaa470533b666d9ab9', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('7a7ef13a3d674612b8dcfb350066801e', '633f2db9d13d4e81a6f2d3bc54b0f014', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('7bf3b0044b25431a8fd6c467a6e12da3', '37909b82a414427dbfada60f301d2f47', '扬州炒饭', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4003');
+INSERT INTO `ordermenu_` VALUES ('7fbb2974d7464b78a07235f811039b5a', '757cd506fe9a470795e9e8549f624234', '红油金针菇', '12.00', '正常', '0', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('82c03fcaa5a448faa44575022f7c0f05', 'e6feee5e8087409b882cd27c6f72f038', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('856453b397984d03b0e40f513b3d33bb', '37909b82a414427dbfada60f301d2f47', '糖醋萝卜', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1004');
+INSERT INTO `ordermenu_` VALUES ('8876580885f54c5e9e66def07f450d6a', '2bdcda192e56469ba4595bcd2fecac99', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('8d45566bdeff4323b6bca1549155ddaa', 'f42ed1832ef94992ac84e749b1194df8', '西红柿炒鸡蛋', '16.00', '正常', '0', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('8de555bf074d46f38f01af8744439a6b', '37909b82a414427dbfada60f301d2f47', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('93d86693e52b4c269daf9a0cf5b46cae', '37909b82a414427dbfada60f301d2f47', '油焖茄子', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2002');
+INSERT INTO `ordermenu_` VALUES ('94ead05d8da24120af36b70be0a5fbf2', '37909b82a414427dbfada60f301d2f47', '米饭', '2.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4004');
+INSERT INTO `ordermenu_` VALUES ('94f211a09fc54c229f5be186cb65c953', '483b7f817642455c95ee102fb368afa0', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('9804f01d9e7e4d81aac41b16c5cf97e4', '2b9e765d47714ba5955e463798d2dcbf', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('9916f4c47a68432288239b9e2d526d0b', 'cda5b2db4c2140bc836629193ce337da', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('99b4e9e80fba407fbdb72807737618c6', '3c258eee738f4b26943bfa23527e6c8e', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('9bb04d11bead422b9e934eb5aee022c0', 'a7bfd275c0364cffa702b6497d1b410d', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('9e3602db008b41aa9fe31516bcf31caf', 'a7bfd275c0364cffa702b6497d1b410d', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('a13e5e2c91474f2184c8ec575d295824', '37909b82a414427dbfada60f301d2f47', '玉米排骨汤', '28.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '3003');
+INSERT INTO `ordermenu_` VALUES ('a1bbe099bb7d40718f0541a6ca883be7', '37909b82a414427dbfada60f301d2f47', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4002');
+INSERT INTO `ordermenu_` VALUES ('a53bced5ddb948678a315c63bbbb1b89', '483b7f817642455c95ee102fb368afa0', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('a9b20a45809545498d5fddf1bb5a409a', 'c38e598c7f83499a87a56fd87ef67f19', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('aadb19e3a41f41b6a096cbe57ddeaddd', '3df4ea4042d04c8bb0279a572e313b11', '油炸花生米', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1003');
+INSERT INTO `ordermenu_` VALUES ('ac759dbcee4345f3a1a64587c5658909', '483b7f817642455c95ee102fb368afa0', '雪碧', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '3001');
+INSERT INTO `ordermenu_` VALUES ('acce1ecd318b4ceba46a0e6d4e9f3f88', '37909b82a414427dbfada60f301d2f47', '雪碧', '8.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '3001');
+INSERT INTO `ordermenu_` VALUES ('b1138d0e127c4099a575b3d72455ee7e', 'f42ed1832ef94992ac84e749b1194df8', '红油金针菇', '12.00', '正常', '0', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('b57a1417e775428580262692f2eddf36', 'a7bfd275c0364cffa702b6497d1b410d', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('b83a14f65a6349318ed1d0b20467ce01', '91965c33ae6a49a5bf8119e22fcbfb70', '油焖茄子', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2002');
+INSERT INTO `ordermenu_` VALUES ('c13230701e4b4a4586685e5126cbf30b', 'cda5b2db4c2140bc836629193ce337da', '尖椒土豆丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('c2877fcb53f14892ab354b10752159d9', 'dec2289a8e0d43ac983556e3abedb5bb', '烙饼子', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4005');
+INSERT INTO `ordermenu_` VALUES ('c3c680c000754d4b9ee8513c9abf7d9a', '7fc82ba264f141b188d154904656d931', '油焖茄子', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2002');
+INSERT INTO `ordermenu_` VALUES ('c4029cbea1f54beea86d701c0f689133', '37909b82a414427dbfada60f301d2f47', '烙饼子', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4005');
+INSERT INTO `ordermenu_` VALUES ('c524b3622aae46adaaf4533c15296fef', '5a1abe1670d04b88afd1d1db7aa0b054', '鱼香肉丝', '25.00', '正常', '3', '', '', '0', '', '0.00', '0', '0', '2004');
+INSERT INTO `ordermenu_` VALUES ('c6d678d4c8724bd698bb8eb772a98008', '7fc82ba264f141b188d154904656d931', '雪碧', '8.00', '超辣', '1', '', '', '0', '', '0.00', '0', '0', '3001');
+INSERT INTO `ordermenu_` VALUES ('caa77d5a0f1841239cbb1a2942ecd77d', '483b7f817642455c95ee102fb368afa0', '尖椒土豆丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2001');
+INSERT INTO `ordermenu_` VALUES ('d42efd1d5663404db8a0369cc5dc1210', '5a1abe1670d04b88afd1d1db7aa0b054', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '1', null);
+INSERT INTO `ordermenu_` VALUES ('d9017514d95e46599437c3a0b93cc528', '3df4ea4042d04c8bb0279a572e313b11', '尖椒土豆丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2001');
+INSERT INTO `ordermenu_` VALUES ('d954824281974ad78cef7723a846aaaf', '5a1abe1670d04b88afd1d1db7aa0b054', '饺子', '15.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('d9c0b38642cb43b59194ca8470fdec78', '483b7f817642455c95ee102fb368afa0', '炝海带丝', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1002');
+INSERT INTO `ordermenu_` VALUES ('db3a1c0127894ec3beacd89ac8b4ae94', '483b7f817642455c95ee102fb368afa0', '龙须面', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '4002');
+INSERT INTO `ordermenu_` VALUES ('dbd12993f5bb40bb874f2bd03151760f', 'e6feee5e8087409b882cd27c6f72f038', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('dfa9eb692ce0473faf923e6861c11c02', '483b7f817642455c95ee102fb368afa0', '鱼香肉丝', '25.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('e241dac3cddb439ab58af20f243c246e', '483b7f817642455c95ee102fb368afa0', '米饭', '2.00', '正常', '3', '', '', '0', '', '0.00', '0', '0', '4004');
+INSERT INTO `ordermenu_` VALUES ('e6d94e5ca6e64ac883fd35876386db73', '2bdcda192e56469ba4595bcd2fecac99', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('ebb470c2a4e1402da210e6613fa880e9', '7fc82ba264f141b188d154904656d931', '炝海带丝', '10.00', '清淡', '1', '', '', '0', '', '0.00', '0', '0', '1002');
+INSERT INTO `ordermenu_` VALUES ('ec9fef4ad6874144a727931c489e2a07', '83e6f45be89d444ea8fb10084a5dfcee', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('ed92aade7d1b4bd497654e7f6bcb8226', '52e51af155b74de3bc1626c042546a0e', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('ef5b0110f4df43479bbb583ff6b1e196', '483b7f817642455c95ee102fb368afa0', '筒子骨海带汤', '38.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '3004');
+INSERT INTO `ordermenu_` VALUES ('f0733b97f34b4cd8ae6071ab558c6bec', '15e601c228ba4cb4a71035d8fb6f4c0c', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `ordermenu_` VALUES ('f0936bf3f013465d8b0dcea3763c2c67', '34775b3b6f5e4a379cbff8258d27d6ff', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('f1800adbc93049ddb0f8009ab471d1c0', '91965c33ae6a49a5bf8119e22fcbfb70', '糖醋萝卜', '10.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1004');
+INSERT INTO `ordermenu_` VALUES ('f462db2abc7942fda79b79699084d772', '83e6f45be89d444ea8fb10084a5dfcee', '红油金针菇', '12.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '1001');
+INSERT INTO `ordermenu_` VALUES ('f5904a7fe55a489596f23663b62bd44e', '37909b82a414427dbfada60f301d2f47', '筒子骨海带汤', '38.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '3004');
+INSERT INTO `ordermenu_` VALUES ('f6a3e236f9884af0bea7a7926125854c', '8753574fc7a54efaa470533b666d9ab9', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', null);
+INSERT INTO `ordermenu_` VALUES ('fa3a1ae74062441aa4e81aa32b3af64c', '2357aad0158d403ab83eef73c586f15b', '西红柿炒鸡蛋', '16.00', '正常', '1', '', '', '0', '', '0.00', '0', '0', '2003');
+INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000001', '第一桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 13:58:41');
 INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000002', '第二桌', '0', '1', '1', '00000000000000000000000000000001', '2016-12-20 13:58:58');
-INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000003', '第三桌', '0', '1', '1', '00000000000000000000000000000001', '2016-12-20 13:59:14');
-INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000004', '第四桌', '0', '1', '1', '00000000000000000000000000000001', '2016-12-20 13:59:32');
-INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000005', '第五桌', '0', '1', '1', '00000000000000000000000000000001', '2016-12-20 13:59:48');
-INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000006', '第六桌', '0', '1', '1', '00000000000000000000000000000001', '2016-12-20 14:00:07');
-INSERT INTO `xiuse_discount` VALUES ('00000000', '九折', '0', '0.00', '-1', '0', '1', '0', '00000000000000000000000000000000', '2017-03-27 14:40:58');
+INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000003', '第三桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 13:59:14');
+INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000004', '第四桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 13:59:32');
+INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000005', '第五桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 13:59:48');
+INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000006', '第六桌', '0', '1', '0', '00000000000000000000000000000001', '2016-12-20 14:00:07');
+INSERT INTO `xiuse_desk` VALUES ('00000000000000000000000000000007', '六人桌', '0', '1', '1', '00000000000000000000000000000001', '2017-02-03 00:00:00');
+INSERT INTO `xiuse_discount` VALUES ('00000000', '九折', '0', '0.00', '-1', '0', '0', '0', '00000000000000000000000000000001', '2017-03-27 14:40:58');
 INSERT INTO `xiuse_discount` VALUES ('00000001', '满百减12', '1', '12.00', '-1', '0', '1', '0', '00000000000000000000000000000001', '2017-03-27 14:42:31');
-INSERT INTO `xiuse_member` VALUES ('000000000000000000000000001', '00001', '洋洋洋', '1000.00', '1', '15200856922', null, '123456', '1', '2017-04-01 11:13:59', '00000000000000000000000000000000');
-INSERT INTO `xiuse_member` VALUES ('000000000000000000000000002', '00002', '彤彤', '100.00', '1', '13200339999', null, '123456', '1', '2017-03-16 11:14:51', '00000000000000000000000000000000');
-INSERT INTO `xiuse_member` VALUES ('000000000000000000000000003', '00003', '拉拉', '45.00', '1', '13032343234', '', '654321', '0', '2017-02-15 11:15:34', '00000000000000000000000000000001');
-INSERT INTO `xiuse_member` VALUES ('000000000000000000000000004', '00004', 'test1', '100.00', '1', '13522114455', null, '123', '1', '2017-04-04 13:44:28', '00000000000000000000000000000001');
-INSERT INTO `xiuse_member` VALUES ('000000000000000000000000005', '00005', 'test2', '88.00', '1', null, null, '321', '1', '2017-04-07 13:45:57', '00000000000000000000000000000001');
-INSERT INTO `xiuse_memberclassify` VALUES ('1', '1', '铂金卡', null, '1', '2017-03-23 15:33:38', '0', '00000000000000000000000000000001');
+INSERT INTO `xiuse_member` VALUES ('000000000000000000000000001', '00001', '洋洋洋', '1104.00', '1', '15200856922', null, '123456', '1', '2017-04-01 11:13:59', '00000000000000000000000000000001', null, '0');
+INSERT INTO `xiuse_member` VALUES ('000000000000000000000000002', '00002', '彤彤', '241.00', '1', '13200339999', null, '123456', '1', '2017-03-16 11:14:51', '00000000000000000000000000000001', null, '0');
+INSERT INTO `xiuse_member` VALUES ('000000000000000000000000003', '00003', '拉拉', '49.00', '1', '13032343234', '', '654321', '1', '2017-02-15 11:15:34', '00000000000000000000000000000001', null, '0');
+INSERT INTO `xiuse_member` VALUES ('000000000000000000000000004', '00004', 'test1', '220.00', '1', '13522114455', null, '123', '1', '2017-04-04 13:44:28', '00000000000000000000000000000001', null, '0');
+INSERT INTO `xiuse_member` VALUES ('000000000000000000000000005', '00005', 'test2', '92.00', '1', null, null, '321', '0', '2017-04-07 13:45:57', '00000000000000000000000000000001', null, '0');
+INSERT INTO `xiuse_member` VALUES ('053a7d875e2a44729a0a7bbe59742597', '1704060120241201', 'sddd', '4.00', '1', 'adf', '', '123', '0', '2017-04-06 13:20:28', '', 'adfdd', '0');
+INSERT INTO `xiuse_member` VALUES ('230d0dc60724457586902637c7df7da6', '1704060120241201', 'sddd', '4.00', '1', 'adf', '', '123', '0', '2017-04-06 13:20:50', '', 'adfdd', '0');
+INSERT INTO `xiuse_member` VALUES ('38cfd8c9e5a6454ea033e8fe1269594e', '1704071010332344', '阿拉斯加', '4.00', '1', '12312312312', '', '123456', '0', '2017-04-07 10:11:04', '00000000000000000000000000000001', '191919@qq.com', '0');
+INSERT INTO `xiuse_member` VALUES ('6c18b3e058004cccab795adb923d72ed', '1704060202287548', '喵喵喵喵', '4.00', '1', '12345678912', '', '12345', '2', '2017-04-06 14:02:37', '00000000000000000000000000000001', 'adf@111.com', '0');
+INSERT INTO `xiuse_member` VALUES ('762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '哈士奇', '84.00', '1', '', '', '', '1', '2017-04-06 14:07:20', '00000000000000000000000000000001', '', '0');
+INSERT INTO `xiuse_member` VALUES ('8afabc91604b444984f59b07dce15f96', '1704061142177086', '1232', '4.00', '4', '122321343433', '', 'adsfad', '0', '2017-04-06 11:42:23', '', 'adf', '0');
+INSERT INTO `xiuse_member` VALUES ('dbaa1a6e54cd4c19ae4f2c03224b3edd', '1704060220052555', '电饭锅的名字就要长长长长超级长啊啊啊啊啊', '210.00', 'c1f05b69b0db4230836795746eb63d06', '23342454554', '', '11111', '1', '2017-04-06 14:20:19', '00000000000000000000000000000001', '11111111', '0');
+INSERT INTO `xiuse_member` VALUES ('fa88e78a4f09463c890a8bcdc7d2ba56', '1704060122326765', 'adfadf', '4.00', '4', '151111111111', '', '123456', '2', '2017-04-06 13:22:37', '00000000000000000000000000000001', '111@111.com', '0');
+INSERT INTO `xiuse_member` VALUES ('fb80ee53bc324b0ea220038ec060be07', '1704100245442174', '吉娃娃', '31.00', 'c1f05b69b0db4230836795746eb63d06', '12345654321', '', 'mYo+BYIT41M=', '1', '2017-04-10 14:45:51', '00000000000000000000000000000001', '', '0');
+INSERT INTO `xiuse_memberclassify` VALUES ('1', '00000000', '铂金卡', '进进进', '5', '2017-03-23 15:33:38', '0', '00000000000000000000000000000001');
 INSERT INTO `xiuse_memberclassify` VALUES ('2', '2', '黄金卡', null, '0', '2017-04-05 15:11:50', '0', '00000000000000000000000000000001');
+INSERT INTO `xiuse_memberclassify` VALUES ('2ef849be9edb4da7b908906293b47e71', '00000001', 'VVVVip卡卡卡卡', '123456', '0', '2017-04-10 13:52:51', '2', '00000000000000000000000000000001');
 INSERT INTO `xiuse_memberclassify` VALUES ('3', '3', '银卡', null, '0', '2017-04-05 15:12:34', '0', '00000000000000000000000000000001');
 INSERT INTO `xiuse_memberclassify` VALUES ('4', '4', '钻石卡', null, '0', '2017-04-05 15:13:09', '0', '00000000000000000000000000000001');
-INSERT INTO `xiuse_menuclassify` VALUES ('001', '凉菜', '1', '0', '凉菜', '000000000000000000000001', '2016-12-20 11:07:37');
-INSERT INTO `xiuse_menuclassify` VALUES ('002', '热菜', '2', '0', '热菜', '000000000000000000000001', '2016-12-20 11:08:27');
-INSERT INTO `xiuse_menuclassify` VALUES ('003', '饮料', '3', '0', '饮料', '000000000000000000000001', '2016-12-20 11:14:09');
-INSERT INTO `xiuse_menuclassify` VALUES ('004', '主食', '4', '0', '主食', '000000000000000000000001', '2016-12-20 10:54:48');
+INSERT INTO `xiuse_memberclassify` VALUES ('b737a7285f844afab7f8346031350110', '00000001', 'test2222', '123456', '0', '2017-04-10 13:46:22', '0', '00000000000000000000000000000001');
+INSERT INTO `xiuse_memberclassify` VALUES ('c1f05b69b0db4230836795746eb63d06', '00000000', '新建会员类型测试机好长好长哦', '坑爹坑爹', '2', '2017-04-10 14:02:58', '0', '00000000000000000000000000000001');
+INSERT INTO `xiuse_menuclassify` VALUES ('001', '凉菜', '5', '0', '凉菜', '00000000000000000000000000000001', '2016-12-20 11:07:37');
+INSERT INTO `xiuse_menuclassify` VALUES ('002', '热菜', '8', '0', '热菜', '00000000000000000000000000000001', '2016-12-20 11:08:27');
+INSERT INTO `xiuse_menuclassify` VALUES ('003', '饮料', '6', '0', '饮料', '00000000000000000000000000000001', '2016-12-20 11:14:09');
+INSERT INTO `xiuse_menuclassify` VALUES ('004', '主食', '3', '0', '主食', '00000000000000000000000000000001', '2016-12-20 10:54:48');
+INSERT INTO `xiuse_menuclassify` VALUES ('1ce13b0bd1164995b9fce8cdad064024', '隐藏分类no', '4', '0', '特价菜33', '00000000000000000000000000000001', '2017-04-11 16:52:59');
+INSERT INTO `xiuse_menuclassify` VALUES ('41d5a2c3c980409686072ebfe18d6dbe', '111', '11', '1', '隐藏的分类', '00000000000000000000000000000001', '2017-04-12 15:36:49');
+INSERT INTO `xiuse_menuclassify` VALUES ('5c0b05955631494381baf64d8cd37ed4', '隐藏分类yes', '7', '1', '特价菜', '00000000000000000000000000000001', '2017-04-11 16:52:43');
+INSERT INTO `xiuse_menuclassify` VALUES ('9d7ce87cd1704cb685dad60e9e7dcebb', '', '10', '1', '新建隐藏test', '00000000000000000000000000000001', '2017-04-12 14:54:21');
+INSERT INTO `xiuse_menuclassify` VALUES ('ed2843b3ab6a48b7b6eb4079c38bce0d', '热销top10', '9', '1', '热门菜品', '00000000000000000000000000000001', '2017-04-11 13:23:01');
+INSERT INTO `xiuse_menuclassify` VALUES ('f4fce08d37244f479aed3f7d52b2a6d9', 'jieshao', '1', '0', '我是新建', '00000000000000000000000000000001', '2017-04-14 17:12:19');
+INSERT INTO `xiuse_menuclassify` VALUES ('f75e19bce7c9494e82cb3ab44f6ae771', '撸串撸串', '2', '1', '串串', '00000000000000000000000000000001', '2017-04-11 10:54:45');
+INSERT INTO `xiuse_menus` VALUES ('02e9243f5a794b19bb07d39bee6e294b', 'asd', '0', '0.00', '', '', '', '1', '', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 10:53:20');
 INSERT INTO `xiuse_menus` VALUES ('1001', '红油金针菇', '100', '12.00', null, '', null, '1', null, '0', '0', '00000000000000000000000000000001', '001', '2016-12-20 13:35:48');
 INSERT INTO `xiuse_menus` VALUES ('1002', '炝海带丝', '100', '10.00', null, '', null, '2', null, '0', '0', '00000000000000000000000000000001', '001', '2016-12-20 13:36:45');
 INSERT INTO `xiuse_menus` VALUES ('1003', '油炸花生米', '100', '10.00', null, '', null, '3', null, '0', '0', '00000000000000000000000000000001', '001', '2016-12-20 13:36:53');
 INSERT INTO `xiuse_menus` VALUES ('1004', '糖醋萝卜', '100', '10.00', null, '', null, '4', null, '0', '0', '00000000000000000000000000000001', '001', '2016-12-20 13:37:54');
+INSERT INTO `xiuse_menus` VALUES ('1380f2cd270343ed96181fd1c1a491fd', 'sadf', '0', '4.00', '', '', '', '2', '', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 10:55:30');
+INSERT INTO `xiuse_menus` VALUES ('19d116d262d240589db4a9d3af96a236', '滴滴滴滴滴滴', '0', '7.00', '', '阿斯蒂芬,阿斯蒂芬阿萨德发的发', 'blob:http%3A//127.0.0.1%3A8020/0cc15fef-0de9-41ab-8b99-0154e0fb95cf', '9', '', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 15:43:04');
 INSERT INTO `xiuse_menus` VALUES ('2001', '尖椒土豆丝', '100', '10.00', null, '', null, '1', null, '0', '0', '00000000000000000000000000000001', '002', '2016-12-20 13:39:04');
 INSERT INTO `xiuse_menus` VALUES ('2002', '油焖茄子', '100', '16.00', null, '', null, '2', null, '0', '0', '00000000000000000000000000000001', '002', '2016-12-20 13:39:46');
 INSERT INTO `xiuse_menus` VALUES ('2003', '西红柿炒鸡蛋', '100', '16.00', null, '', null, '3', null, '0', '0', '00000000000000000000000000000001', '002', '2016-12-20 13:40:17');
@@ -512,26 +479,63 @@ INSERT INTO `xiuse_menus` VALUES ('4002', '龙须面', '100', '10.00', null, '',
 INSERT INTO `xiuse_menus` VALUES ('4003', '扬州炒饭', '100', '10.00', null, '', null, '3', null, '0', '0', '00000000000000000000000000000001', '004', '2016-12-20 13:43:54');
 INSERT INTO `xiuse_menus` VALUES ('4004', '米饭', '100', '2.00', null, '', null, '4', null, '0', '0', '00000000000000000000000000000001', '004', '2016-12-20 13:44:35');
 INSERT INTO `xiuse_menus` VALUES ('4005', '烙饼子', '100', '10.00', null, '', null, '5', null, '0', '0', '00000000000000000000000000000001', '004', '2016-12-20 13:45:20');
+INSERT INTO `xiuse_menus` VALUES ('4d2137ba3d2d4759bb5f18a7c855cec1', '啥地方', '0', '23.00', '11', '', '', '10', '说的vf', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 15:57:20');
+INSERT INTO `xiuse_menus` VALUES ('61b3390a998d41cbbb44b610748bee32', '新建有图有标签', '0', '3.00', '', '阿道夫,阿道夫dd', 'C:fakepathJellyfish.jpg', '4', '', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 14:56:52');
+INSERT INTO `xiuse_menus` VALUES ('6242728304d649c6a3cb0cb89f041845', '水水水水', '0', '2.00', '', '', 'blob:http%3A//127.0.0.1%3A8020/b9f42e63-fdd6-40c4-927c-a236644f41ee', '3', '', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 13:52:22');
+INSERT INTO `xiuse_menus` VALUES ('7a102c582bb34e869abee70e4fc80de0', '羊肉串', '0', '2.00', '', '', 'blob:http%3A//127.0.0.1%3A8020/7ece094d-1227-4e87-8387-3f374d7c2de7', '1', '', '0', '0', '00000000000000000000000000000001', 'f75e19bce7c9494e82cb3ab44f6ae771', '2017-04-14 13:50:15');
+INSERT INTO `xiuse_menus` VALUES ('a5d385c9158344938139d25946c33a57', '有图有快捷码有介绍3块钱有标签已售完', '0', '3.00', '', '标签1,标签1标签', 'C:fakepathTulips.jpg', '7', '', '1', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 15:24:50');
+INSERT INTO `xiuse_menus` VALUES ('a705b736b7b34284bfcb3d9e711e3fe1', '带图片带标签2', '0', '111.00', '', '啧啧啧', 'C:fakepathTulips.jpg', '6', '', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 15:01:12');
+INSERT INTO `xiuse_menus` VALUES ('ab62341ade124f618cec5fdaf18222d0', '更改', '0', '3.00', '', '打的费', '', '5', '', '0', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 14:57:50');
+INSERT INTO `xiuse_menus` VALUES ('c2a678c49e25452cb1ec2d3c4104a88f', '啊啊阿道夫', '0', '10.00', '', '滴滴滴,滴滴滴大多数非', 'blob:http%3A//127.0.0.1%3A8020/7cf27a85-87e2-48ea-9923-2d6786439978', '8', '', '1', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 15:37:12');
+INSERT INTO `xiuse_menus` VALUES ('e4ee2ab18bd445fc820cb7144762664e', '大师傅', '0', '4.00', '滴滴滴', '大师傅,大师傅大幅萨的说法', 'blob:http%3A//127.0.0.1%3A8020/5aed0e31-dee6-431f-b947-37e6b36589e9', '11', '122233344', '1', '0', '00000000000000000000000000000001', 'f4fce08d37244f479aed3f7d52b2a6d9', '2017-04-14 15:58:59');
+INSERT INTO `xiuse_recharge` VALUES ('00000000000000000000000212', '1', '45.00', '1000.00', '000000000000000000000000001', '00001', '2017-04-07 08:48:03', null);
 INSERT INTO `xiuse_recharge` VALUES ('0000000000000001', '1', '1000.00', '1000.00', '000000000000000000000000001', '00001', '2017-04-01 11:13:59', null);
 INSERT INTO `xiuse_recharge` VALUES ('0000000000000002', '1', '100.00', '100.00', '000000000000000000000000002', '00002', '2017-03-16 11:14:51', null);
 INSERT INTO `xiuse_recharge` VALUES ('0000000000000003', '1', '45.00', '17.00', '000000000000000000000000003', '00003', '2017-02-15 11:15:34', null);
 INSERT INTO `xiuse_recharge` VALUES ('0000000000000004', '2', '100.00', '9.00', '000000000000000000000000004', '00004', '2017-04-04 13:44:28', null);
 INSERT INTO `xiuse_recharge` VALUES ('0000000000000005', '1', '88.00', '88.00', '000000000000000000000000005', '00005', '2017-04-07 13:45:57', null);
+INSERT INTO `xiuse_recharge` VALUES ('13ec8f8f7a204883af41961e28ccea63', '1', '123.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-06 17:11:21', '0');
+INSERT INTO `xiuse_recharge` VALUES ('3801a6ff6edc4c3db4de0fbee42c3230', '1', '3.00', '210.00', 'dbaa1a6e54cd4c19ae4f2c03224b3edd', '1704060220052555', '2017-04-11 10:16:30', '207');
+INSERT INTO `xiuse_recharge` VALUES ('412e2aa6e2d6463093b0db5d51331034', '1', '12.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-11 09:16:27', null);
+INSERT INTO `xiuse_recharge` VALUES ('4d20d69ad4294d6bb2d528df81803dcf', '1', '1.00', '206.00', 'dbaa1a6e54cd4c19ae4f2c03224b3edd', '1704060220052555', '2017-04-11 10:08:04', '205');
+INSERT INTO `xiuse_recharge` VALUES ('595ba1f0d920492f93a6fc91f9ecbe22', '1', '50.00', '0.00', '000000000000000000000000004', '00004', '2017-04-10 15:26:05', null);
+INSERT INTO `xiuse_recharge` VALUES ('6aeadb5fc4a74903a66542dbee2477ca', '1', '50.00', '0.00', '000000000000000000000000004', '00004', '2017-04-10 15:24:00', null);
+INSERT INTO `xiuse_recharge` VALUES ('790b4c5ecdab432fb86df11b1058647f', '1', '2.00', '0.00', 'fb80ee53bc324b0ea220038ec060be07', '1704100245442174', '2017-04-10 15:33:32', null);
+INSERT INTO `xiuse_recharge` VALUES ('7aa8c7089cc5459bbfaf6cfa60feb278', '1', '1.00', '31.00', 'fb80ee53bc324b0ea220038ec060be07', '1704100245442174', '2017-04-11 10:15:28', '30');
+INSERT INTO `xiuse_recharge` VALUES ('82b487680ae245f698616562a5f97715', '1', '2.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:35:30', null);
+INSERT INTO `xiuse_recharge` VALUES ('82e2fb5751584adcabc86cfd38fa83bc', '1', '2.00', '0.00', '000000000000000000000000004', '00004', '2017-04-10 15:28:02', null);
+INSERT INTO `xiuse_recharge` VALUES ('849c2c6440a64c6caba5ba090d7e0a95', '1', '10.00', '0.00', 'fb80ee53bc324b0ea220038ec060be07', '1704100245442174', '2017-04-10 15:30:06', null);
+INSERT INTO `xiuse_recharge` VALUES ('94947086d2244396b91fcaa0b1f70996', '1', '13.00', '0.00', 'fb80ee53bc324b0ea220038ec060be07', '1704100245442174', '2017-04-10 15:34:05', null);
+INSERT INTO `xiuse_recharge` VALUES ('9aa016fc3b08460c9e062b909aa60cb5', '2', '1000.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-06 17:24:28', '0');
+INSERT INTO `xiuse_recharge` VALUES ('af9e8638759241559056feb06e7b81c7', '1', '1.00', '207.00', 'dbaa1a6e54cd4c19ae4f2c03224b3edd', '1704060220052555', '2017-04-11 10:16:26', '206');
+INSERT INTO `xiuse_recharge` VALUES ('b237929a73954688999126033ba07ea5', '1', '12.00', '0.00', '000000000000000000000000002', '00002', '2017-04-10 15:42:50', null);
+INSERT INTO `xiuse_recharge` VALUES ('bb5cb4ecc29341a8b4737a23477f8e60', '1', '4.00', '210.00', '000000000000000000000000004', '00004', '2017-04-11 10:18:33', '206');
+INSERT INTO `xiuse_recharge` VALUES ('bccde727e6454b3088d89f185695cc7c', '1', '2.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:41:26', null);
+INSERT INTO `xiuse_recharge` VALUES ('bdf4dacdee7e4d0fba5e3247c41b6e07', '1', '10.00', '220.00', '000000000000000000000000004', '00004', '2017-04-11 10:21:22', '210');
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625321', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625322', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625333', '1', '4.00', '28.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', '68');
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625334', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625344', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625355', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625356', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', '68');
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625359', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625366', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625411', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625412', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625413', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fbfdea625416', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d7490ab6bb85466a9598fkfdea625356', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d8490ab6bb85466a9598fbfdea625356', '1', '4.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-10 15:56:55', null);
+INSERT INTO `xiuse_recharge` VALUES ('d9a048b7c49b42d0a1e393ece00a1d75', '1', '2.00', '84.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-11 10:01:14', '82');
+INSERT INTO `xiuse_recharge` VALUES ('eb1b8c6a8cae4e72b1d45c1b289427a3', '1', '111.00', '0.00', '762875ae7e9c49a3b0e97094f6d75888', '1704060207084023', '2017-04-06 17:26:00', '0');
+INSERT INTO `xiuse_recharge` VALUES ('efd25af0a15344b6b773c64ddd238a73', '1', '100.00', '204.00', 'dbaa1a6e54cd4c19ae4f2c03224b3edd', '1704060220052555', '2017-04-11 10:03:56', '104');
+INSERT INTO `xiuse_recharge` VALUES ('f06670bd9e824ccd9944be04dacbf55b', '1', '1.00', '241.00', '000000000000000000000000002', '00002', '2017-04-11 10:08:45', '240');
+INSERT INTO `xiuse_recharge` VALUES ('f944ec9eadba45fb93931713e9162a61', '1', '123.00', '0.00', '000000000000000000000000002', '00002', '2017-04-10 15:45:24', null);
+INSERT INTO `xiuse_recharge` VALUES ('fdef935af0b04d52b881ccff79dbd2da', '1', '1.00', '0.00', 'fb80ee53bc324b0ea220038ec060be07', '1704100245442174', '2017-04-11 10:12:18', '30');
+INSERT INTO `xiuse_recharge` VALUES ('kl;kl;kl;kl', '1', '100.00', '1100.00', '000000000000000000000000001', '00001', '2017-04-07 09:14:09', '10');
 INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000000', 'TestRN', '010-88888888', '北京', null, '2016-12-12 13:22:43');
 INSERT INTO `xiuse_restaurant` VALUES ('00000000000000000000000000000001', 'TestR1', '010-12345678', '北京', null, '2016-12-20 11:16:58');
-INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000000', 'admin', 'weixin', '15811111111', 'admin@163.com', '123', '00000000000000000000000000000001', '0', '-1', '0', null, '2016-12-12 13:20:42');
+INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000000', 'admin', 'weixin', '15811111111', 'admin@163.com', '123', '00000000000000000000000000000001', '0', '-1', '1', null, '2016-12-12 13:20:42');
 INSERT INTO `xiuse_user` VALUES ('00000000000000000000000000000001', 'test', 'weixin', '15811112222', 'Rita@163.com', '123', '00000000000000000000000000000001', '1', '-1', '0', null, '2017-03-24 16:20:42');
-
--- ----------------------------
--- Trigger structure for GetBeforeBalance
--- ----------------------------
-DELIMITER ;;
-CREATE TRIGGER `GetBeforeBalance` BEFORE INSERT ON `xiuse_recharge` FOR EACH ROW set new.BeforeBalance=(select MemberAmount from xiuse_member where xiuse_member.MemberId= MemberId);;
-DELIMITER ;
-
--- ----------------------------
--- Trigger structure for SetAmount
--- ----------------------------
-DELIMITER ;;
-CREATE TRIGGER `SetAmount` AFTER INSERT ON `xiuse_recharge` FOR EACH ROW update xiuse_member set  MemberAmount=RechargeAmount+BeforeBalance where MemberId=MemberId;;
-DELIMITER ;
+INSERT INTO `xiuse_user` VALUES ('2342325435343dgd', '服务员1', '微信', '15832132326', 'sdfsw', '123', '00000000000000000000000000000001', '1', '-1', '0', null, '2017-04-12 15:18:22');
