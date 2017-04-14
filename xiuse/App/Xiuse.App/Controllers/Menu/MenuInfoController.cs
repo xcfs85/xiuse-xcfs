@@ -58,6 +58,8 @@ namespace Xiuse.App.Controllers.Menu
             MenuModel.MenuImage = Convert.ToString(obj.MenuImage);
             MenuModel.MenuId = Guid.NewGuid().ToString("N");
             MenuModel.MenuTime = DateTime.Now;
+            MenuModel.MenuShortcut = Convert.ToString(obj.MenuShortcut);
+            MenuModel.MenuInstruction = Convert.ToString(obj.MenuInstruction);
             if (MenuBLL.Insert(MenuModel))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
