@@ -77,6 +77,7 @@ namespace Xiuse.App.Controllers.Menu
             MenuModel.MenuId = Convert.ToString(obj.MenuId);
             MenuModel.MenuNo = Convert.ToInt32(obj.MenuNo);
             MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
+            MenuModel.MenuTime = DateTime.Now;
             MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
             if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
@@ -89,7 +90,7 @@ namespace Xiuse.App.Controllers.Menu
             {
                 GetMenuLst[i].MenuNo = i + 1;
             }
-            if (MenuBLL.UpdateList(GetMenuLst))
+            if (MenuBLL.UpdateList(GetMenuLst,MenuModel))
             {
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             }

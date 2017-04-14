@@ -40,9 +40,9 @@ namespace Xiuse.BLL
         /// </summary>
         /// <param name="lst"></param>
         /// <returns></returns>
-        public bool UpdateList(List<Xiuse.Model.xiuse_menuclassify> lst)
+        public bool UpdateList(List<Xiuse.Model.xiuse_menuclassify> lst, Model.xiuse_menuclassify MenuModel)
         {
-            return dal.UpdateList(lst);
+            return dal.UpdateList(lst, MenuModel);
         }
         /// <summary>
         ///  删除一条数据

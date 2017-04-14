@@ -45,9 +45,9 @@ namespace Xiuse.BLL
             return dal.Update(model);
         }
 
-        public bool UpdateList(List<Model.xiuse_menus> lst)
+        public bool UpdateList(List<Model.xiuse_menus> lst, Model.xiuse_menus menuModel)
         {
-            return dal.UpdateList(lst);
+            return dal.UpdateList(lst,menuModel);
         }
         /// <summary>
         ///  删除一条数据
