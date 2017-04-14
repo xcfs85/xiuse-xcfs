@@ -44,16 +44,21 @@ namespace Xiuse.App.Controllers.Menu
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [HttpPost]
         [Route("AddMenu")]
-        public HttpResponseMessage PostAddMenu([FromBody]Model.xiuse_menus model)
+        public HttpResponseMessage PostAddMenu(dynamic obj)
         {
-            if (model == null)
-            {
-                throw new HttpRequestException();
-            }
-            model.MenuId = Guid.NewGuid().ToString("N");
-            model.MenuTime = DateTime.Now;
-            if (MenuBLL.Insert(model))
+            MenuModel.SaleState = Convert.ToInt16(obj.SaleState);
+            MenuModel.MenuName= Convert.ToString(obj.MenuName);
+            MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
+            MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
+            MenuModel.MenuNo = Convert.ToInt32(obj.MenuNo);
+            MenuModel.MenuPrice = Convert.ToDecimal(obj.MenuPrice);
+            MenuModel.MenuTag = Convert.ToString(obj.MenuTag);
+            MenuModel.MenuImage = Convert.ToString(obj.MenuImage);
+            MenuModel.MenuId = Guid.NewGuid().ToString("N");
+            MenuModel.MenuTime = DateTime.Now;
+            if (MenuBLL.Insert(MenuModel))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
