@@ -110,9 +110,9 @@ namespace Xiuse.App.Controllers.Menu
             MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
             MenuModel.MenuNo = Convert.ToInt32(obj.MenuNo);
             MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
-            if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
+            if (obj == null || MenuBLL.Exists(MenuModel.MenuId) == false)
             {
-                throw new HttpRequestException();
+                return base.ReturnData("0", "菜品不存在！", StatusCodeEnum.Error);
             }
             List<Xiuse.Model.xiuse_menus> GetMenuLst = MenuBLL.GetAllMenusWithoutUpdate(MenuModel.RestaurantId, MenuModel.ClassifyId, MenuModel.MenuId);
             for (int i = 0; i < GetMenuLst.Count; i++)

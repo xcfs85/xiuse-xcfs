@@ -76,7 +76,8 @@ namespace  Xiuse.DAL
         public bool DeleteList(string MenuId, List<Xiuse.Model.xiuse_menus> lst)
         {
             List<string> newList = new List<string>();
-            string strSql = String.Format("Delete From xiuse_menus Where MenuId='{0}'", MenuId);
+            //string strSql = String.Format("Delete From xiuse_menus Where MenuId='{0}'", MenuId);
+            string strSql = String.Format("update xiuse_menus set MenuState='2' Where MenuId='{0}'", MenuId);
             newList.Add(strSql);
             foreach (Model.xiuse_menus model in lst)
             {
