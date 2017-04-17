@@ -76,6 +76,25 @@ namespace Xiuse.BLL
             return DataSetTransModelListNoExpand(dal.GetDiscountData(RestaurantId));
         }
         /// <summary>
+        /// 获取餐厅整单折扣的信息
+        /// </summary>
+        /// <param name="RestaurantId">餐厅的Id</param>
+        /// <returns></returns>
+        public List<Model.xiuse_discount> GetEntireModels(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpand(dal.GetEntireDiscountData(RestaurantId));
+        }
+        /// <summary>
+        /// 获取单品的折扣
+        /// </summary>
+        /// <param name="RestaurantId">餐厅的Id</param>
+        /// <param name="MenuId">菜品的Id</param>
+        /// <returns></returns>
+        public Model.xiuse_discount GetSingleModels(string RestaurantId,string MenuId)
+        {
+            return DataSetTransModelNoExpand(dal.GetSingleDiscountData(RestaurantId, MenuId));
+        }
+        /// <summary>
         /// 设置折扣的状态（1,启用；0，禁用;2,删除；）
         /// </summary>
         /// <param name="DiscountId">折扣的ID</param>
