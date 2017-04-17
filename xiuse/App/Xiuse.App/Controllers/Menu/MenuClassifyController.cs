@@ -79,6 +79,10 @@ namespace Xiuse.App.Controllers.Menu
         {
             MenuModel.ClassifyNo = Convert.ToInt32(obj.ClassifyNo);
             MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
+            MenuModel.ClassifyInstruction = Convert.ToString(obj.ClassifyInstruction);
+            MenuModel.ClassifyTag = Convert.ToString(obj.ClassifyTag);
+            MenuModel.ClassifyTime = DateTime.Now;
+
             MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
             if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
             {
@@ -91,7 +95,7 @@ namespace Xiuse.App.Controllers.Menu
             {
                 GetClassifies[i].ClassifyNo = i + 1;
             } 
-            if (MenuBLL.UpdateList(GetClassifies))
+            if (MenuBLL.UpdateList(GetClassifies,MenuModel))
             {         
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             } 

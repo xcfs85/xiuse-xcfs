@@ -43,7 +43,7 @@ namespace  Xiuse.DAL
         }
 
 
-        public bool UpdateList(List<Xiuse.Model.xiuse_menuclassify> lst)
+        public bool UpdateList(List<Xiuse.Model.xiuse_menuclassify> lst, Model.xiuse_menuclassify MenuModel)
         {
             List<string> newList = new List<string>();
             foreach (Model.xiuse_menuclassify model in lst)
@@ -51,7 +51,9 @@ namespace  Xiuse.DAL
                 string strSql = String.Format(@"update xiuse_menuclassify set ClassifyNo='{0}' where ClassifyId='{1}'",model.ClassifyNo,model.ClassifyId);
                 newList.Add(strSql);
             }
-            return AosyMySql.ExecuteListSQL(newList)==lst.Count;
+            string strSql2 = String.Format(@"update xiuse_menuclassify set ClassifyInstruction ='{0}',ClassifyTag='{1}', ClassifyTime='{2}' where ClassifyId='{3}'", MenuModel.ClassifyInstruction, MenuModel.ClassifyTag, MenuModel.ClassifyTime,MenuModel.ClassifyId);
+            newList.Add(strSql2);
+            return AosyMySql.ExecuteListSQL(newList)==lst.Count+1;
         }
 
 
