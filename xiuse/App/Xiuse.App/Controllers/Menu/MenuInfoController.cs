@@ -79,12 +79,23 @@ namespace Xiuse.App.Controllers.Menu
             MenuModel.ClassifyId = Convert.ToString(obj.ClassifyId);
             MenuModel.MenuTime = DateTime.Now;
             MenuModel.RestaurantId = Convert.ToString(obj.RestaurantId);
-            if (obj == null || MenuBLL.Exists(MenuModel.ClassifyId) == false)
+            MenuModel.MenuImage = Convert.ToString(obj.MenuImage);
+            MenuModel.MenuInstruction = Convert.ToString(obj.MenuInstruction);
+            MenuModel.MenuTag = Convert.ToString(obj.MenuTag);
+            MenuModel.MenuTime = DateTime.Now;
+            MenuModel.MenuState = Convert.ToInt16(obj.MenuState);
+            MenuModel.SaleState = Convert.ToInt16(obj.SaleState);
+            MenuModel.MenuQuantity = Convert.ToInt32(obj.MenuQuantity);
+            MenuModel.MenuPrice = Convert.ToInt32(obj.MenuPrice);
+            MenuModel.MenuName = Convert.ToString(obj.MenuName);
+            MenuModel.MenuShortcut = Convert.ToString(obj.MenuShortcut);
+            if (obj == null || MenuBLL.Exists(MenuModel.MenuId) == false)
             {
-                throw new HttpRequestException();
+                return base.ReturnData("0", "菜品不存在！", StatusCodeEnum.Error);
             }
             List<Model.xiuse_menus> GetMenuLst = MenuBLL.GetAllMenusWithoutUpdate(MenuModel.RestaurantId, MenuModel.ClassifyId, MenuModel.MenuId);
-
+            if (MenuModel.MenuNo > GetMenuLst.Count)
+                MenuModel.MenuNo = GetMenuLst.Count+1;
             GetMenuLst.Insert(MenuModel.MenuNo - 1, MenuModel);
             for (int i = 0; i < GetMenuLst.Count; i++)
             {

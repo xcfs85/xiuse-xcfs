@@ -197,7 +197,7 @@ namespace Xiuse.BLL
                 list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.xiuse_menus>(dataSet, 0));
                 return list;
             }
-            return null;
+            return list;
         }
         /// <summary>
         /// 把DataSet转成泛型(expand无关联实体)

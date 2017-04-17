@@ -30,7 +30,7 @@ namespace  Xiuse.DAL
 
         public DataSet GetAllMenusWithoutUpdate(string rest, string classifyId,string menuId)
         {
-            string strSql = String.Format(@"select * from xiuse_menus where RestaurantId='{0}' and ClassifyId='{1}' and menuId<>'{2}'", rest, classifyId, menuId);
+            string strSql = String.Format(@"select * from xiuse_menus where RestaurantId='{0}' and ClassifyId='{1}' and menuId<>'{2}' and MenuState<>2 and MenuState<>1", rest, classifyId, menuId);
             return AosyMySql.ExecuteforDataSet(strSql);
         }
         /// <summary>
@@ -51,11 +51,11 @@ namespace  Xiuse.DAL
             List<string> newList = new List<string>();
             foreach (Model.xiuse_menus model in lst)
             {
-                string strSql = String.Format(@"update xiuse_menu set MenuNo='{0}' where MenuId='{1}'", model.MenuNo, model.MenuId);
+                string strSql = String.Format(@"update xiuse_menus set MenuNo='{0}' where MenuId='{1}'", model.MenuNo, model.MenuId);
                 newList.Add(strSql);
             }
-            string strSql2 = String.Format(@"update xiuse_menu set RestaurantId='{0}',ClassifyId='{1}',MenuName='{2}',MenuQuantity='{3}',MenuPrice='{4}',MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuInstruction='{8}',SaleState='{9}',MenuState='{10}',MenuModel.MenuTime='{11}' where MenuId='{12}' ",
-                menuModel.RestaurantId,menuModel.ClassifyId,menuModel.MenuName,menuModel.MenuQuantity,menuModel.MenuPrice,menuModel.MenuShortcut,menuModel.MenuTag,menuModel.MenuImage,menuModel.MenuInstruction,menuModel.SaleState,menuModel.MenuTime,menuModel.MenuId);
+            string strSql2 = String.Format(@"update xiuse_menus set RestaurantId='{0}',ClassifyId='{1}',MenuName='{2}',MenuQuantity='{3}',MenuPrice='{4}',MenuShortcut='{5}',MenuTag='{6}',MenuImage='{7}',MenuInstruction='{8}',SaleState='{9}',MenuState='{10}',MenuTime='{11}' where MenuId='{12}' ",
+                menuModel.RestaurantId,menuModel.ClassifyId,menuModel.MenuName,menuModel.MenuQuantity,menuModel.MenuPrice,menuModel.MenuShortcut,menuModel.MenuTag,menuModel.MenuImage,menuModel.MenuInstruction,menuModel.SaleState,menuModel.MenuState, menuModel.MenuTime,menuModel.MenuId);
             newList.Add(strSql2);
             return AosyMySql.ExecuteListSQL(newList) == lst.Count+1;
         }
