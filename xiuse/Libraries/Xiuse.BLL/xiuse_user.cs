@@ -67,7 +67,17 @@ namespace Xiuse.BLL
         {
             return dal.AffirmUser(UserName, Password);
         }
-
+        /// <summary>
+        /// /登录判断用户名、密码、餐厅
+        /// </summary>
+        /// <param name="UserName">用户名</param>
+        /// <param name="Password">密码</param>
+        /// <param name="RestaurantId">餐厅Id</param>
+        /// <returns></returns>
+        public string AffirmUser(string UserName, string Password,string RestaurantId)
+        {
+            return dal.AffirmUser(UserName, Password, RestaurantId);
+        }
 
         /// <summary>
         /// 通过id查询实体
@@ -105,6 +115,15 @@ namespace Xiuse.BLL
         public List<Xiuse.Model.xiuse_user> GetWorkerModels(string restaurantId)
         {
             return dal.GetWorkerModels(restaurantId);
+        }
+        /// <summary>
+        /// 获取当前餐厅的全部的管理员
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns></returns>
+        public List<Xiuse.Model.xiuse_user> GetManager(string restaurantId)
+        {
+            return dal.GetManager(restaurantId);
         }
 
         /// <summary>

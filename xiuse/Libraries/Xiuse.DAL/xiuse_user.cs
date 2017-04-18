@@ -85,6 +85,21 @@ namespace  Xiuse.DAL
             else
                 return AosyMySql.ExecuteScalar(strSql).ToString();
         }
+        /// <summary>
+        /// /登录判断用户名、密码、餐厅
+        /// </summary>
+        /// <param name="UserName">用户名</param>
+        /// <param name="Password">密码</param>
+        /// <param name="RestaurantId">餐厅Id</param>
+        /// <returns></returns>
+        public string AffirmUser(string UserName, string Password,string RestaurantId)
+        {
+            string strSql = String.Format("Select UserId From xiuse_user Where Username='{0}' and Password='{1}' and RestaurantId='{2}'", UserName, Password, RestaurantId);
+            if (AosyMySql.ExecuteScalar(strSql) == null)
+                return "";
+            else
+                return AosyMySql.ExecuteScalar(strSql).ToString();
+        }
 
 
         /// <summary>
@@ -105,7 +120,7 @@ namespace  Xiuse.DAL
 				model.Weixin=dr["Weixin"].ToString();
 				model.CellPhone=(string)dr["CellPhone"];
 				model.Email=dr["Email"].ToString();
-				model.Password=dr["Password"].ToString();
+				//model.Password=dr["Password"].ToString();
 				model.UserRole=(short)dr["UserRole"];
 				model.ParentUserId=dr["ParentUserId"].ToString();
 				model.OwnRestaurant=(short)dr["OwnRestaurant"];
@@ -185,9 +200,37 @@ namespace  Xiuse.DAL
                     model.Weixin = dr["Weixin"].ToString();
                     model.CellPhone = (string)dr["CellPhone"];
                     model.Email = dr["Email"].ToString();
-                    model.Password = dr["Password"].ToString();
                     model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
+                    model.OwnRestaurant = (short)dr["OwnRestaurant"];
+                    model.Time = (DateTime)dr["Time"];
+                    models.Add(model);
+                }
+                return models;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 获取餐厅的全部管理员
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns></returns>
+        public List<Model.xiuse_user> GetManager(string restaurantId)
+        {
+            string strSql = String.Format(@"Select * From xiuse_user where UserRole=0 and RestaurantId='{0}'", restaurantId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            List<Xiuse.Model.xiuse_user> models = new List<Model.xiuse_user>();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    Xiuse.Model.xiuse_user model = new Xiuse.Model.xiuse_user();
+                    model.UserId = (string)dr["UserId"];
+                    model.RestaurantId = (string)dr["RestaurantId"];
+                    model.UserName = dr["UserName"].ToString();
                     model.OwnRestaurant = (short)dr["OwnRestaurant"];
                     model.Time = (DateTime)dr["Time"];
                     models.Add(model);
