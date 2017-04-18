@@ -75,6 +75,10 @@ namespace Xiuse.BLL
         {
             return DataSetTransModelListNoExpand(dal.GetDiscountData(RestaurantId));
         }
+        public List<Model.ViewModel.XiuseDicountView> GetModelsView(string RestaurantId)
+        {
+            return DataSetTransModelListNoExpandView(dal.GetDiscountData(RestaurantId));
+        }
         /// <summary>
         /// 获取餐厅整单折扣的信息
         /// </summary>
@@ -200,6 +204,16 @@ namespace Xiuse.BLL
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {
                 list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.xiuse_discount>(dataSet, 0));
+                return list;
+            }
+            return null;
+        }
+         private  List<Xiuse.Model.ViewModel.XiuseDicountView> DataSetTransModelListNoExpandView(DataSet dataSet)
+        {
+            List<Xiuse.Model.ViewModel.XiuseDicountView > list = new List<Xiuse.Model.ViewModel.XiuseDicountView>();
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                list.AddRange(ConvertHelper.DataSetToEntityList<Xiuse.Model.ViewModel.XiuseDicountView>(dataSet, 0));
                 return list;
             }
             return null;

@@ -20,15 +20,26 @@ namespace Xiuse.App.Controllers.Discount
     {
         BLL.xiuse_discount BllDiscount = new BLL.xiuse_discount();
         Xiuse.BLL.xiuse_user user = new BLL.xiuse_user();
+        BLL.xiuse_menus BllMenus = new BLL.xiuse_menus();
         /// <summary>
         /// 获取餐厅所有的折扣信息
         /// </summary>
         /// <param name="RestaurantId">餐厅的Id</param>
         /// <returns></returns>
         [Route("DiscountAt")]
-        public  List<Model.xiuse_discount> GetDiscountAt(string RestaurantId)
+        public  List<Model.ViewModel.XiuseDicountView> GetDiscountAt(string RestaurantId)
         {
-            return BllDiscount.GetModels(RestaurantId);
+            List<Model.ViewModel.XiuseDicountView> tmp = BllDiscount.GetModelsView(RestaurantId);
+            foreach (Model.ViewModel.XiuseDicountView item in tmp)
+            {
+                if(item.DiscountSection == 1&&item.DiscountMenus != "-1")
+                {
+                    string tmpMenus = "MenuId in ('" + item.DiscountMenus.Replace(",", "','") + "')";
+                    item.MenusDetail = BllMenus.DataSetTransModelListNoExpand(BllMenus.GetData("*", tmpMenus));
+                   
+                }
+            }
+            return tmp;
         }
         /// <summary>
         /// 获取整单折扣的信息(RestaurantId)
@@ -147,5 +158,6 @@ namespace Xiuse.App.Controllers.Discount
                 return ReturnData("1", "", Models.StatusCodeEnum.Success);
           
         }
+
     }
 }

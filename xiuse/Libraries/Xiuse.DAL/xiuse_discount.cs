@@ -115,7 +115,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public DataSet GetEntireDiscountData(string RestaurantId)
         {
-            string strSql = string.Format("Select * From xiuse_discount Where RestaurantId='{0}' and DiscountState=0 and DiscountSection=0", RestaurantId);
+            string strSql = string.Format("Select * From xiuse_discount Where RestaurantId='{0}' and DiscountState=0", RestaurantId);
             return AosyMySql.ExecuteforDataSet(strSql);
         }
         /// <summary>

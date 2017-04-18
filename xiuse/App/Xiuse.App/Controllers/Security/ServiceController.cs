@@ -70,7 +70,7 @@ namespace Xiuse.App.Controllers.Security
         }
 
         /// <summary>
-        /// 获取秘钥
+        /// 获取秘钥 数据传输的动态秘钥，每小时跟新一次
         /// </summary>
         /// <returns></returns>
         [Route("api/key")]
@@ -93,8 +93,33 @@ namespace Xiuse.App.Controllers.Security
             resultMsg.Info = "1";
             resultMsg.Data = key;
             return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
+        }
 
-          
+
+        /// <summary>
+        /// 获取秘钥 客户端数据加密的秘钥，一天更新一次。
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/KeyClient")]
+        [HttpGet]
+        public HttpResponseMessage KeyClient()
+        {
+            string key = String.Empty;
+            if (HttpRuntime.Cache.Get("KeyClient") == null)
+            {
+                key = RandomHelper.GetRandomString(8, true, true, true, false, "");
+                HttpRuntime.Cache.Insert("KeyClient", key, null, DateTime.Now.AddDays(1), TimeSpan.Zero);
+                //SessionHelper.SetSession("key", key);
+            }
+            else
+                key = HttpRuntime.Cache.Get("KeyClient").ToString();
+
+            ResultMsg resultMsg = new ResultMsg();
+            resultMsg.StatusCode = (int)StatusCodeEnum.Success;
+            //resultMsg.Info = StatusCodeEnum.ParameterError.GetEnumText();
+            resultMsg.Info = "1";
+            resultMsg.Data = key;
+            return HttpResponseExtension.toJson(JsonConvert.SerializeObject(resultMsg));
         }
     }
 }
