@@ -105,7 +105,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public DataSet GetDiscountData(string RestaurantId)
         {
-            string strSql = string.Format("Select * From xiuse_discount Where RestaurantId='{0}'", RestaurantId);
+            string strSql = string.Format("Select * From xiuse_discount Where RestaurantId='{0}' and DiscountState<>2", RestaurantId);
             return AosyMySql.ExecuteforDataSet(strSql);
         }
         /// <summary>
@@ -137,7 +137,7 @@ namespace  Xiuse.DAL
         /// <returns></returns>
         public bool SetDiscountState(string DiscountId,int State)
         {
-            string strSql = string.Format("update xiuse_discount set DiscountState='{0}' where DiscountId='{1}'", DiscountId,State);
+            string strSql = string.Format("update xiuse_discount set DiscountState='{0}' where DiscountId='{1}'",State, DiscountId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         #endregion

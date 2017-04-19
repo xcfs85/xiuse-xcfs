@@ -105,20 +105,20 @@ namespace Xiuse.App.Controllers.Discount
                 return ReturnData("0", "修改失败！", Models.StatusCodeEnum.Error);
         }
         /// <summary>
-        /// 设置折扣的状态（1,启用；0，禁用;2,删除；）
+        /// 设置折扣的状态（1,启用；0，禁用;2,删除；）DiscountState折扣的状态（1,启用；0，禁用;2,删除；）;DiscountId折扣的ID
         /// </summary>
-        /// <param name="DiscountId">折扣的ID</param>
-        /// <param name="State">折扣的状态（1,启用；0，禁用;2,删除；）</param>
+        /// <param name="xiuseDiscount">折扣</param>
         /// <returns></returns>
         [Route("SetDiscountState")]
-        public HttpResponseMessage GetSetDiscountState(string DiscountId,int State)
+        [HttpPost]
+        public HttpResponseMessage SetDiscountState( Model.xiuse_discount xiuseDiscount)
         {
-            if (DiscountId == null)
+            if (xiuseDiscount == null)
                 throw new HttpResponseException(HttpStatusCode.BadGateway);
-            if (BllDiscount.SetDiscountState(DiscountId,State))
-                return new HttpResponseMessage(HttpStatusCode.OK);
+            if (BllDiscount.SetDiscountState(xiuseDiscount.DiscountId, (int)xiuseDiscount.DiscountState))
+                return ReturnData("1", "删除成功！", Models.StatusCodeEnum.Success);
             else
-                return new HttpResponseMessage(HttpStatusCode.Gone);
+                return ReturnData("0", "折扣不存在！", Models.StatusCodeEnum.Error);
         }
         /// <summary>
         /// 获取管理员用户
