@@ -26,8 +26,15 @@ namespace Xiuse.BLL
         {
             return dal.Insert(model);
         }
-
-
+        /// <summary>
+        /// 获取折扣菜品的折扣
+        /// </summary>
+        /// <param name="MenuId">菜品的Id</param>
+        /// <returns></returns>
+        public Model.xiuse_discount GetMenuDiscount(string MenuId)
+        {
+            return DataSetTransModelNoExpand(dal.GetData("*", " FIND_IN_SET('" + MenuId + "',DiscountMenus )  order by DiscountTime desc LIMIT 0,1"));
+        }
         /// <summary>
         /// 更新一条数据
         /// </summary>

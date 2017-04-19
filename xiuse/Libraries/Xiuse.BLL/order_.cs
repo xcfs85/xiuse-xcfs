@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using Xiuse.Model;
 using DotNet.Utilities;
+using Xiuse.Model.ViewModel;
 
 namespace Xiuse.BLL
 {
@@ -268,6 +269,7 @@ namespace Xiuse.BLL
         /// 
         public OrderBill GetOrderBill(string orderId)
         {
+
             return dal.GetOrderBill(orderId);
         }
        

@@ -42,13 +42,14 @@
   <ItemGroup>
     <Compile Include="memberconsumption.cs" />
     <Compile Include="MenuAll.cs" />
-    <Compile Include="OrderBill.cs" />
+    <Compile Include="ViewModel\OrderBill.cs" />
     <Compile Include="ordermenu_.cs" />
     <Compile Include="order_.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Revenue.cs" />
     <Compile Include="SysLog.cs" />
+    <Compile Include="ViewModel\ordermenu_dicount.cs" />
     <Compile Include="ViewModel\XiuseDicountView.cs" />
     <Compile Include="xiuse_desk.cs" />
     <Compile Include="xiuse_discount.cs" />

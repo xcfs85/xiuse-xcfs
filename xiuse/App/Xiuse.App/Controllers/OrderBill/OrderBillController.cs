@@ -11,6 +11,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Xiuse;
+using Xiuse.Model;
+using Xiuse.Model.ViewModel;
 
 namespace Xiuse.App.Controllers.OrderBill
 {
@@ -30,7 +32,7 @@ namespace Xiuse.App.Controllers.OrderBill
         /// <param name="RestaurantId">餐厅Id</param>
         /// <returns></returns>
         [Route("SameDayOrderDesk")]
-        public List<Model.OrderBill> GetSameDayOrderDesk(string DeskId)
+        public List<Model.ViewModel.OrderBill> GetSameDayOrderDesk(string DeskId)
         {
 
             return Order.GetUncleanedDesksbyId(DeskId);
@@ -42,7 +44,7 @@ namespace Xiuse.App.Controllers.OrderBill
         /// <param name="RestaurantId">餐厅Id</param>
         /// <returns></returns>
         [Route("SameDayOrder")]
-        public List<Model.OrderBill> GetSameDayOrder(string RestaurantId)
+        public List<Model.ViewModel.OrderBill> GetSameDayOrder(string RestaurantId)
         {
            return  Order.GetAllUncleanedDesks(RestaurantId);
 
@@ -53,9 +55,8 @@ namespace Xiuse.App.Controllers.OrderBill
         /// <param name="OrderId">订单Id</param>
         /// <returns></returns>
         [Route("OrderBill")]
-        public Model.OrderBill GetOrderBill(string OrderId)
+        public Model.ViewModel.OrderBill GetOrderBill(string OrderId)
         {
-            //todo
             return Order.GetOrderBill(OrderId);
             
         }

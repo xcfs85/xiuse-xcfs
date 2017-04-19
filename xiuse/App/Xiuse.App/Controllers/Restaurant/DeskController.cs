@@ -34,7 +34,7 @@ namespace Xiuse.App.Controllers.Restaurant
         /// <param name="model"></param>
         /// <returns></returns>
         [Route("AddDesk")]
-        public HttpResponseMessage PostAddDesk([FromBody]Model.xiuse_desk model)
+        public HttpResponseMessage PostAddDesk(Model.xiuse_desk model)
         {
             if (model == null )
             {
@@ -68,16 +68,17 @@ namespace Xiuse.App.Controllers.Restaurant
         /// <summary>
         /// 删除餐桌
         /// </summary>
-        /// <param name="id">餐桌ID</param>
+        /// <param name="model">餐桌</param>
         /// <returns></returns>
         [Route("DeleteDesk")]
-        public HttpResponseMessage DeleteDelDeskClassify([FromBody]String id)
+        [HttpPost]
+        public HttpResponseMessage DelDeskClassify(Model.xiuse_desk model)
         {
-            if (id == null || DeskBLL.Exists(id) == false)
+            if (model.DeskId == null || DeskBLL.Exists(model.DeskId) == false)
             {
                 throw new HttpRequestException();
             }
-            if (DeskBLL.Delete(id))
+            if (DeskBLL.DeleteState(model.DeskId))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);

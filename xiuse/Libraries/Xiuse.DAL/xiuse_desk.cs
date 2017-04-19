@@ -20,9 +20,9 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Insert(Xiuse.Model.xiuse_desk model)
         {
-            string strSql=String.Format(@"Insert Into xiuse_desk(RestaurantId,DeskName,TakeOut,DeskDel,DeskState,DeskTime,DeskId) 
-                                        values('{0}','{1}','{2}','{3}','{4}','{5}')",
-                                        model.RestaurantId,model.DeskName,model.TakeOut,model.DeskDel,model.DeskState,model.DeskTime,model.DeskId);
+            string strSql=String.Format(@"Insert Into xiuse_desk(RestaurantId,DeskName,TakeOut,DeskTime,DeskId) 
+                                        values('{0}','{1}','{2}','{3}','{4}')",
+                                        model.RestaurantId,model.DeskName, model.TakeOut,model.DeskTime,model.DeskId);
 
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -53,7 +53,12 @@ namespace  Xiuse.DAL
             string strSql=String.Format("Delete From xiuse_desk Where DeskId='{0}'",DeskId);
             return AosyMySql.ExecuteforBool(strSql);
         }
-        
+        public bool DeleteState(string DeskId)
+        {
+            string strSql = String.Format(@"Update xiuse_desk Set DeskDel=0 Where DeskId='{0}'",DeskId);
+            return AosyMySql.ExecuteforBool(strSql);
+        }
+
 
 
         /// <summary>

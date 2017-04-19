@@ -4,6 +4,8 @@ using System.Text;
 using System.Data;
 using Xiuse.Model;
 using Xiuse.DbUtility;
+using Xiuse.Model.ViewModel;
+using DotNet.Utilities;
 
 namespace  Xiuse.DAL
 {
@@ -25,7 +27,7 @@ namespace  Xiuse.DAL
             string strSql = String.Format(@"Insert Into order_(DeskId,BillAmount,DishCount,CustomerNum,OrderbeginTime,ServiceUserId,OrderId,AccountsPayable) 
                                         values('{0}','{1}','{2}','{3}','{4}','{5}','{6}',{7})",
                                       model.DeskId, model.BillAmount, model.DishCount, model.CustomerNum, model.OrderbeginTime, model.ServiceUserId, model.OrderId,model.AccountsPayable);
-            string DeskState = String.Format(@"update xiuse_desk set DeskState='1' where DeskId={0}", model.DeskId);
+            string DeskState = String.Format(@"update xiuse_desk set DeskState='1' where DeskId='{0}'", model.DeskId);
             AosyMySql.ExecuteforBool(DeskState);
             return AosyMySql.ExecuteforBool(strSql);
         }
@@ -158,8 +160,7 @@ namespace  Xiuse.DAL
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                 {
                     DataRow dr2 = ds2.Tables[0].Rows[j];
-                    Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
-                    
+                    Xiuse.Model.ViewModel.ordermenu_dicount modelMenu = new ordermenu_dicount();
                     modelMenu.OrderMenuId= (string)dr["OrderMenuId"];
                     modelMenu.OrderId = (string)dr["OrderId"];
                     modelMenu.MenuName = dr["MenuName"].ToString();
@@ -172,6 +173,7 @@ namespace  Xiuse.DAL
                     modelMenu.DiscountContent = (decimal)dr["DiscountContent"];
                     modelMenu.DiscountType = (byte)dr["DiscountType"];
                     modelMenu.MenuServing = (short)dr["MenuServing"];
+                    modelMenu.MenuId = (string)dr["MenuId"];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
                 OB.Add(modelBill);
@@ -218,7 +220,7 @@ namespace  Xiuse.DAL
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                 {
                     DataRow dr2 = ds2.Tables[0].Rows[j];
-                    Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
+                    ordermenu_dicount modelMenu = new ordermenu_dicount();
 
                     modelMenu.OrderMenuId = (string)dr2.ItemArray[0];
                     modelMenu.OrderId = (string)dr2.ItemArray[1];
@@ -234,6 +236,7 @@ namespace  Xiuse.DAL
                     modelMenu.DiscountContent = (decimal)dr2.ItemArray[10];
                     modelMenu.DiscountType = (short)dr2.ItemArray[11];
                     modelMenu.MenuServing = (short)dr2.ItemArray[12];
+                    modelMenu.MenuId = (string)dr2["MenuId"];
                     modelBill.Ordermenu.Add(modelMenu);
                 }
                 OB.Add(modelBill);
@@ -253,8 +256,8 @@ namespace  Xiuse.DAL
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             if (ds.Tables[0].Rows.Count > 0)
             {
-                Xiuse.Model.OrderBill modelBill = new Xiuse.Model.OrderBill();
-                Xiuse.Model.order_ Order = new Xiuse.Model.order_();
+                OrderBill modelBill = new OrderBill();
+                Model.order_ Order = new Model.order_();
                 DataRow dr = ds.Tables[0].Rows[0];
                 Order.OrderId = dr["OrderId"].ToString();
                 Order.DeskId = (string)dr["DeskId"];
@@ -277,8 +280,7 @@ namespace  Xiuse.DAL
                 for (int j = 0; j < ds2.Tables[0].Rows.Count; j++)
                 {
                     DataRow dr2 = ds2.Tables[0].Rows[j];
-                    Xiuse.Model.ordermenu_ modelMenu = new Xiuse.Model.ordermenu_();
-
+                   ordermenu_dicount modelMenu = new ordermenu_dicount();
                     modelMenu.OrderMenuId = (string)dr2["OrderMenuId"];
                     modelMenu.OrderId = (string)dr2["OrderId"];
                     modelMenu.MenuName = dr2["MenuName"].ToString();
@@ -292,6 +294,10 @@ namespace  Xiuse.DAL
                     modelMenu.DiscountType = (short)dr2["DiscountType"];
                     modelMenu.MenuNum = (int)dr2["MenuNum"];
                     modelMenu.MenuServing = (short)dr2["MenuServing"];
+                    modelMenu.MenuId = (string)dr2["MenuId"];
+                    string disSql = string.Format("select * from xiuse_discount d  where FIND_IN_SET('{0}', DiscountMenus) and DiscountState=0  order by d.DiscountTime desc LIMIT 0,1", modelMenu.MenuId);
+                    modelMenu.MenuDiscount = DataSetTransModelNoExpand(AosyMySql.ExecuteforDataSet(disSql));
+                    
                     modelBill.Ordermenu.Add(modelMenu);
                 }
                 return modelBill;
@@ -528,6 +534,14 @@ namespace  Xiuse.DAL
         {
             string sql = "update order_ set " + updatefield + " where " + wheres;
             return AosyMySql.ExecuteNonQuery(sql);
+        }
+        private Xiuse.Model.xiuse_discount DataSetTransModelNoExpand(DataSet dataSet)
+        {
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                return ConvertHelper.DataSetToEntity<Xiuse.Model.xiuse_discount>(dataSet, 0);
+            }
+            return null;
         }
     }
 }

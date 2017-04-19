@@ -47,6 +47,11 @@ namespace Xiuse.BLL
         {
             return dal.Delete(DeskId);
         }
+        public bool DeleteState(string DeskId)
+        {
+            return dal.DeleteState(DeskId);
+        }
+        
 
         /// <summary>
         ///  ÅÐ¶Ï²Í×ÀÊÇ·ñ´æÔÚ
@@ -77,7 +82,7 @@ namespace Xiuse.BLL
         /// 
         public List<Xiuse.Model.xiuse_desk> GetAllDesk(string RestaurantId)
         {
-            return DataSetTransModelListNoExpand(GetData("*", "RestaurantId=" + RestaurantId));
+            return DataSetTransModelListNoExpand(GetData("*", "DeskDel=1 and RestaurantId=" + RestaurantId));
 
         }
 
