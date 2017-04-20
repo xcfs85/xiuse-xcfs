@@ -21,7 +21,7 @@ namespace  Xiuse.DAL
         public bool Insert(Xiuse.Model.xiuse_user model)
         {
             string strSql=String.Format(@"Insert Into xiuse_user(RestaurantId,UserName,Weixin,CellPhone,Email,Password,UserRole,ParentUserId,OwnRestaurant,Time,UserId) 
-                                        values('{0}','{1}','{2}',{3},'{4}','{5}',{6},'{7}',{8},'{9}','{10}')",
+                                        values('{0}','{1}','{2}','{3}','{4}','{5}',{6},'{7}',{8},'{9}','{10}')",
                                         model.RestaurantId,model.UserName,model.Weixin,model.CellPhone,model.Email,model.Password,model.UserRole,model.ParentUserId,model.OwnRestaurant,model.Time,model.UserId);
 
             return AosyMySql.ExecuteforBool(strSql);
@@ -35,7 +35,14 @@ namespace  Xiuse.DAL
         /// <param name="model">对象实体</param>
         public bool Update(Xiuse.Model.xiuse_user model)
         {
-            string strSql=String.Format(@"Update xiuse_user Set 
+            string strSql = "";
+            if (string.IsNullOrEmpty(model.Password))
+                strSql = String.Format(@"Update xiuse_user Set 
+            RestaurantId='{0}',UserName='{1}',Weixin='{2}',CellPhone='{3}',Email='{4}',UserRole='{5}',ParentUserId='{6}',OwnRestaurant='{7}'
+            Where UserId='{8}'",
+                model.RestaurantId, model.UserName, model.Weixin, model.CellPhone, model.Email, model.UserRole, model.ParentUserId, model.OwnRestaurant, model.UserId);
+            else
+            strSql=String.Format(@"Update xiuse_user Set 
             RestaurantId='{0}',UserName='{1}',Weixin='{2}',CellPhone='{3}',Email='{4}',Password='{5}',UserRole='{6}',ParentUserId='{7}',OwnRestaurant='{8}'
             Where UserId='{9}'",
             model.RestaurantId,model.UserName,model.Weixin,model.CellPhone,model.Email,model.Password,model.UserRole,model.ParentUserId,model.OwnRestaurant,model.UserId);
@@ -72,7 +79,7 @@ namespace  Xiuse.DAL
         /// <parame name="UserId">UserId</param>
         public bool WorkerExists(string UserId)
         {
-            string strSql = String.Format("Select Count(1) From xiuse_user Where UserId='{0}' and UserRole=1", UserId);
+            string strSql = String.Format("Select Count(1) From xiuse_user Where UserId='{0}'", UserId);
             return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
         }
         ///登录判断用户名、密码
@@ -186,7 +193,7 @@ namespace  Xiuse.DAL
         /// </summary>
         public List<Xiuse.Model.xiuse_user> GetWorkerModels(string restaurantId)
         {
-            string strSql = String.Format(@"Select * From xiuse_user where UserRole=1 and RestaurantId='{0}'",restaurantId);
+            string strSql = String.Format(@"Select * From xiuse_user where OwnRestaurant=0 and DelTag<>2 and RestaurantId='{0}'", restaurantId);
             DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
             List<Xiuse.Model.xiuse_user> models = new List<Model.xiuse_user>();
             if (ds.Tables[0].Rows.Count > 0)
@@ -203,6 +210,7 @@ namespace  Xiuse.DAL
                     model.UserRole = (short)dr["UserRole"];
                     model.ParentUserId = dr["ParentUserId"].ToString();
                     model.OwnRestaurant = (short)dr["OwnRestaurant"];
+                    model.DelTag = (short)dr["DelTag"];
                     model.Time = (DateTime)dr["Time"];
                     models.Add(model);
                 }

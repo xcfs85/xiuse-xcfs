@@ -68,7 +68,6 @@ namespace Xiuse.App.Controllers
             }
             user.UserId = Guid.NewGuid().ToString("N");
             user.Time = DateTime.Now;
-            user.UserRole = 0;
             user.DelTag = 0;
             if (new_user.Insert(user))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);

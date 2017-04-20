@@ -295,7 +295,7 @@ namespace  Xiuse.DAL
                     modelMenu.MenuNum = (int)dr2["MenuNum"];
                     modelMenu.MenuServing = (short)dr2["MenuServing"];
                     modelMenu.MenuId = (string)dr2["MenuId"];
-                    string disSql = string.Format("select * from xiuse_discount d  where FIND_IN_SET('{0}', DiscountMenus) and DiscountState=0  order by d.DiscountTime desc LIMIT 0,1", modelMenu.MenuId);
+                    string disSql = string.Format("select * from xiuse_discount d  where FIND_IN_SET('{0}', DiscountMenus) and DiscountState=1  order by d.DiscountTime desc LIMIT 0,1", modelMenu.MenuId);
                     modelMenu.MenuDiscount = DataSetTransModelNoExpand(AosyMySql.ExecuteforDataSet(disSql));
                     
                     modelBill.Ordermenu.Add(modelMenu);
@@ -356,7 +356,40 @@ namespace  Xiuse.DAL
                 return null;
             }
         }
-        
+        /// <summary>
+        /// 获取实体，餐桌当天未完成支付的订单
+        /// </summary>
+        /// <param name="DeskId"></param>
+        /// <returns></returns>
+        public Xiuse.Model.order_ GetDefaultModel(string DeskId)
+        {
+            string strSql = String.Format(@"Select * From order_ Where DeskId='{0}' and ClearDeskState=0 and OrderState=0 and date(orderbegintime)=date(curdate()) order by OrderbeginTime desc  limit 0,1", DeskId);
+            DataSet ds = AosyMySql.ExecuteforDataSet(strSql);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Xiuse.Model.order_ model = new Xiuse.Model.order_();
+                DataRow dr = ds.Tables[0].Rows[0];
+                model.OrderId = dr["OrderId"].ToString();
+                model.DeskId = (string)dr["DeskId"];
+                model.BillAmount = (decimal)dr["BillAmount"];
+                model.AccountsPayable = (decimal)dr["AccountsPayable"];
+                model.Refunds = (decimal)dr["Refunds"];
+                model.DishCount = (int)dr["DishCount"];
+                model.OrderState = (int)dr["OrderState"];
+                model.Cash = (decimal)dr["Cash"];
+                model.BankCard = (decimal)dr["BankCard"];
+                model.WeiXin = (decimal)dr["WeiXin"];
+                model.Alipay = (decimal)dr["Alipay"];
+                model.MembersCard = (decimal)dr["MembersCard"];
+                model.OrderbeginTime = (DateTime)dr["OrderbeginTime"];
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
 
 
         /// <summary>

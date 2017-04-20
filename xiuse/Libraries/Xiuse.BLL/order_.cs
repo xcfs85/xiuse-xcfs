@@ -115,9 +115,18 @@ namespace Xiuse.BLL
         {
             return dal.GetModel(OrderId);
         }
-        
+        /// <summary>
+        /// 获取实体，餐桌当天未完成支付的订单
+        /// </summary>
+        /// <param name="DeskId"></param>
+        /// <returns></returns>
+        public Xiuse.Model.order_ GetDefaultModel(string DeskId)
+        {
+            return dal.GetDefaultModel(DeskId);
+        }
 
-		/// <summary>
+
+        /// <summary>
         /// 搜索数据
         /// </summary>
         /// <param name="">餐桌Id[DeskId]</param>

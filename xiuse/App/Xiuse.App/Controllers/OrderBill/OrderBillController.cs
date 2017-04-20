@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Xiuse;
+using Xiuse.App.Base;
 using Xiuse.Model;
 using Xiuse.Model.ViewModel;
 
@@ -21,7 +22,7 @@ namespace Xiuse.App.Controllers.OrderBill
     /// 账单操作接口
     ///  
     /// </summary>
-    public class OrderBillController : ApiController
+    public class OrderBillController : BaseResultMsg
     {
         BLL.order_ Order = new BLL.order_();
 
@@ -34,9 +35,7 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("SameDayOrderDesk")]
         public List<Model.ViewModel.OrderBill> GetSameDayOrderDesk(string DeskId)
         {
-
             return Order.GetUncleanedDesksbyId(DeskId);
-         
         }
         /// <summary>
         /// 获取当天餐厅的所有未清台的账单
@@ -50,7 +49,7 @@ namespace Xiuse.App.Controllers.OrderBill
 
         }
         /// <summary>
-        /// 获取订单的详单
+        /// 获取订单的详单,带有菜品折扣
         /// </summary>
         /// <param name="OrderId">订单Id</param>
         /// <returns></returns>
@@ -61,6 +60,22 @@ namespace Xiuse.App.Controllers.OrderBill
             
         }
         /// <summary>
+        /// 获取当前餐桌的未支付的最近的订单
+        /// </summary>
+        /// <param name="DeskId"></param>
+        /// <returns></returns>
+        [Route("DefaultOrderBill")]
+        [HttpGet]
+        public HttpResponseMessage DefaultOrderBill(string DeskId)
+        {
+            Model.order_ model = Order.GetDefaultModel(DeskId);
+            if (model != null)
+                return ReturnData("1", Order.GetOrderBill(model.OrderId), Models.StatusCodeEnum.Success);
+            else
+                return ReturnData("0", "没有未支付的订单！", Models.StatusCodeEnum.Error);
+        }
+
+        /// <summary>
         ///获取账单 (id)
         /// </summary>
         /// <param name="OrderId"></param>
@@ -69,6 +84,17 @@ namespace Xiuse.App.Controllers.OrderBill
         public Model.order_ GetBillById(string OrderId)
         {
             return Order.GetModel(OrderId);
+        }
+        /// <summary>
+        /// 提交结账订单
+        /// </summary>
+        /// <param name="bill"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("CheckoutOrderBill")]
+        public HttpResponseMessage CheckoutOrderBill(dynamic bill)
+        {
+            return ReturnData("1", "", Models.StatusCodeEnum.Success);
         }
     }
 }

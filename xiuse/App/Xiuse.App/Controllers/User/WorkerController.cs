@@ -17,6 +17,8 @@ using System.Web.Http;
 using Xiuse.App.Base;
 using Xiuse;
 using Xiuse.App.Models;
+using System.Web;
+using DotNet.Utilities;
 
 namespace Xiuse.App.Controllers.User
 {
@@ -36,7 +38,7 @@ namespace Xiuse.App.Controllers.User
             List<Model.xiuse_user> worker = BLLWorker.GetWorkerModels(restaurantId);
             return worker;
         }
-
+       // public HttpResponseMessage UpdateWorker()
 
         /// <summary>
         ///  通过用户id号查询Worker信息
@@ -65,35 +67,50 @@ namespace Xiuse.App.Controllers.User
             {
                 throw new HttpRequestException();
             }
+            string key = HttpRuntime.Cache.Get("key").ToString();
+            if(!string.IsNullOrEmpty(user.Password))
+                user.Password = DESEncrypt.DecryptJS(Convert.ToString(user.Password), key);
             user.UserId = Guid.NewGuid().ToString("N");
             user.Time = DateTime.Now;
-            user.UserRole = 1;
             user.DelTag = 0;
+        
             if (BLLWorker.Insert(user) == true)
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
 
         }
+        /// <summary>
+        /// 更新worker（如果密码为空，维持不变！）
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [Route("UpdateWorker")]
+        [HttpPost]
+        public HttpResponseMessage UpdateWorker(Model.xiuse_user user)
+        {
+            string key = HttpRuntime.Cache.Get("key").ToString();
+            if (!string.IsNullOrEmpty(user.Password))
+                user.Password = DESEncrypt.DecryptJS(Convert.ToString(user.Password), key);
+            if (BLLWorker.Update(user))
+                return base.ReturnData("1", "", StatusCodeEnum.Success);
+            else
+                return base.ReturnData("0", "", StatusCodeEnum.Error);
+        }
 
         /// <summary>
-        /// 设置员工权限
-        ///
+        /// 设置员工状态( 0:正常,1：禁止,2：删除)
         /// </summary>
-        /// 0:正常
-        /// 1：禁止
-        /// 2：删除
-        /// <param name="WorkerId"></param>
-        /// <param name="tag"></param>
+        /// <param name="user"></param>
         /// <returns></returns>
         [Route("FixWorkerbyId")]
-        public HttpResponseMessage PostFixWorker(string WorkerId,int tag)
+        public HttpResponseMessage PostFixWorker([FromBody] Model.xiuse_user user)
         {
-            if (WorkerId== null || BLLWorker.WorkerExists(WorkerId)==false)
+            if (user.UserId == null || !BLLWorker.WorkerExists(user.UserId))
             {
-                throw new HttpRequestException();
+                return base.ReturnData("0", "员工不存在！", StatusCodeEnum.Error);
             }
-            if (BLLWorker.FixWorker(WorkerId,tag) == true)
+            if (BLLWorker.FixWorker(user.UserId,user.DelTag))
                 return base.ReturnData("1", "", StatusCodeEnum.Success);
             else
                 return base.ReturnData("0", "", StatusCodeEnum.Error);
