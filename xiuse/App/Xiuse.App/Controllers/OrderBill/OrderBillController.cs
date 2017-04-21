@@ -94,6 +94,17 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("CheckoutOrderBill")]
         public HttpResponseMessage CheckoutOrderBill(dynamic bill)
         {
+            //todo
+            string orderId =Convert.ToString(bill.OrderId);
+            Dictionary<string, bool> dt = new Dictionary<string, bool>();
+            for (int i = 0; i < bill.Menus.Count; i++)
+                dt.Add(Convert.ToString(bill.Menus[i].OrderMenuId), bill.Menus[i].DisState);
+            //bill.Menus
+            Model.ViewModel.OrderBill orderBill = GetOrderBill(orderId);
+            foreach (Model.ViewModel.ordermenu_dicount item in orderBill.Ordermenu)
+                if (dt.Keys.Contains(item.OrderMenuId))
+                    item.DisState = dt[item.OrderMenuId];
+
             return ReturnData("1", "", Models.StatusCodeEnum.Success);
         }
     }
