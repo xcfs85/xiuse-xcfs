@@ -4,11 +4,13 @@
 *账单详细信息（条件：账单Id）
 *
 */
+using DotNet.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using Xiuse;
 using Xiuse.App.Base;
@@ -25,6 +27,7 @@ namespace Xiuse.App.Controllers.OrderBill
     public class OrderBillController : BaseResultMsg
     {
         BLL.order_ Order = new BLL.order_();
+        BLL.xiuse_discount discountBll = new BLL.xiuse_discount();
 
         /// <summary>
         /// 获取当天餐厅的餐桌的所有未清台的账单
@@ -94,16 +97,41 @@ namespace Xiuse.App.Controllers.OrderBill
         [Route("CheckoutOrderBill")]
         public HttpResponseMessage CheckoutOrderBill(dynamic bill)
         {
+            string key = HttpRuntime.Cache.Get("key").ToString();
             //todo
             string orderId =Convert.ToString(bill.OrderId);
             Dictionary<string, bool> dt = new Dictionary<string, bool>();
             for (int i = 0; i < bill.Menus.Count; i++)
-                dt.Add(Convert.ToString(bill.Menus[i].OrderMenuId), bill.Menus[i].DisState);
+                dt.Add(Convert.ToString(bill.Menus[i].OrderMenuId), Convert.ToBoolean(bill.Menus[i].DisState));
             //bill.Menus
             Model.ViewModel.OrderBill orderBill = GetOrderBill(orderId);
             foreach (Model.ViewModel.ordermenu_dicount item in orderBill.Ordermenu)
                 if (dt.Keys.Contains(item.OrderMenuId))
                     item.DisState = dt[item.OrderMenuId];
+            if (bill.EntireDiscount.Value != null)
+                orderBill.EntireDiscount = discountBll.GetModel(bill.EntireDiscount.DiscountId.Value);
+            orderBill.Order.BillAmount = bill.Total;
+            orderBill.Order.AccountsPayable = bill.AccountsPayable;
+            orderBill.Order.Alipay = bill.Alipay;
+            orderBill.Order.BankCard = bill.BankCard;
+            orderBill.Order.Cash = bill.Cash;
+            orderBill.Order.MembersCard = bill.MembersCard;
+            orderBill.Order.WeiXin = bill.WeiXin;
+            orderBill.Order.Tip = bill.Tip.Value;
+            orderBill.Order.SameChange = bill.SameChange;
+            orderBill.Order.ChangePay = bill.Change;
+            orderBill.Order.CurrentPay = bill.CurrentPay;
+            orderBill.EntireDiscount = new xiuse_discount();
+            if(bill.TellUser != null)
+            {
+                orderBill.TellUser = new xiuse_user();
+                orderBill.TellUser.UserName = DESEncrypt.DecryptJS(Convert.ToString(bill.TellUser.UserName), key);
+                orderBill.TellUser.Password = DESEncrypt.DecryptJS(Convert.ToString(bill.TellUser.PassWord), key);
+            }
+           
+           
+            Order.CheckoutBill(orderBill);
+
 
             return ReturnData("1", "", Models.StatusCodeEnum.Success);
         }

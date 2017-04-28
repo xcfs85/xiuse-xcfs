@@ -278,10 +278,102 @@ namespace Xiuse.BLL
         /// 
         public OrderBill GetOrderBill(string orderId)
         {
-
             return dal.GetOrderBill(orderId);
         }
-       
+
+        public List<string> CheckoutBill(Model.ViewModel.OrderBill bill)
+        {
+            List<string> state = new List<string>();
+            DAL.ordermenu_ orderMenuDal = new DAL.ordermenu_();
+            DAL.xiuse_desk deskDal = new DAL.xiuse_desk();
+            DAL.xiuse_discount discountDal = new DAL.xiuse_discount();
+            #region 检查账单
+            decimal BillAmount = 0;
+            decimal sigalDiscount = 0;
+            decimal EntireDiscount = 0;
+            foreach (ordermenu_dicount item in  bill.Ordermenu){
+                BillAmount += item.MenuPrice;
+                if (item.DisState)
+                {
+                    item.DiscountName = item.MenuDiscount.DiscountName;
+                    item.DiscountContent = item.MenuDiscount.DiscountContent;
+                    item.DiscountType = item.MenuDiscount.DiscountType;
+                    item.DiscoutFlag = item.DisState ? Int16.Parse("1") : Int16.Parse("0");
+                    sigalDiscount += item.DiscountType == 0 ? (decimal)item.DiscountContent *(decimal)0.01*item.MenuPrice:item.DiscountContent;
+                }
+            }
+            if (bill.EntireDiscount != null)
+            {
+                EntireDiscount = bill.EntireDiscount.DiscountType == 0? 
+                    (decimal)bill.EntireDiscount.DiscountContent * (decimal)0.01*(BillAmount-sigalDiscount) : bill.EntireDiscount.DiscountContent;
+            }
+            if (BillAmount != bill.Order.BillAmount)
+            {
+                bill.Order.BillAmount = BillAmount;
+                state.Add("{'Code':1,'Info':'账单总额有误！'}");
+            }
+            if(EntireDiscount>BillAmount - sigalDiscount)
+            {
+                EntireDiscount = 0;
+                state.Add("{'Code':2,'Info':'整单折扣有误！'}");
+            }
+            if(bill.Order.Tip < 0)
+            {
+                bill.Order.Tip = 0;
+                state.Add("{'Code':3,'Info':小费计算有误！'}");
+            }
+            if(bill.Order.SameChange<0|| bill.Order.SameChange>(BillAmount - sigalDiscount - EntireDiscount))
+            {
+                bill.Order.SameChange = 0;
+                state.Add("{'Code':4,'Info':抹零计算有误！'}");
+            }
+            if(bill.Order.AccountsPayable != (BillAmount - sigalDiscount -EntireDiscount -bill.Order.SameChange+bill.Order.Tip))
+            {
+                bill.Order.AccountsPayable = (BillAmount - sigalDiscount - EntireDiscount);
+                state.Add("{'Code':5,'Info':应付款计算有误！'}");
+            }
+            if(bill.Order.CurrentPay != (bill.Order.Cash + bill.Order.BankCard + bill.Order.MembersCard + bill.Order.WeiXin + bill.Order.Alipay))
+            {
+                bill.Order.ChangePay = (bill.Order.Cash + bill.Order.BankCard + bill.Order.MembersCard + bill.Order.WeiXin + bill.Order.Alipay);
+                state.Add("{'Code':6,'Info':总付款的金额计算有误！'}");
+            }
+            if(bill.Order.ChangePay != (bill.Order.CurrentPay -bill.Order.AccountsPayable))
+            {
+                bill.Order.ChangePay = (bill.Order.CurrentPay - bill.Order.AccountsPayable);
+                state.Add("{'Code':7,'Info':找零计算有误！'}");
+            }
+            bill.Order.OrderState = 1;
+            bill.Order.OrderEndTime = DateTime.Now;
+            #endregion
+
+            #region 更新数据
+            //添加整单折扣
+            if(bill.EntireDiscount != null)
+            {
+                Model.ordermenu_ entier = new Model.ordermenu_();
+                entier.OrderId = bill.Order.OrderId;
+
+                entier.DiscoutFlag = 2;
+                entier.DiscountName = bill.EntireDiscount.DiscountName;
+                entier.DiscountContent = bill.EntireDiscount.DiscountContent;
+                entier.DiscountType = bill.EntireDiscount.DiscountType;
+                entier.OrderMenuId = Guid.NewGuid().ToString("N");
+                if (orderMenuDal.IsExitEntier(entier.OrderId))
+                    orderMenuDal.DeleteEntityDiscount(entier.OrderId);
+                orderMenuDal.Insert(entier);
+            }
+            
+            //更新订单中的菜单
+            foreach (Model.ordermenu_ item in bill.Ordermenu)
+                orderMenuDal.Update(item);
+            ///更新订单
+            dal.Update(bill.Order);
+            //更新餐桌的状态
+            deskDal.UpdateDesk(bill.Order.DeskId);
+            #endregion
+            return state;
+        }
+
         #region 工具类
         /// <summary>
         /// 把DataSet转成List泛型集合(expand无关联实体)

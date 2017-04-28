@@ -297,6 +297,29 @@ namespace  Xiuse.DAL
             string sql = "update ordermenu_ set " + updatefield + " where " + wheres;
             return AosyMySql.ExecuteNonQuery(sql);
         }
+
+        #region xcfs85
+        /// <summary>
+        /// 是否存在整体折扣
+        /// </summary>
+        /// <param name="OrderId">订单的ID</param>
+        /// <returns></returns>
+        public bool IsExitEntier(string OrderId)
+        {
+            string strSql = String.Format("Select Count(1) From ordermenu_ Where OrderId='{0}' and DiscoutFlag=2 ", OrderId);
+            return int.Parse(AosyMySql.ExecuteScalar(strSql).ToString()) > 0;
+        }
+        /// <summary>
+        /// 删除已有的整体折扣
+        /// </summary>
+        /// <param name="OrderId">订单的ID</param>
+        /// <returns></returns>
+        public bool DeleteEntityDiscount(string OrderId)
+        {
+            string strSql = String.Format("Delete From ordermenu_ Where OrderId='{0}'  and DiscoutFlag=2", OrderId);
+            return AosyMySql.ExecuteforBool(strSql);
+        }
+        #endregion
     }
 }
 

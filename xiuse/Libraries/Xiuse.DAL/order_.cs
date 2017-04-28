@@ -55,9 +55,11 @@ namespace  Xiuse.DAL
         public bool Update(Xiuse.Model.order_ model)
         {
             string strSql=String.Format(@"Update order_ Set 
-            DeskId='{0}',BillAmount={1},AccountsPayable={2},Refunds={3},DishCount={4},OrderState={5},Cash={6},BankCard={7},WeiXin={8},Alipay={9},MembersCard={10},OrderbeginTime='{11}',OrderEndTime='{12}' 
-            Where OrderId='{13}'",
-            model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,model.OrderId);
+            DeskId='{0}',BillAmount={1},AccountsPayable={2},Refunds={3},DishCount={4},OrderState={5},Cash={6},BankCard={7},WeiXin={8},Alipay={9},MembersCard={10},OrderbeginTime='{11}',OrderEndTime='{12}'
+            ,ServiceUserId='{13}',CustomerNum={14},OrderReMark='{15}',ChangePay={16},Tip={17},SameChange={18},CurrentPay={19}
+            Where OrderId='{20}'",
+            model.DeskId,model.BillAmount,model.AccountsPayable,model.Refunds,model.DishCount,model.OrderState,model.Cash,model.BankCard,model.WeiXin,model.Alipay,model.MembersCard,model.OrderbeginTime,model.OrderEndTime,
+             model.ServiceUserId,model.CustomerNum,model.OrderReMark,model.ChangePay,model.Tip,model.SameChange,model.CurrentPay,model.OrderId);
             return AosyMySql.ExecuteforBool(strSql);
         }
         /// <summary>

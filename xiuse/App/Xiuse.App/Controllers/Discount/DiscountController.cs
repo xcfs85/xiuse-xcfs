@@ -145,11 +145,11 @@ namespace Xiuse.App.Controllers.Discount
         [HttpPost]
         public HttpResponseMessage TellDiscount(dynamic obj)
         {
-            if(obj.Name == null||obj.Psw == null)
+            if(obj.UserName == null||obj.PassWord == null)
                 return ReturnData("0", "参数不正确！", Models.StatusCodeEnum.ParameterError);
             string key = HttpRuntime.Cache.Get("key").ToString();
-            string UserName = DESEncrypt.DecryptJS(Convert.ToString(obj.Name), key);
-            string PassWord = DESEncrypt.DecryptJS(Convert.ToString(obj.Psw), key);      
+            string UserName = DESEncrypt.DecryptJS(Convert.ToString(obj.UserName), key);
+            string PassWord = DESEncrypt.DecryptJS(Convert.ToString(obj.PassWord), key);      
             //验证用户名密码
             string staffId = user.AffirmUser(UserName, PassWord, Convert.ToString(obj.RestaurantId));
             if (string.IsNullOrEmpty(staffId))

@@ -226,6 +226,34 @@ namespace Xiuse.Model
             get { return _OrderReMark; }
             set { _OrderReMark = value; }
         }
+        /// <summary>
+        /// 小费
+        /// </summary>
+        public decimal Tip
+        {
+            get;set;
+        }
+        /// <summary>
+        /// 抹零
+        /// </summary>
+        public decimal SameChange
+        {
+            get;set;
+        }
+        /// <summary>
+        /// 找零
+        /// </summary>
+        public decimal ChangePay
+        {
+            get;set;
+        }
+        /// <summary>
+        /// 当前总付款
+        /// </summary>
+        public decimal CurrentPay
+        {
+            get;set;
+        }
         #endregion
     }
 }

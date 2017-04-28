@@ -147,6 +147,20 @@ namespace  Xiuse.DAL
                 
 
         }
+        /// <summary>
+        /// 根据订单状态设置餐桌的状态
+        /// </summary>
+        /// <param name="DeskId"></param>
+        /// <returns></returns>
+        public bool UpdateDesk(string DeskId)
+        {
+            string sql2 = string.Format(@"update xiuse_desk set DeskState=(select  CASE count(1) WHEN 0 THEN 0 ELSE  if( sum(OrderState)=count(1),2,1)  END  as deskstate  
+                                            from  order_  
+                                            where  DeskId = '{0}'  and   ClearDeskState = 0 and OrderState <> 2 and  date(OrderbeginTime) = date(curdate()))
+                                             where DeskId = '{0}'", DeskId);
+            AosyMySql.ExecuteNonQuery(sql2);
+            return true;
+        }
 
         /// <summary>
         /// 获取实体

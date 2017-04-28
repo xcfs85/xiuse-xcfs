@@ -267,7 +267,6 @@
     <Compile Include="Controllers\Restaurant\DeskController.cs" />
     <Compile Include="Controllers\Restaurant\RestaurantController.cs" />
     <Compile Include="Controllers\Revenue\DailyBillsController.cs" />
-    <Compile Include="Controllers\Revenue\DailyDishesController.cs" />
     <Compile Include="Controllers\Revenue\DailyTurnoverController.cs" />
     <Compile Include="Controllers\Security\ServiceController.cs" />
     <Compile Include="Controllers\Test\TestController.cs" />
