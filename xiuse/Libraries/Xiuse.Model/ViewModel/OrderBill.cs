@@ -15,6 +15,7 @@ namespace Xiuse.Model.ViewModel
         private order_ _order;
         private List<ordermenu_dicount> _ordermenu;
 
+        
         public OrderBill()
         {
             _order = new order_();
@@ -35,6 +36,21 @@ namespace Xiuse.Model.ViewModel
         {
             get { return _ordermenu; }
             set { _ordermenu = value; }
+        }
+
+        /// <summary>
+        /// 整单折扣
+        /// </summary>
+        public Xiuse.Model.xiuse_discount EntireDiscount
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 验证用户
+        /// </summary>
+        public xiuse_user TellUser
+        {
+            get; set;
         }
     }
 }
