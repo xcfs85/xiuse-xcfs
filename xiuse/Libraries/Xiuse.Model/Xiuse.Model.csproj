@@ -50,7 +50,6 @@
     <Compile Include="Revenue.cs" />
     <Compile Include="SysLog.cs" />
     <Compile Include="ViewModel\ordermenu_dicount.cs" />
-    <Compile Include="ViewModel\TurnOverView.cs" />
     <Compile Include="ViewModel\XiuseDicountView.cs" />
     <Compile Include="xiuse_desk.cs" />
     <Compile Include="xiuse_discount.cs" />
