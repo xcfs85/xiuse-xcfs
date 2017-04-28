@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,7 @@ namespace Xiuse.Model.ViewModel
     public class TurnOverView
     {
         /// <summary>
-        /// 营业额a
+        /// 营业额
         /// </summary>
         public decimal Account
         {
